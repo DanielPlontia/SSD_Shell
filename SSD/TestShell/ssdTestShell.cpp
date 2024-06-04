@@ -39,4 +39,12 @@ public:
 		cmd += to_string(addr);
 		myExecuter->runner(cmd);
 	}
+
+	void write(int addr, string data) {
+		std::string cmd = "W ";
+		cmd += to_string(addr);
+		cmd += " ";
+		cmd += data;
+		myExecuter->runner(cmd);
+	}
 };
