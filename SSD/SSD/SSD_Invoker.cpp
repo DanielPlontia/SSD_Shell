@@ -8,6 +8,8 @@
 #include <cctype>
 #include "Command.h"
 #include "SSD_HW.h"
+#include "MySSD.cpp"
+#include<iostream>
 
 using std::vector;
 using std::string;
@@ -21,6 +23,7 @@ private:
 	vector<string> userCmd;
 	Command* command_Instance;
 	SSD_HW* SSD_Instance;
+	string mapping_instance;
 
 	void makeLower(string& str)
 	{
@@ -30,21 +33,26 @@ private:
 
 	SSD_HW* getSSD() 
 	{
-
-		return nullptr;
+		return new MySSD();
 	}
 
 	Command* getCmdInstance()
 	{
-		/*if (SSD_Instance == nullptr)
-			return nullptr;*/
+		if (SSD_Instance == nullptr)
+			return nullptr;
 
 		string cmdName = userCmd[0];
 		
 		makeLower(cmdName);
 
-		if (cmdName == "r") return new WriteCmd(SSD_Instance);
-		if(cmdName == "w") return new ReadCmd(SSD_Instance);
+		if (cmdName == "r") { 
+			mapping_instance = "read_instance";
+			return new ReadCmd(SSD_Instance);
+		}
+		if (cmdName == "w") { 
+			mapping_instance = "write_instance";
+			return new WriteCmd(SSD_Instance);
+		}
 		return nullptr;
 
 	}
@@ -52,6 +60,8 @@ private:
 public:
 	SSD_Invoker(vector<string> userCommand)
 	{
+		mapping_instance = "";
+
 		userCmd = userCommand;
 
 		SSD_Instance = getSSD();
@@ -59,11 +69,22 @@ public:
 		command_Instance = getCmdInstance();
 	}
 
-	void run()
+	string run()
 	{
 		if (command_Instance == nullptr)
-			return;
+		{
+			std::cout << "Command Invalide. must R or W" <<std::endl;
+		}
+		else {
+			try {
+				command_Instance->execute(userCmd);
+			}
+			catch (exception e) {
+				std::cout << e.what() << endl;
+				return "cmd validation check Throw something";
+			}
+		}
 
-		command_Instance->execute(userCmd);
+		return mapping_instance;
 	}
 };
