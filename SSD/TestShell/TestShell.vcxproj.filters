@@ -15,28 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="TestShell.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="read.cpp">
+    <ClCompile Include="ssdTestShell.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="write.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="SSD_Invoker.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MySSD.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Command.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="SSD_HW.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
