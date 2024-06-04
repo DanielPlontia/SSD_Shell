@@ -10,18 +10,18 @@ const int MAX_LBA = 100;
 class MySSD : public SSD_HW {
 public:
 	MySSD() {
-		nand_file_ = "nand.txt";
-		result_file_ = "result.txt";
+		nand_file_ = "./nand.txt";
+		result_file_ = "./result.txt";
 
 		load_nand_data();
 	};
 
 	void read(int addr) override {
-
+		dump_read_data(nand_data_[addr]);
 	};
 
 	void write(int addr, unsigned int data) override {
-
+		nand_data_[addr] = data;
 	};
 
 	~MySSD() {
@@ -63,6 +63,20 @@ private:
 				ss << i << " 0x" << std::setfill('0') << std::setw(8) << std::hex << nand_data_[i];
 				file << ss.str() << std::endl;
 			}
+		}
+		catch (std::exception& e) {
+			throw e;
+		}
+	}
+
+	void dump_read_data(unsigned int value) {
+		try {
+			std::ofstream file;
+			file.open(result_file_);
+
+			std::stringstream ss;
+			ss << "0x" << std::setfill('0') << std::setw(8) << std::hex << value;
+			file << ss.str() << std::endl;
 		}
 		catch (std::exception& e) {
 			throw e;
