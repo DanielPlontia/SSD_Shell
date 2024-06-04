@@ -3,22 +3,8 @@
 #include <vector>
 #include <string>
 
+#include "exeRunner.h"
 using namespace std;
-
-#define interface struct
-
-interface exeRunner {
-	virtual void runner(std::string cmd) = 0;
-};
-
-class sddExeRunner : exeRunner{
-public:
-	void runner(std::string cmd) {
-		// exe calling  byr cmd
-		std::cout << "Runner called" << endl;
-	}
-};
-
 
 class TestShell {
 private:
