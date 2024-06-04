@@ -8,6 +8,6 @@ int main(int argc, char *argv[]) {
 	for (int i = 0; i < argc; i++) {
 		command.push_back(argv[i]);
 	}
-	Invoker invoker{ command };
+	SSD_Invoker invoker{ command };
 	invoker.run();
 }
