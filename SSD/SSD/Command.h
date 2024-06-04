@@ -1,9 +1,9 @@
 #pragma once
-#define Interface struct
+#define interface struct
 
 #include <vector>
 
-Interface Command{
+interface Command{
 public:
 	virtual void execute() = 0;
 	virtual bool check_validation(std::vector<int> operation) = 0;

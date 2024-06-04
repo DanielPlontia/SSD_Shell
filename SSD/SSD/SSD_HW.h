@@ -1,7 +1,7 @@
 #pragma once
-#define Interface struct
+#define interface struct
 
-Interface SSD_HW{
+interface SSD_HW{
 public:
 	virtual void sector() = 0;
 	virtual void writeNandFile() = 0;
