@@ -1,7 +1,13 @@
-#include "SSD_HW.h"
-#include "Command.h"
-int main(int argc, char *argv[]) {
-	// SSD Invoker
-	// Invoker »ý¼º
+#include "SSD_Invoker.cpp"
+#include <vector>
+#include <string>
 
+using namespace std;
+int main(int argc, char *argv[]) {
+	vector<string> command;
+	for (int i = 0; i < argc; i++) {
+		command.push_back(argv[i]);
+	}
+	SSD_Invoker invoker{ command };
+	invoker.run();
 }
