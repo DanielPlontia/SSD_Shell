@@ -10,7 +10,7 @@ interface exeRunner {
 	virtual void runner(std::string cmd) = 0;
 };
 
-class sddExeRunner : exeRunner{
+class sddExeRunner : public exeRunner{
 public:
 	void runner(std::string cmd) {
 		// exe calling  byr cmd
