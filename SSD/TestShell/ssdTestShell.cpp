@@ -34,7 +34,6 @@ public:
 		rfs.open("result.txt", 'r');
 		rfs.getline(readData, 100);
 		rfs.close();
-
 		return readData;
 	}
 };
@@ -87,7 +86,7 @@ public:
 		return ret;
 	}
 
-	void fullRead(dataReader *fileReader) {
+	void fullRead(dataReader*fileReader) {
 		for (int index = 0; index < 100; ++index) {
 			std::string cmd = "R ";
 			cmd += to_string(index);

@@ -14,7 +14,7 @@ public:
 
 class dataReaderMock : public dataReader {
 public:
-	MOCK_METHOD(string, fileRead, (), (override));
+	MOCK_METHOD(string, fileRead, (), ());
 };
 
 TEST(ShellTest, ReadData) {
@@ -34,7 +34,8 @@ TEST(ShellTest, WriteNormal) {
 TEST(ShellTest, FullReadData) {
 	ExeMock exeMock;
 	dataReaderMock fileReaderMock;
-	TestShell shell(&exeMock);
+	string inputData = "FullRead";
+	TestShell shell(&exeMock, inputData);
 	EXPECT_CALL(exeMock, runner).Times(100);
 	EXPECT_CALL(fileReaderMock, fileRead)
 		.WillRepeatedly(testing::Return("0xff99"));
