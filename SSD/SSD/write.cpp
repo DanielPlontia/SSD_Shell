@@ -24,11 +24,13 @@ public:
 	}
 
 private:
+	const int MIN_ADDR_NUM = 0;
+	const int MAX_ADDR_NUM = 99;
 	SSD_HW* ssd_hw;
 	std::vector<std::string> cmd_arg;
 
-	int Write_Address = -1;
-	unsigned int Write_Data = 0;
+	int write_address = -1;
+	unsigned int write_data = 0;
 
 	void do_action() override
 	{
@@ -56,9 +58,9 @@ private:
 	{
 		if (is_valid_decimal_string(cmd_arg.at(1)) == false) return false;
 		try {
-			Write_Address = std::stoi(cmd_arg.at(1));
-			if (Write_Address < 0) return false;
-			if (Write_Address > 99) return false;
+			write_address = std::stoi(cmd_arg.at(1));
+			if (write_address < MIN_ADDR_NUM) return false;
+			if (write_address > MAX_ADDR_NUM) return false;
 		}
 		catch (std::exception e) {
 			return false;
@@ -71,7 +73,7 @@ private:
 		if (cmd_arg.at(2)[0] != '0' || cmd_arg.at(2)[1] != 'x') return false;
 		if (is_valid_hex_string(cmd_arg.at(2).substr(2)) == false) return false;
 		try {
-			Write_Data = std::stoi(cmd_arg.at(2), 0, 16);
+			write_data = std::stoi(cmd_arg.at(2), 0, 16);
 		}
 		catch (std::exception e) {
 			return false;
