@@ -13,9 +13,13 @@ public:
 
 TEST(ShellTest, ReadData) {
 	ExeMock exeMock;
-	TestShell shell(&exeMock);
 	EXPECT_CALL(exeMock, runner).Times(1);
-
-	int address = 3;
-	shell.read(3);
+	string inputData = "Read 3";
+	TestShell shell(&exeMock, inputData);
+}
+TEST(ShellTest, WriteNormal) {
+	ExeMock exeMock;
+	EXPECT_CALL(exeMock, runner).Times(1);
+	string inputData = "Write 3 0x10000000";
+	TestShell shell(&exeMock, inputData);
 }
