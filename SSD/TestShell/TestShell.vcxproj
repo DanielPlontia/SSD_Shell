@@ -127,8 +127,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ssdExeRunner.cpp" />
     <ClCompile Include="ssdTestShell.cpp" />
     <ClCompile Include="TestShell.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="exeRunner.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

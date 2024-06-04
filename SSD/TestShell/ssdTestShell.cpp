@@ -2,28 +2,9 @@
 #include <sstream>
 #include <vector>
 #include <string>
-#include <cstdlib>
 
+#include "exeRunner.h"
 using namespace std;
-
-#define interface struct
-
-interface exeRunner {
-	virtual void runner(std::string cmd) = 0;
-};
-
-class sddExeRunner : exeRunner{
-public:
-	void runner(std::string cmd) {
-		// exe calling  byr cmd
-		std::string exe_run_cmd = "SSD.exe " + cmd;
-		int exit_status = system(exe_run_cmd.c_str());
-		if (exit_status != 0) {
-			std::cerr << "SSD.exe not success return. return value : " << exit_status << std::endl;
-		}
-	}
-};
-
 
 class TestShell {
 private:
