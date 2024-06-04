@@ -26,11 +26,55 @@ public:
 private:
 	SSD_HW* ssd_hw;
 	std::vector<std::string> cmd_arg;
+
+	int Write_Address = -1;
+	unsigned int Write_Data = 0;
+
 	bool check_validation() override
 	{
-		return false;
+		if (cmd_arg.size() < 3) return false;
+		if (cmd_arg.at(0) != "W") return false;
+
+		if (is_valid_decimal_string(cmd_arg.at(1)) == false) return false;
+		try {
+			Write_Address = std::stoi(cmd_arg.at(1));
+			if (Write_Address < 0) return false;
+			if (Write_Address > 99) return false;
+		}
+		catch (std::exception& e) {
+			return false;
+		}
+
+		if (cmd_arg.at(2).length() != 10) return false;
+		if (cmd_arg.at(2)[0] != '0' || cmd_arg.at(2)[1] != 'x') return false;
+		if (is_valid_hex_string(cmd_arg.at(2).substr(2)) == false) return false;
+		try {
+			Write_Data = std::stoi(cmd_arg.at(2), 0, 16);
+		}
+		catch (std::exception& e) {
+			return false;
+		}
+		return true;
 	}
+
 	void do_action() override
 	{
+	}
+
+	bool is_valid_decimal_string(const std::string& decimalString) {
+		for (char ch : decimalString) {
+			if (!std::isdigit(ch)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	bool is_valid_hex_string(const std::string& hexString) {
+		for (char ch : hexString) {
+			if (!std::isxdigit(ch)) {
+				return false;
+			}
+		}
+		return true;
 	}
 };
