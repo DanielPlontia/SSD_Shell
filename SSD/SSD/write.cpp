@@ -1,6 +1,14 @@
+#include <stdexcept>
 
 #include "SSD_HW.h"
 #include "Command.h"
+
+class WriteException : public std::exception {
+public:
+	char const* what() const override {
+		return "WRITE :validation error!";
+	}
+};
 
 class WriteCmd : public Command {
 	// Command을(를) 통해 상속됨
@@ -10,7 +18,9 @@ public:
 	void execute(const std::vector<std::string>& operation) override
 	{
 		cmd_arg = operation;
-
+		if (check_validation() == false) {
+			throw WriteException();
+		}
 	}
 
 private:
