@@ -108,10 +108,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ClInclude Include="SSD_HW_Mock.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SSD_HW_Mock.h" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
