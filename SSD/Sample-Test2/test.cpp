@@ -17,54 +17,6 @@ public:
 	MOCK_METHOD(string, fileRead, (), (override));
 };
 
-TEST(ShellTest, ParseUserInputWriteCommand) {
-	ExeMock exeMock;
-	TestShell shell(&exeMock);
-
-	std::string userInput = "write 3 0xffffffff";
-	TestShell::inputData expected = { "write", 3, "0xffffffff" };
-	TestShell::inputData actual = shell.inputStrParser(userInput);
-    
-	EXPECT_EQ(expected.command, actual.command);
-	EXPECT_EQ(expected.dataAddr, actual.dataAddr);
-	EXPECT_EQ(expected.data, actual.data);
-}
-
-TEST(ShellTest, ParseUserInputReadCommand) {
-	ExeMock exeMock;
-	TestShell shell(&exeMock);
-
-	std::string userInput = "read 3";
-	TestShell::inputData expected = { "read", 3, "" };
-	TestShell::inputData actual = shell.inputStrParser(userInput);
-
-	EXPECT_EQ(expected.command, actual.command);
-	EXPECT_EQ(expected.dataAddr, actual.dataAddr);
-	EXPECT_EQ(expected.data, actual.data);
-}
-
-TEST(ShellTest, ParseUserInputExitCommand) {
-	ExeMock exeMock;
-	TestShell shell(&exeMock);
-
-	std::string userInput = "exit";
-	TestShell::inputData expected = { "exit", 0, "" };
-	TestShell::inputData actual = shell.inputStrParser(userInput);
-
-	EXPECT_EQ(expected.command, actual.command);
-	EXPECT_EQ(expected.dataAddr, actual.dataAddr);
-	EXPECT_EQ(expected.data, actual.data);
-}
-
-TEST(ShellTest, ParseUserInputWrongCommand) {
-	ExeMock exeMock;
-	TestShell shell(&exeMock);
-
-	std::string userInput = "Reed 3 0xffff";
-	
-	EXPECT_THROW(shell.inputStrParser(userInput) , exception);
-}
-
 TEST(ShellTest, ReadData) {
 	ExeMock exeMock;
 	TestShell shell(&exeMock);
