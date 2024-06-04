@@ -28,8 +28,9 @@ private:
 		
 		makeLower(cmdName);
 
-		if (cmdName == "r") commandInstance = new Read();
-		if(cmdName == "w") commandInstance = new Write();
+		if (cmdName == "r") return new Read();
+		if(cmdName == "w") return new WriteCmd();
+
 
 	}
 
