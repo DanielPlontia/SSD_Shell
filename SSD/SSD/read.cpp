@@ -19,30 +19,39 @@ public:
     ReadCmd(SSD_HW* _ssd) : ssd_hw{ _ssd } {};
     void execute(const std::vector<std::string>& operation) override {
         cmd_arg = operation;
-        LBA = stoi(operation[1]);
         if (check_validation() == false) {
             throw ReadException();
         }
+        LBA = stoi(operation[1]);
         do_action();
     }
 private:
     bool check_validation() override {
         if (check_args() == false) return false;
         if (check_cmd() == false) return false;
-        if (check_range() == false) return false;
+        if (check_address_value() == false) return false;
+        if (check_address_range() == false) return false;
 
         return true;
     }
     bool check_args() {
-        if(cmd_arg.size() != 2) return false;
+        if (cmd_arg.size() != 2) return false;
         return true;
     }
     bool check_cmd() {
         if (cmd_arg[0] != "R") return false;
         return true;
     }
-    bool check_range() {
-        if ((LBA < min_num) || (LBA > max_num)) return false;
+    bool check_address_value() {
+        for (char ch : cmd_arg[1]) {
+            if (!std::isdigit(ch)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    bool check_address_range() {
+        if ((stoi(cmd_arg[1]) < min_num) || (stoi(cmd_arg[1]) > max_num)) return false;
         return true;
     }
     void do_action() override {
