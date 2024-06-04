@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <vector>
 #include <string>
 
 using namespace std;
@@ -24,7 +26,6 @@ public:
 };
 
 class SddDataReader : public dataReader {
-
 public:
 	string fileRead() {
 		// file read
@@ -47,17 +48,37 @@ public:
 	};
 
 private:
-	inputData readedData;
+	vector<string> readedData;
 	exeRunner* myExecuter;
+
+	void split_input_data(string input) {
+		istringstream ss (input);
+		string subs1;
+
+		while(getline(ss,subs1,' ')){
+			readedData.push_back(subs1);
+		}
+	}
 	
 public:
-	TestShell(exeRunner* exe) :
-		myExecuter(exe) {
+	TestShell(exeRunner* exe, string inputData) : myExecuter(exe)
+	{
+		split_input_data(inputData);
+		if (readedData[0] == "Read") read();
+		if (readedData[0] == "Write") write();
 	}
 
-	void read(int addr) {
+	void read() {
 		std::string cmd = "R ";
-		cmd += to_string(addr);
+		cmd += readedData[1];
+		myExecuter->runner(cmd);
+	}
+
+	void write() {
+		std::string cmd = "W ";
+		cmd += readedData[1];
+		cmd += " ";
+		cmd += readedData[2];
 		myExecuter->runner(cmd);
 	}
 
@@ -76,5 +97,4 @@ public:
 	}
 
 };
-
 
