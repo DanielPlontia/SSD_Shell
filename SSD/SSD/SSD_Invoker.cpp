@@ -5,6 +5,7 @@
 #include "Command.h"
 #include "read.cpp"
 #include "write.cpp"
+#include "SSD_HW.h"
 
 using std::vector;
 using std::string;
@@ -14,7 +15,8 @@ using std::string;
 class SSD_Invoker {
 private:
 	vector<string> userCmd;
-	Command* commandInstance;
+	Command* command_Instance;
+	SSD_HW* SSD_Instance;
 
 	void makeLower(string& str)
 	{
@@ -22,15 +24,24 @@ private:
 			[](unsigned char c) { return std::tolower(c); });
 	}
 
+	SSD_HW* getSSD() 
+	{
+
+		return nullptr;
+	}
+
 	Command* getCmdInstance()
 	{
+		if (SSD_Instance == nullptr)
+			return nullptr;
+
 		string cmdName = userCmd[0];
 		
 		makeLower(cmdName);
 
-		if (cmdName == "r") return new Read();
-		if(cmdName == "w") return new WriteCmd();
-
+		if (cmdName == "r") return new ReadCmd();
+		if(cmdName == "w") return new WriteCmd(SSD_Instance);
+		return nullptr;
 
 	}
 
@@ -38,10 +49,17 @@ public:
 	SSD_Invoker(vector<string> userCommand)
 	{
 		userCmd = userCommand;
+
+		SSD_Instance = getSSD();
+
+		command_Instance = getCmdInstance();
 	}
 
 	void run()
 	{
-		commandInstance->execute(userCmd);
+		if (command_Instance == nullptr)
+			return;
+
+		command_Instance->execute(userCmd);
 	}
 };
