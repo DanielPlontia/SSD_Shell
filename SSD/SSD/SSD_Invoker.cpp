@@ -1,6 +1,10 @@
 #include<vector>
 #include<string>
+#include<algorithm>
+#include <cctype>
 #include "Command.h"
+#include "read.cpp"
+#include "write.cpp"
 
 using std::vector;
 using std::string;
@@ -12,8 +16,22 @@ private:
 	vector<string> userCmd;
 	Command* commandInstance;
 
+	void makeLower(string& str)
+	{
+		std::transform(str.begin(), str.end(), str.begin(),
+			[](unsigned char c) { return std::tolower(c); });
+	}
 
+	Command* getCmdInstance()
+	{
+		string cmdName = userCmd[0];
+		
+		makeLower(cmdName);
 
+		if (cmdName == "r") commandInstance = new Read();
+		if(cmdName == "w") commandInstance = new Write();
+
+	}
 
 public:
 	SSD_Invoker(vector<string> userCommand)
@@ -23,6 +41,6 @@ public:
 
 	void run()
 	{
-
+		commandInstance->execute(userCmd);
 	}
 };
