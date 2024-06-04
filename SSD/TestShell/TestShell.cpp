@@ -6,7 +6,7 @@
 
 int main()
 {
-    sddExeRunner ssdExe;
+    ssdExecutor ssdExe;
     TestShell* shell = nullptr;
 
     while (1) {
