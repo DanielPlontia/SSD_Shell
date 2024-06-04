@@ -1,14 +1,9 @@
 #include "SSD_HW.h"
 #include <fstream>
-#include <vector>
-#include <string>
+#include <iomanip>
 #include <iostream>
-
-using std::string;
-using std::vector;
-using std::ifstream;
-using std::cout;
-using std::endl;
+#include <sstream>
+#include <string>
 
 const int MAX_LBA = 100;
 
@@ -18,7 +13,7 @@ public:
 		nand_file_ = "nand.txt";
 		result_file_ = "result.txt";
 
-		set_nand_data();
+		load_nand_data();
 	};
 
 	void read(int addr) override {
@@ -29,12 +24,48 @@ public:
 
 	};
 
+	~MySSD() {
+		dump_nand_data();
+	}
+
 private:
-	string nand_file_;
-	string result_file_;
+	std::string nand_file_;
+	std::string result_file_;
 
-	vector<unsigned int> nand_data_;
+	unsigned int nand_data_[MAX_LBA] = { 0 };
 
-	void set_nand_data() {
+	void load_nand_data() {
+		try {
+			std::ifstream file;
+			file.open(nand_file_);
+			if (!file.is_open()) return;
+
+			std::string line;
+			while (std::getline(file, line)) {
+				size_t pos = line.find(" ");
+				int index = stoi(line.substr(0, pos));
+				unsigned int value = std::stoul(line.substr(pos + 1, line.size()), nullptr, 16);
+				nand_data_[index] = value;
+			}
+		}
+		catch (std::exception& e) {
+			throw e;
+		}
+	}
+
+	void dump_nand_data() {
+		try {
+			std::ofstream file;
+			file.open(nand_file_);
+
+			for (int i = 0; i < MAX_LBA; i++) {
+				std::stringstream ss;
+				ss << i << " 0x" << std::setfill('0') << std::setw(8) << std::hex << nand_data_[i];
+				file << ss.str() << std::endl;
+			}
+		}
+		catch (std::exception& e) {
+			throw e;
+		}
 	}
 };
