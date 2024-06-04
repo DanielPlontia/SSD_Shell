@@ -27,6 +27,9 @@
     <ClCompile Include="SSD_Invoker.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="MySSD.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Command.h">
