@@ -21,6 +21,7 @@ public:
 		if (check_validation() == false) {
 			throw WriteException();
 		}
+		do_action();
 	}
 
 private:
@@ -34,6 +35,7 @@ private:
 
 	void do_action() override
 	{
+		ssd_hw->write(write_address, write_data);
 	}
 
 	bool check_validation() override
