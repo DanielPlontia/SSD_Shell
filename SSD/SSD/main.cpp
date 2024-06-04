@@ -1,3 +1,4 @@
+#pragma once
 #include "SSD_Invoker.cpp"
 #include <vector>
 #include <string>

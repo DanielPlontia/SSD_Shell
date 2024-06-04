@@ -1,4 +1,4 @@
-
+#pragma once
 #include "SSD_HW.h"
 #include "Command.h"
 

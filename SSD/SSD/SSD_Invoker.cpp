@@ -1,16 +1,20 @@
+#pragma once
+
+#include "read.cpp"
+#include "write.cpp"
 #include<vector>
 #include<string>
 #include<algorithm>
 #include <cctype>
 #include "Command.h"
-#include "read.cpp"
-#include "write.cpp"
 #include "SSD_HW.h"
 
 using std::vector;
 using std::string;
 
 
+class WriteCmd;
+class ReadCmd;
 
 class SSD_Invoker {
 private:
@@ -32,15 +36,15 @@ private:
 
 	Command* getCmdInstance()
 	{
-		if (SSD_Instance == nullptr)
-			return nullptr;
+		/*if (SSD_Instance == nullptr)
+			return nullptr;*/
 
 		string cmdName = userCmd[0];
 		
 		makeLower(cmdName);
 
-		if (cmdName == "r") return new ReadCmd();
-		if(cmdName == "w") return new WriteCmd(SSD_Instance);
+		if (cmdName == "r") return new WriteCmd(SSD_Instance);
+		if(cmdName == "w") return new ReadCmd(SSD_Instance);
 		return nullptr;
 
 	}
