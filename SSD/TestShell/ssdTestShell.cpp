@@ -28,7 +28,7 @@ public:
 		// file read
 		std::ifstream rfs;
 		char readData[100];
-		rfs.open("result.txt", 'r');
+		rfs.open("result.txt");
 		rfs.getline(readData, 100);
 		rfs.close();
 		return readData;
@@ -79,8 +79,8 @@ public:
 		}
 	}
 	void fullWrite() {
-		std::string cmd = "W ";
 		for (int index = 0; index < 100; ++index) {
+			std::string cmd = "W ";
 			cmd += to_string(index);
 			cmd += " ";
 			cmd += readedData[1];
