@@ -60,7 +60,7 @@ private:
 
 			for (int i = 0; i < MAX_LBA; i++) {
 				std::stringstream ss;
-				ss << i << " 0x" << std::setfill('0') << std::setw(8) << std::hex << nand_data_[i];
+				ss << i << " 0x" << std::uppercase << std::setfill('0') << std::setw(8) << std::hex << nand_data_[i];
 				file << ss.str() << std::endl;
 			}
 			file.close();
@@ -76,7 +76,7 @@ private:
 			file.open(result_file_);
 
 			std::stringstream ss;
-			ss << "0x" << std::setfill('0') << std::setw(8) << std::hex << value;
+			ss << "0x" << std::uppercase << std::setfill('0') << std::setw(8) << std::hex << value;
 			file << ss.str() << std::endl;
 			file.close();
 		}
