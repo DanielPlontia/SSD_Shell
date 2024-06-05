@@ -17,29 +17,35 @@ public:
 	MOCK_METHOD(string, fileRead, (), ());
 };
 
-TEST(ShellTest, ReadData) {
+class TestShellFixture : public testing::Test {
+public:
 	ExeMock exeMock;
+	dataReaderMock readerMock;
+
+	TestShell shell{ &exeMock, &readerMock };
+};
+
+TEST_F(TestShellFixture, ReadData) {
 	EXPECT_CALL(exeMock, runner).Times(1);
-	string inputData = "Read 3";
-	TestShell shell(&exeMock, inputData);
+	string inputData = "read 3";
+
+	shell.TestExecute(inputData);
 }
 
-TEST(ShellTest, WriteNormal) {
-	ExeMock exeMock;
+TEST_F(TestShellFixture, WriteNormal) {
 	EXPECT_CALL(exeMock, runner).Times(1);
-	string inputData = "Write 3 0x10000000";
-	TestShell shell(&exeMock, inputData);
+	string inputData = "write 3 0x10000000";
+
+	shell.TestExecute(inputData);
 }
 
-TEST(ShellTest, FullReadData) {
-	ExeMock exeMock;
-	dataReaderMock fileReaderMock;
-	string inputData = "FullRead";
-	TestShell shell(&exeMock, inputData);
+TEST_F(TestShellFixture, FullReadData) {
+	string inputData = "fullread";
+
 	EXPECT_CALL(exeMock, runner).Times(100);
-	EXPECT_CALL(fileReaderMock, fileRead)
+	EXPECT_CALL(readerMock, fileRead)
 		.WillRepeatedly(testing::Return("0xff99"));
 
 	int address = 3;
-	shell.fullRead(&fileReaderMock);
+	shell.fullRead();
 }

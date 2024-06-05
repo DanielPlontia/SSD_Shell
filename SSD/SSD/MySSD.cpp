@@ -17,7 +17,7 @@ public:
 	};
 
 	void read(int addr) override {
-		dump_read_data(nand_data_[addr]);
+		dump_read_result(nand_data_[addr]);
 	};
 
 	void write(int addr, unsigned int data) override {
@@ -63,13 +63,14 @@ private:
 				ss << i << " 0x" << std::setfill('0') << std::setw(8) << std::hex << nand_data_[i];
 				file << ss.str() << std::endl;
 			}
+			file.close();
 		}
 		catch (std::exception& e) {
 			throw e;
 		}
 	}
 
-	void dump_read_data(unsigned int value) {
+	void dump_read_result(unsigned int value) {
 		try {
 			std::ofstream file;
 			file.open(result_file_);
@@ -77,6 +78,7 @@ private:
 			std::stringstream ss;
 			ss << "0x" << std::setfill('0') << std::setw(8) << std::hex << value;
 			file << ss.str() << std::endl;
+			file.close();
 		}
 		catch (std::exception& e) {
 			throw e;
