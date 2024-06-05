@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -117,11 +117,11 @@ private:
 	}
 
 	void make_test_func_map() {
-		test_func_map.emplace("read", test_func{ std::bind(&TestShell::read, this), "SSD¿¡ Æ¯Á¤ ¸Ş¸ğ¸® °ªÀ» ÀĞ¾î Console¿¡ Ãâ·ÂÇØÁİ´Ï´Ù.\n»ç¿ë¹ı : read [ÁÖ¼Ò]\n" });
-		test_func_map.emplace("write", test_func{ std::bind(&TestShell::write, this), "SSD Æ¯Á¤ ¸Ş¸ğ¸®¿¡ °ªÀ» Àû½À´Ï´Ù. Data´Â 0x·Î ½ÃÀÛÇÏ´Â 4byte Hex stringÀ¸·Î ÀÛ¼ºÇØÁÖ¼Å¾ß ÇÕ´Ï´Ù.\n»ç¿ë¹ı : write [ÁÖ¼Ò] [Data]\n" });
-		test_func_map.emplace("fullread", test_func{ std::bind(&TestShell::fullRead, this), "SSD ¸ğµç ¸Ş¸ğ¸® °ªÀ» ÀĞ¾î Console¿¡ Ãâ·ÂÇØÁİ´Ï´Ù.\n»ç¿ë¹ı : fullread\n" });
-		test_func_map.emplace("fullwrite", test_func{ std::bind(&TestShell::fullWrite, this), "SSD ¸ğµç ¸Ş¸ğ¸®¿¡ °ªÀ» Àû½À´Ï´Ù. Data´Â 0x·Î ½ÃÀÛÇÏ´Â 4byte Hex stringÀ¸·Î ÀÛ¼ºÇØÁÖ¼Å¾ß ÇÕ´Ï´Ù.\n»ç¿ë¹ı : fullwrite [Data]\n" });
-		test_func_map.emplace("help", test_func{ std::bind(&TestShell::showHelp, this), "TestShell¿¡¼­ »ç¿ëÇÒ ¼ö ÀÖ´Â Commandµé¿¡ ´ëÇÑ ¼³¸íÀ» È®ÀÎ ÇÒ ¼ö ÀÖ½À´Ï´Ù.\n" });
-		test_func_map.emplace("testapp1", test_func{ std::bind(&TestShell::testApp1, this), "TestShell¿¡¼­ »ç¿ëÇÒ ¼ö ÀÖ´Â Commandµé¿¡ ´ëÇÑ ¼³¸íÀ» È®ÀÎ ÇÒ ¼ö ÀÖ½À´Ï´Ù.\n" });
+		test_func_map.emplace("read", test_func{ std::bind(&TestShell::read, this), "SSDì— íŠ¹ì • ë©”ëª¨ë¦¬ ê°’ì„ ì½ì–´ Consoleì— ì¶œë ¥í•´ì¤ë‹ˆë‹¤.\nì‚¬ìš©ë²• : read [ì£¼ì†Œ]\n" });
+		test_func_map.emplace("write", test_func{ std::bind(&TestShell::write, this), "SSD íŠ¹ì • ë©”ëª¨ë¦¬ì— ê°’ì„ ì ìŠµë‹ˆë‹¤. DataëŠ” 0xë¡œ ì‹œì‘í•˜ëŠ” 4byte Hex stringìœ¼ë¡œ ì‘ì„±í•´ì£¼ì…”ì•¼ í•©ë‹ˆë‹¤.\nì‚¬ìš©ë²• : write [ì£¼ì†Œ] [Data]\n" });
+		test_func_map.emplace("fullread", test_func{ std::bind(&TestShell::fullRead, this), "SSD ëª¨ë“  ë©”ëª¨ë¦¬ ê°’ì„ ì½ì–´ Consoleì— ì¶œë ¥í•´ì¤ë‹ˆë‹¤.\nì‚¬ìš©ë²• : fullread\n" });
+		test_func_map.emplace("fullwrite", test_func{ std::bind(&TestShell::fullWrite, this), "SSD ëª¨ë“  ë©”ëª¨ë¦¬ì— ê°’ì„ ì ìŠµë‹ˆë‹¤. DataëŠ” 0xë¡œ ì‹œì‘í•˜ëŠ” 4byte Hex stringìœ¼ë¡œ ì‘ì„±í•´ì£¼ì…”ì•¼ í•©ë‹ˆë‹¤.\nì‚¬ìš©ë²• : fullwrite [Data]\n" });
+		test_func_map.emplace("help", test_func{ std::bind(&TestShell::showHelp, this), "TestShellì—ì„œ ì‚¬ìš©í•  ìˆ˜ ìˆëŠ” Commandë“¤ì— ëŒ€í•œ ì„¤ëª…ì„ í™•ì¸ í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.\n" });
+    test_func_map.emplace("testapp1", test_func{ std::bind(&TestShell::testApp1, this), "SSD ì „ì²´ ë©”ëª¨ë¦¬ì— 0x12345678ì„ ì‘ì„±í•˜ê³  ì „ì²´ ë©”ëª¨ë¦¬ë¥¼ ì½ì–´ ì •ìƒì ìœ¼ë¡œ ì‘ì„±ì´ ëëŠ”ì§€ í™•ì¸í•©ë‹ˆë‹¤.\nì‚¬ìš©ë²• : testapp1\n" });
 	}
 };

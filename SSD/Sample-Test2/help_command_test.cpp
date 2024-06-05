@@ -1,7 +1,7 @@
-
+ï»¿
 #include "TestShellFixture.h"
 
-// Ç¥ÁØ Ãâ·ÂÀ» ÀçÁöÇâÇÏ¿© Ä¸Ã³ÇÏ´Â Å¬·¡½º
+// í‘œì¤€ ì¶œë ¥ì„ ì¬ì§€í–¥í•˜ì—¬ ìº¡ì²˜í•˜ëŠ” í´ë˜ìŠ¤
 class OutputRedirector {
 public:
     OutputRedirector() : old_cout_buf(std::cout.rdbuf()) {

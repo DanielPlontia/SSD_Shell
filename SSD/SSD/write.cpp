@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <stdexcept>
 
 #include "SSD_HW.h"
@@ -12,7 +12,7 @@ public:
 };
 
 class WriteCmd : public Command {
-	// CommandÀ»(¸¦) ÅëÇØ »ó¼ÓµÊ
+	// Commandì„(ë¥¼) í†µí•´ ìƒì†ë¨
 public:
 	WriteCmd(SSD_HW* _ssd) : ssd_hw{ _ssd } {};
 
@@ -76,7 +76,7 @@ private:
 		if (cmd_arg.at(2)[0] != '0' || cmd_arg.at(2)[1] != 'x') return false;
 		if (is_valid_hex_string(cmd_arg.at(2).substr(2)) == false) return false;
 		try {
-			write_data = std::stoi(cmd_arg.at(2), 0, 16);
+			write_data = std::stoul(cmd_arg.at(2), 0, 16);
 		}
 		catch (std::exception e) {
 			return false;
