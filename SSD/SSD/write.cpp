@@ -96,6 +96,7 @@ private:
 			if (!std::isxdigit(ch)) {
 				return false;
 			}
+			if (ch > 'F') return false;
 		}
 		return true;
 	}
