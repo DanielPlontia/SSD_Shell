@@ -125,7 +125,7 @@ public:
 
 	void repeatWriteOperation(int start, int end, string data)
 	{
-		for (int lba = start; lba <= 5; lba++) {
+		for (int lba = start; lba <= end; lba++) {
 			readedData.push_back("write");
 			readedData.push_back(to_string(lba));
 			readedData.push_back(data);
