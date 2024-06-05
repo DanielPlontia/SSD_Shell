@@ -3,9 +3,13 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <unordered_map>
+#include <functional>
 
 #include "exeRunner.h"
+
 using namespace std;
+using test_func = std::function<void()>;
 
 interface dataReader {
 public:
@@ -27,40 +31,23 @@ public:
 
 class TestShell {
 public:
-	struct inputData {
-		std::string command;
-		int dataAddr{ 0 };
-		std::string data;
-	};
-
-private:
-	vector<string> readedData;
-	exeRunner* myExecuter;
-
-	void split_input_data(string input) {
-		istringstream ss (input);
-		string subs1;
-
-		while(getline(ss,subs1,' ')){
-			readedData.push_back(subs1);
-		}
+	TestShell(exeRunner* exe, dataReader* reader) : myExecuter{ exe }, fileReader{ reader } {
+		test_func_map.emplace("read", std::bind(&TestShell::read, this));
+		test_func_map.emplace("write", std::bind(&TestShell::write, this));
+		test_func_map.emplace("fullread", std::bind(&TestShell::fullRead, this));
+		test_func_map.emplace("fullwrite", std::bind(&TestShell::fullWrite, this));
+		test_func_map.emplace("help", std::bind(&TestShell::showHelp, this));
 	}
-	
-public:
-	TestShell(exeRunner* exe, string inputData) : myExecuter(exe)
+
+	bool TestExecute(std::string inputData)
 	{
 		split_input_data(inputData);
-		if (readedData[0] == "read") read();
-		else if (readedData[0] == "exit") return;
-		else if (readedData[0] == "write") write();
-		else if (readedData[0] == "help") showHelp();
-		else if (readedData[0] == "fullread") {
-			SddDataReader dataReader;
-			fullRead(&dataReader);
+		if (readedData[0] == "exit") return true;
+
+		if (test_func_map.find(readedData[0]) == test_func_map.end()) {
+			throw std::exception("Invalid Command");
 		}
-		else if (readedData[0] == "fullwrite")	fullWrite();
-		else
-			return;
+		return false;
 	}
 
 	void read() {
@@ -77,7 +64,7 @@ public:
 		myExecuter->runner(cmd);
 	}
 
-	void fullRead(dataReader*fileReader) {
+	void fullRead() {
 		for (int index = 0; index < 100; ++index) {
 			std::string cmd = "R ";
 			cmd += to_string(index);
@@ -85,7 +72,6 @@ public:
 			cout << fileReader->fileRead() << endl;
 		}
 	}
-
 	void showHelp() {
 	}
 
@@ -98,6 +84,19 @@ public:
 			myExecuter->runner(cmd);
 		}
 	}
+private:
+	unordered_map<string, test_func> test_func_map;
+	vector<string> readedData;
+	exeRunner* myExecuter;
+	dataReader* fileReader;
 
+	void split_input_data(string input) {
+		istringstream ss(input);
+		string subs1;
+
+		while (getline(ss, subs1, ' ')) {
+			readedData.push_back(subs1);
+		}
+	}
 };
 

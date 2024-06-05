@@ -6,7 +6,7 @@
 
 namespace fs = std::filesystem;
 
-class ssdExeRunner : public exeRunner {
+class ssdExecutor : public exeRunner {
 public:
 	void runner(std::string cmd) override {
 		if(check_precondition(cmd) == false) return;

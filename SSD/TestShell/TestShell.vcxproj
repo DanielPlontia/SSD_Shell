@@ -128,7 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ssdExeRunner.cpp" />
+    <ClCompile Include="ssdExecutor.cpp" />
     <ClCompile Include="ssdTestShell.cpp" />
     <ClCompile Include="TestShell.cpp" />
   </ItemGroup>
