@@ -15,7 +15,6 @@
 using std::vector;
 using std::string;
 
-
 class WriteCmd;
 class ReadCmd;
 
@@ -58,6 +57,7 @@ public:
 
 		return mapping_instance;
 	}
+
 private:
 	vector<string> userCmd;
 	std::shared_ptr<Command> command_Instance;
@@ -85,5 +85,4 @@ private:
 		return nullptr;
 
 	}
-
 };

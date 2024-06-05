@@ -1,4 +1,4 @@
-#include <stdexcept>
+ï»¿#include <stdexcept>
 
 #include "SSD_HW_Mock.h"
 #include "../SSD/write.cpp"
@@ -24,51 +24,59 @@ TEST_F(writeTestFixtrue, WriteCmd_Exception_When_InvalidArg_NotMatch_WriteCmd) {
 TEST_F(writeTestFixtrue, WriteCmd_Exception_When_InvalidArg_Address_Range) {
 	std::vector<std::string> cmd_arg{ "W","-3","0x1234ABCD" };
 	EXPECT_THROW(write_cmd.execute(cmd_arg), WriteException) 
-		<< "Arg 1 index is not valid Address : ÁÖ¼Ò °ªÀ¸·Î´Â À½¼ö¸¦ ³Ö¾úÀ¸³ª ExceptionÀÌ ¹ß»ýÇÏÁö ¾Ê¾Ò½À´Ï´Ù." << std::endl;
+		<< "Arg 1 index is not valid Address : ì£¼ì†Œ ê°’ìœ¼ë¡œëŠ” ìŒìˆ˜ë¥¼ ë„£ì—ˆìœ¼ë‚˜ Exceptionì´ ë°œìƒí•˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤." << std::endl;
 	
 	cmd_arg = std::vector<std::string>{ "W", "100","0x1234ABCD"};
 	EXPECT_THROW(write_cmd.execute(cmd_arg), WriteException)
-		<< "Arg 1 index is not valid Address : ÁÖ¼Ò °ªÀ¸·Î 100 (99 ÃÊ°ú) ¸¦ ³Ö¾úÀ¸³ª ExceptinoÀÌ ¹ß»ýÇÏÁö ¾Ê¾Ò½À´Ï´Ù." << std::endl;
+		<< "Arg 1 index is not valid Address : ì£¼ì†Œ ê°’ìœ¼ë¡œ 100 (99 ì´ˆê³¼) ë¥¼ ë„£ì—ˆìœ¼ë‚˜ Exceptinoì´ ë°œìƒí•˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤." << std::endl;
 }
 
 TEST_F(writeTestFixtrue, WriteCmd_Exception_When_InvalidArg_Address_Format) {
 	std::vector<std::string> cmd_arg{ "W","AB","0x1234ABCD" };
 	EXPECT_THROW(write_cmd.execute(cmd_arg), WriteException) 
-		<< "Arg 1 index is not valid Address : ÁÖ¼Ò °ªÀ¸·Î´Â ¹®ÀÚ°ªÀÌ µé¾î°¬À¸³ª ExceptionÀÌ ¹ß»ýÇÏÁö ¾Ê¾Ò½À´Ï´Ù." << std::endl;
+		<< "Arg 1 index is not valid Address : ì£¼ì†Œ ê°’ìœ¼ë¡œëŠ” ë¬¸ìžê°’ì´ ë“¤ì–´ê°”ìœ¼ë‚˜ Exceptionì´ ë°œìƒí•˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤." << std::endl;
 	
 	cmd_arg = std::vector<std::string>{ "W", "0x12","0x1234ABCD"};
 	EXPECT_THROW(write_cmd.execute(cmd_arg), WriteException)
-		<< "Arg 1 index is not valid Address : ÁÖ¼Ò °ªÀ¸·Î HexÇüÅÂÀÇ stringÀÌ µé¾î°¬À¸³ª ExceptionÀÌ ¹ß»ýÇÏÁö ¾Ê¾Ò½À´Ï´Ù." << std::endl;
+		<< "Arg 1 index is not valid Address : ì£¼ì†Œ ê°’ìœ¼ë¡œ Hexí˜•íƒœì˜ stringì´ ë“¤ì–´ê°”ìœ¼ë‚˜ Exceptionì´ ë°œìƒí•˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤." << std::endl;
 }
 
 TEST_F(writeTestFixtrue, WriteCmd_Exception_When_InvalidArg_Data_Length) {
 	std::vector<std::string> cmd_arg{ "W","2","0x1234ABC" };
 	EXPECT_THROW(write_cmd.execute(cmd_arg), WriteException) 
-		<< "Arg 2 index is not valid Data : DataÀÇ Legnth¸¦ 9ÀÚ¸®·Î ³Ö¾úÀ¸³ª ExceptionÀÌ ¹ß»ýÇÏÁö ¾Ê¾Ò½À´Ï´Ù." << std::endl;
+		<< "Arg 2 index is not valid Data : Dataì˜ Legnthë¥¼ 9ìžë¦¬ë¡œ ë„£ì—ˆìœ¼ë‚˜ Exceptionì´ ë°œìƒí•˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤." << std::endl;
 
 	cmd_arg = std::vector<std::string>{ "W", "2", "0x1234ABCDE" };
 	EXPECT_THROW(write_cmd.execute(cmd_arg), WriteException)
-		<< "Arg 2 index is not valid Data : DataÀÇ Legnth¸¦ 11ÀÚ¸®·Î ³Ö¾úÀ¸³ª ExceptionÀÌ ¹ß»ýÇÏÁö ¾Ê¾Ò½À´Ï´Ù." << std::endl;
+		<< "Arg 2 index is not valid Data : Dataì˜ Legnthë¥¼ 11ìžë¦¬ë¡œ ë„£ì—ˆìœ¼ë‚˜ Exceptionì´ ë°œìƒí•˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤." << std::endl;
 }
 
 TEST_F(writeTestFixtrue, WriteCmd_Exception_When_InvalidArg_Data_Format) {
 	std::vector<std::string> cmd_arg{ "W","2","12345ABCDE" };
 	EXPECT_THROW(write_cmd.execute(cmd_arg), WriteException) 
-		<< "Arg 2 index is not valid Data : DataÀÇ ½ÃÀÛÀÌ 0x·Î ½ÃÀÛÇÏÁö ¾Ê¾ÒÀ¸³ª ExceptionÀÌ ¹ß»ýÇÏÁö ¾Ê¾Ò½À´Ï´Ù." << std::endl;
+		<< "Arg 2 index is not valid Data : Dataì˜ ì‹œìž‘ì´ 0xë¡œ ì‹œìž‘í•˜ì§€ ì•Šì•˜ìœ¼ë‚˜ Exceptionì´ ë°œìƒí•˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤." << std::endl;
 
 	cmd_arg = std::vector<std::string>{ "W", "2", "0xABCDEFGH" };
 	EXPECT_THROW(write_cmd.execute(cmd_arg), WriteException)
-		<< "Arg 2 index is not valid Data : DataÀÇ Hex¿¡¼­ »ç¿ëÇÒ ¼ö ¾ø´Â G, H °°Àº ¹®ÀÚ°¡ Æ÷ÇÔµÇ¾î ÀÖÀ¸³ª ExceptionÀÌ ¹ß»ýÇÏÁö ¾Ê¾Ò½À´Ï´Ù." << std::endl;
+		<< "Arg 2 index is not valid Data : Dataì˜ Hexì—ì„œ ì‚¬ìš©í•  ìˆ˜ ì—†ëŠ” G, H ê°™ì€ ë¬¸ìžê°€ í¬í•¨ë˜ì–´ ìžˆìœ¼ë‚˜ Exceptionì´ ë°œìƒí•˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤." << std::endl;
 
 	cmd_arg = std::vector<std::string>{ "W", "2", "0xabCDEFGH" };
 	EXPECT_THROW(write_cmd.execute(cmd_arg), WriteException)
-		<< "Arg 2 index is not valid Data : DataÀÇ Hex¿¡¼­ ¼Ò¹®ÀÚ ¾ËÆÄºªÀÌ »ç¿ëµÇ¾úÀ¸³ª ExceptionÀÌ ¹ß»ýÇÏÁö ¾Ê¾Ò½À´Ï´Ù." << std::endl;
+		<< "Arg 2 index is not valid Data : Dataì˜ Hexì—ì„œ ì†Œë¬¸ìž ì•ŒíŒŒë²³ì´ ì‚¬ìš©ë˜ì—ˆìœ¼ë‚˜ Exceptionì´ ë°œìƒí•˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤." << std::endl;
 }
 
-TEST_F(writeTestFixtrue, WriteCmd_Call_SSD_Write_Method) {
-	std::vector<std::string> cmd_arg{ "W","2","0x1234ABCD" };
+class ParameterizedTestFixture : public testing::TestWithParam<std::string> {
+public:
+	SSD_HW_Mock mock_ssd;
+	WriteCmd write_cmd{ &mock_ssd };
+};
+INSTANTIATE_TEST_CASE_P(WriteCmd_NormalTest, ParameterizedTestFixture,
+	testing::Values("0x1234ABCD", "0x234ABCD1", "0x34ABCD12", "0x4ABCD123", "0xABCD1234"));
 
-	EXPECT_CALL(mock_ssd, write(2, 0x1234ABCD)).Times(1);
+TEST_P(ParameterizedTestFixture, WriteCmd_NormalTest) {
+	std::string test_value = GetParam();
+	std::vector<std::string> cmd_arg{ "W","2", test_value };
 
+	EXPECT_CALL(mock_ssd, write(2, std::stoul(test_value, 0, 16))).Times(1);
 	write_cmd.execute(cmd_arg);
 }

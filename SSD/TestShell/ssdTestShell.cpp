@@ -1,11 +1,10 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <vector>
 #include <string>
 #include <unordered_map>
 #include <functional>
-
 #include "exeRunner.h"
 
 using namespace std;
@@ -28,7 +27,7 @@ public:
 		// file read
 		std::ifstream rfs;
 		char readData[100];
-		rfs.open("result.txt", 'r');
+		rfs.open("result.txt");
 		rfs.getline(readData, 100);
 		rfs.close();
 		return readData;
@@ -77,19 +76,42 @@ public:
 			cout << fileReader->fileRead() << endl;
 		}
 	}
+
 	void fullWrite() {
-		std::string cmd = "W ";
 		for (int index = 0; index < 100; ++index) {
+			std::string cmd = "W ";
 			cmd += to_string(index);
 			cmd += " ";
 			cmd += readedData[1];
 			myExecuter->runner(cmd);
 		}
 	}
+
 	void showHelp() {
 		for (auto& test_func : test_func_map) {
 			std::cout << test_func.first << " : " << test_func.second.description << std::endl;
 		}
+	}
+
+	void testApp1() {
+		readedData.clear();
+		readedData.push_back("fullwrite");
+		readedData.push_back("0x12345678");
+		fullWrite();
+		readedData.clear();
+		readedData.push_back("fullread");
+		fullRead();
+	}
+	void testApp2() {
+		int startLba = 0;
+		int endLba = 5;
+		int count = 0;
+		while (count < TEST_APP2_REPEAT_COUNT) {
+			repeatWriteOperation(startLba, endLba, "0xAAAABBBB");
+			count++;
+		}
+		repeatWriteOperation(startLba, endLba, "0x12345678");
+		repeatReadOperation(startLba, endLba);
 	}
 
 private:
@@ -97,20 +119,47 @@ private:
 	exeRunner* myExecuter;
 	dataReader* fileReader;
 
+	const int TEST_APP2_REPEAT_COUNT = 30;
+
 	void split_input_data(string input) {
 		istringstream ss(input);
 		string subs1;
+
+		readedData.clear();
 
 		while (getline(ss, subs1, ' ')) {
 			readedData.push_back(subs1);
 		}
 	}
 
+	void repeatReadOperation(int start, int end)
+	{
+		for (int lba = start; lba <= end; lba++) {
+			readedData.clear();
+			readedData.push_back("read");
+			readedData.push_back(to_string(lba));
+			read();
+		}
+	}
+
+	void repeatWriteOperation(int start, int end, string data)
+	{
+		for (int lba = start; lba <= end; lba++) {
+			readedData.clear();
+			readedData.push_back("write");
+			readedData.push_back(to_string(lba));
+			readedData.push_back(data);
+			write();
+		}
+	}
+
 	void make_test_func_map() {
-		test_func_map.emplace("read", test_func{ std::bind(&TestShell::read, this), "SSD¿¡ Æ¯Á¤ ¸Þ¸ð¸® °ªÀ» ÀÐ¾î Console¿¡ Ãâ·ÂÇØÁÝ´Ï´Ù.\n»ç¿ë¹ý : read [ÁÖ¼Ò]\n" });
-		test_func_map.emplace("write", test_func{ std::bind(&TestShell::write, this), "SSD Æ¯Á¤ ¸Þ¸ð¸®¿¡ °ªÀ» Àû½À´Ï´Ù. Data´Â 0x·Î ½ÃÀÛÇÏ´Â 4byte Hex stringÀ¸·Î ÀÛ¼ºÇØÁÖ¼Å¾ß ÇÕ´Ï´Ù.\n»ç¿ë¹ý : write [ÁÖ¼Ò] [Data]\n" });
-		test_func_map.emplace("fullread", test_func{ std::bind(&TestShell::fullRead, this), "SSD ¸ðµç ¸Þ¸ð¸® °ªÀ» ÀÐ¾î Console¿¡ Ãâ·ÂÇØÁÝ´Ï´Ù.\n»ç¿ë¹ý : fullread\n" });
-		test_func_map.emplace("fullwrite", test_func{ std::bind(&TestShell::fullWrite, this), "SSD ¸ðµç ¸Þ¸ð¸®¿¡ °ªÀ» Àû½À´Ï´Ù. Data´Â 0x·Î ½ÃÀÛÇÏ´Â 4byte Hex stringÀ¸·Î ÀÛ¼ºÇØÁÖ¼Å¾ß ÇÕ´Ï´Ù.\n»ç¿ë¹ý : fullwrite [Data]\n" });
-		test_func_map.emplace("help", test_func{ std::bind(&TestShell::showHelp, this), "TestShell¿¡¼­ »ç¿ëÇÒ ¼ö ÀÖ´Â Commandµé¿¡ ´ëÇÑ ¼³¸íÀ» È®ÀÎ ÇÒ ¼ö ÀÖ½À´Ï´Ù.\n" });
+		test_func_map.emplace("read", test_func{ std::bind(&TestShell::read, this), "SSDì— íŠ¹ì • ë©”ëª¨ë¦¬ ê°’ì„ ì½ì–´ Consoleì— ì¶œë ¥í•´ì¤ë‹ˆë‹¤.\nì‚¬ìš©ë²• : read [ì£¼ì†Œ]\n" });
+		test_func_map.emplace("write", test_func{ std::bind(&TestShell::write, this), "SSD íŠ¹ì • ë©”ëª¨ë¦¬ì— ê°’ì„ ì ìŠµë‹ˆë‹¤. DataëŠ” 0xë¡œ ì‹œìž‘í•˜ëŠ” 4byte Hex stringìœ¼ë¡œ ìž‘ì„±í•´ì£¼ì…”ì•¼ í•©ë‹ˆë‹¤.\nì‚¬ìš©ë²• : write [ì£¼ì†Œ] [Data]\n" });
+		test_func_map.emplace("fullread", test_func{ std::bind(&TestShell::fullRead, this), "SSD ëª¨ë“  ë©”ëª¨ë¦¬ ê°’ì„ ì½ì–´ Consoleì— ì¶œë ¥í•´ì¤ë‹ˆë‹¤.\nì‚¬ìš©ë²• : fullread\n" });
+		test_func_map.emplace("fullwrite", test_func{ std::bind(&TestShell::fullWrite, this), "SSD ëª¨ë“  ë©”ëª¨ë¦¬ì— ê°’ì„ ì ìŠµë‹ˆë‹¤. DataëŠ” 0xë¡œ ì‹œìž‘í•˜ëŠ” 4byte Hex stringìœ¼ë¡œ ìž‘ì„±í•´ì£¼ì…”ì•¼ í•©ë‹ˆë‹¤.\nì‚¬ìš©ë²• : fullwrite [Data]\n" });
+		test_func_map.emplace("help", test_func{ std::bind(&TestShell::showHelp, this), "TestShellì—ì„œ ì‚¬ìš©í•  ìˆ˜ ìžˆëŠ” Commandë“¤ì— ëŒ€í•œ ì„¤ëª…ì„ í™•ì¸ í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.\n" });
+		test_func_map.emplace("testapp1", test_func{ std::bind(&TestShell::testApp1, this), "SSD ì „ì²´ ë©”ëª¨ë¦¬ì— 0x12345678ì„ ìž‘ì„±í•˜ê³  ì „ì²´ ë©”ëª¨ë¦¬ë¥¼ ì½ì–´ ì •ìƒì ìœ¼ë¡œ ìž‘ì„±ì´ ëëŠ”ì§€ í™•ì¸í•©ë‹ˆë‹¤.\nì‚¬ìš©ë²• : testapp1\n" });
+		test_func_map.emplace("testapp2", test_func{ std::bind(&TestShell::testApp2, this), "LBA 0~5ì— 0xAAAABBBB 30íšŒ Write, ë™ì¼ LBAì— 0x12345678 Overwriteí›„ Readí•˜ì—¬ ì •ìƒì ìœ¼ë¡œ ìž‘ì„±ëëŠ”ì§€ í™•ì¸í•©ë‹ˆë‹¤\nì‚¬ìš©ë²• : testapp2\n" });
 	}
 };

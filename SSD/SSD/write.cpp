@@ -1,6 +1,6 @@
-#pragma once
-#include <stdexcept>
+ï»¿#pragma once
 
+#include <stdexcept>
 #include "SSD_HW.h"
 #include "Command.h"
 
@@ -12,7 +12,7 @@ public:
 };
 
 class WriteCmd : public Command {
-	// CommandÀ»(¸¦) ÅëÇØ »ó¼ÓµÊ
+	// Commandì„(ë¥¼) í†µí•´ ìƒì†ë¨
 public:
 	WriteCmd(SSD_HW* _ssd) : ssd_hw{ _ssd } {};
 
@@ -53,10 +53,12 @@ private:
 	{
 		return cmd_arg.size() < 3;
 	}
+
 	bool is_not_matched_cmd_char()
 	{
 		return cmd_arg.at(0) != "W";
 	}
+
 	bool is_valid_address_arg()
 	{
 		if (is_valid_decimal_string(cmd_arg.at(1)) == false) return false;
@@ -70,19 +72,21 @@ private:
 		}
 		return true;
 	}
+
 	bool is_valid_data_arg()
 	{
 		if (cmd_arg.at(2).length() != 10) return false;
 		if (cmd_arg.at(2)[0] != '0' || cmd_arg.at(2)[1] != 'x') return false;
 		if (is_valid_hex_string(cmd_arg.at(2).substr(2)) == false) return false;
 		try {
-			write_data = std::stoi(cmd_arg.at(2), 0, 16);
+			write_data = std::stoul(cmd_arg.at(2), 0, 16);
 		}
 		catch (std::exception e) {
 			return false;
 		}
 		return true;
 	}
+
 	bool is_valid_decimal_string(const std::string& decimalString) {
 		for (char ch : decimalString) {
 			if (!std::isdigit(ch)) {
@@ -91,6 +95,7 @@ private:
 		}
 		return true;
 	}
+
 	bool is_valid_hex_string(const std::string& hexString) {
 		for (char ch : hexString) {
 			if (!std::isxdigit(ch)) {

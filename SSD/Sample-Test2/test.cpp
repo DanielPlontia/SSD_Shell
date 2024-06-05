@@ -1,4 +1,3 @@
-
 #include "TestShellFixture.h"
 
 TEST_F(TestShellFixture, ReadData) {
@@ -24,4 +23,24 @@ TEST_F(TestShellFixture, FullReadData) {
 
 	int address = 3;
 	shell.fullRead();
+}
+
+TEST_F(TestShellFixture, testApp1) {
+	string inputData = "testapp1";
+
+	EXPECT_CALL(readerMock, fileRead)
+		.WillRepeatedly(testing::Return("0x12345678"));
+	EXPECT_CALL(exeMock, runner).Times(200);
+	shell.TestExecute(inputData);
+
+}
+
+TEST_F(TestShellFixture, testApp2) {
+	string inputData = "testapp2";
+
+	EXPECT_CALL(readerMock, fileRead)
+		.WillRepeatedly(testing::Return("0x12345678"));
+	EXPECT_CALL(exeMock, runner).Times(192);
+	shell.TestExecute(inputData);
+
 }
