@@ -9,7 +9,13 @@
 #include "exeRunner.h"
 
 using namespace std;
-using test_func = std::function<void()>;
+
+struct test_func {
+	test_func() = default;
+	test_func(std::function<void()> _func, const char* _desc) : function{ _func }, description{ _desc } {}
+	std::function<void()> function;
+	std::string description;
+};
 
 interface dataReader {
 public:
@@ -31,12 +37,9 @@ public:
 
 class TestShell {
 public:
+	unordered_map<string, test_func> test_func_map;
 	TestShell(exeRunner* exe, dataReader* reader) : myExecuter{ exe }, fileReader{ reader } {
-		test_func_map.emplace("read", std::bind(&TestShell::read, this));
-		test_func_map.emplace("write", std::bind(&TestShell::write, this));
-		test_func_map.emplace("fullread", std::bind(&TestShell::fullRead, this));
-		test_func_map.emplace("fullwrite", std::bind(&TestShell::fullWrite, this));
-		test_func_map.emplace("help", std::bind(&TestShell::showHelp, this));
+		make_test_func_map();
 	}
 
 	bool TestExecute(std::string inputData)
@@ -47,6 +50,7 @@ public:
 		if (test_func_map.find(readedData[0]) == test_func_map.end()) {
 			throw std::exception("Invalid Command");
 		}
+		test_func_map[readedData[0]].function();
 		return false;
 	}
 
@@ -73,9 +77,6 @@ public:
 			cout << fileReader->fileRead() << endl;
 		}
 	}
-	void showHelp() {
-	}
-
 	void fullWrite() {
 		std::string cmd = "W ";
 		for (int index = 0; index < 100; ++index) {
@@ -85,8 +86,13 @@ public:
 			myExecuter->runner(cmd);
 		}
 	}
+	void showHelp() {
+		for (auto& test_func : test_func_map) {
+			std::cout << test_func.first << " : " << test_func.second.description << std::endl;
+		}
+	}
+
 private:
-	unordered_map<string, test_func> test_func_map;
 	vector<string> readedData;
 	exeRunner* myExecuter;
 	dataReader* fileReader;
@@ -99,5 +105,12 @@ private:
 			readedData.push_back(subs1);
 		}
 	}
-};
 
+	void make_test_func_map() {
+		test_func_map.emplace("read", test_func{ std::bind(&TestShell::read, this), "SSD에 특정 메모리 값을 읽어 Console에 출력해줍니다.\n사용법 : read [주소]\n" });
+		test_func_map.emplace("write", test_func{ std::bind(&TestShell::write, this), "SSD 특정 메모리에 값을 적습니다. Data는 0x로 시작하는 4byte Hex string으로 작성해주셔야 합니다.\n사용법 : write [주소] [Data]\n" });
+		test_func_map.emplace("fullread", test_func{ std::bind(&TestShell::fullRead, this), "SSD 모든 메모리 값을 읽어 Console에 출력해줍니다.\n사용법 : fullread\n" });
+		test_func_map.emplace("fullwrite", test_func{ std::bind(&TestShell::fullWrite, this), "SSD 모든 메모리에 값을 적습니다. Data는 0x로 시작하는 4byte Hex string으로 작성해주셔야 합니다.\n사용법 : fullwrite [Data]\n" });
+		test_func_map.emplace("help", test_func{ std::bind(&TestShell::showHelp, this), "TestShell에서 사용할 수 있는 Command들에 대한 설명을 확인 할 수 있습니다.\n" });
+	}
+};
