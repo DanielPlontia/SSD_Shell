@@ -76,7 +76,7 @@ private:
 		if (cmd_arg.at(2)[0] != '0' || cmd_arg.at(2)[1] != 'x') return false;
 		if (is_valid_hex_string(cmd_arg.at(2).substr(2)) == false) return false;
 		try {
-			write_data = std::stoi(cmd_arg.at(2), 0, 16);
+			write_data = std::stoul(cmd_arg.at(2), 0, 16);
 		}
 		catch (std::exception e) {
 			return false;

@@ -65,10 +65,18 @@ TEST_F(writeTestFixtrue, WriteCmd_Exception_When_InvalidArg_Data_Format) {
 		<< "Arg 2 index is not valid Data : Data의 Hex에서 소문자 알파벳이 사용되었으나 Exception이 발생하지 않았습니다." << std::endl;
 }
 
-TEST_F(writeTestFixtrue, WriteCmd_Call_SSD_Write_Method) {
-	std::vector<std::string> cmd_arg{ "W","2","0x1234ABCD" };
+class ParameterizedTestFixture : public testing::TestWithParam<std::string> {
+public:
+	SSD_HW_Mock mock_ssd;
+	WriteCmd write_cmd{ &mock_ssd };
+};
+INSTANTIATE_TEST_CASE_P(WriteCmd_NormalTest, ParameterizedTestFixture,
+	testing::Values("0x1234ABCD", "0x234ABCD1", "0x34ABCD12", "0x4ABCD123", "0xABCD1234"));
 
-	EXPECT_CALL(mock_ssd, write(2, 0x1234ABCD)).Times(1);
+TEST_P(ParameterizedTestFixture, WriteCmd_NormalTest) {
+	std::string test_value = GetParam();
+	std::vector<std::string> cmd_arg{ "W","2", test_value };
 
+	EXPECT_CALL(mock_ssd, write(2, std::stoul(test_value, 0, 16))).Times(1);
 	write_cmd.execute(cmd_arg);
 }
