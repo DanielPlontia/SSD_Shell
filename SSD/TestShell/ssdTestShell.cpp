@@ -58,11 +58,6 @@ public:
 		std::string cmd = "R ";
 		cmd += readedData[1];
 		myExecuter->runner(cmd);
-		int count = 0;
-		while (count < 1000)
-		{
-			count++;
-		}
 		cout << fileReader->fileRead() << endl;
 	}
 
