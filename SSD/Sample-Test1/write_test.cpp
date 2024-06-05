@@ -59,18 +59,14 @@ TEST_F(writeTestFixtrue, WriteCmd_Exception_When_InvalidArg_Data_Format) {
 	cmd_arg = std::vector<std::string>{ "W", "2", "0xABCDEFGH" };
 	EXPECT_THROW(write_cmd.execute(cmd_arg), WriteException)
 		<< "Arg 2 index is not valid Data : Data의 Hex에서 사용할 수 없는 G, H 같은 문자가 포함되어 있으나 Exception이 발생하지 않았습니다." << std::endl;
+
+	cmd_arg = std::vector<std::string>{ "W", "2", "0xabCDEFGH" };
+	EXPECT_THROW(write_cmd.execute(cmd_arg), WriteException)
+		<< "Arg 2 index is not valid Data : Data의 Hex에서 소문자 알파벳이 사용되었으나 Exception이 발생하지 않았습니다." << std::endl;
 }
 
 TEST_F(writeTestFixtrue, WriteCmd_Call_SSD_Write_Method) {
 	std::vector<std::string> cmd_arg{ "W","2","0x1234ABCD" };
-
-	EXPECT_CALL(mock_ssd, write(2, 0x1234ABCD)).Times(1);
-
-	write_cmd.execute(cmd_arg);
-}
-
-TEST_F(writeTestFixtrue, WriteCmd_Call_SSD_Write_Method2) {
-	std::vector<std::string> cmd_arg{ "W","2","0x1234abcd" };
 
 	EXPECT_CALL(mock_ssd, write(2, 0x1234ABCD)).Times(1);
 
