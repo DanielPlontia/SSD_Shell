@@ -79,13 +79,12 @@ public:
 		}
 	}
 	void fullWrite() {
-		std::string cmd = "W ";
 		for (int index = 0; index < 100; ++index) {
+			std::string cmd = "W ";
 			cmd += to_string(index);
 			cmd += " ";
 			cmd += readedData[1];
 			myExecuter->runner(cmd);
-			cmd = "W ";
 		}
 	}
 	void showHelp() {
