@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <stdexcept>
 
 #include "SSD_HW.h"
@@ -12,7 +12,7 @@ public:
 };
 
 class WriteCmd : public Command {
-	// CommandÀ»(¸¦) ÅëÇØ »ó¼ÓµÊ
+	// Commandì„(ë¥¼) í†µí•´ ìƒì†ë¨
 public:
 	WriteCmd(SSD_HW* _ssd) : ssd_hw{ _ssd } {};
 
