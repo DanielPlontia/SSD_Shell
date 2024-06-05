@@ -27,20 +27,20 @@ public:
 
 TEST_F(TestShellFixture, ReadData) {
 	EXPECT_CALL(exeMock, runner).Times(1);
-	string inputData = "Read 3";
+	string inputData = "read 3";
 
 	shell.TestExecute(inputData);
 }
 
 TEST_F(TestShellFixture, WriteNormal) {
 	EXPECT_CALL(exeMock, runner).Times(1);
-	string inputData = "Write 3 0x10000000";
+	string inputData = "write 3 0x10000000";
 
 	shell.TestExecute(inputData);
 }
 
 TEST_F(TestShellFixture, FullReadData) {
-	string inputData = "FullRead";
+	string inputData = "fullread";
 
 	EXPECT_CALL(exeMock, runner).Times(100);
 	EXPECT_CALL(readerMock, fileRead)
