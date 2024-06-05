@@ -1,14 +1,14 @@
 #include "TestShellFixture.h"
 
 TEST_F(TestShellFixture, ReadData) {
-	EXPECT_CALL(exeMock, runner).Times(1);
+	EXPECT_CALL(exeMock, runner).Times(1).WillRepeatedly(testing::Return(true));
 	string inputData = "read 3";
 
 	shell.TestExecute(inputData);
 }
 
 TEST_F(TestShellFixture, WriteNormal) {
-	EXPECT_CALL(exeMock, runner).Times(1);
+	EXPECT_CALL(exeMock, runner).Times(1).WillRepeatedly(testing::Return(true));
 	string inputData = "write 3 0x10000000";
 
 	shell.TestExecute(inputData);
@@ -17,7 +17,7 @@ TEST_F(TestShellFixture, WriteNormal) {
 TEST_F(TestShellFixture, FullReadData) {
 	string inputData = "fullread";
 
-	EXPECT_CALL(exeMock, runner).Times(100);
+	EXPECT_CALL(exeMock, runner).Times(100).WillRepeatedly(testing::Return(true));
 	EXPECT_CALL(readerMock, fileRead)
 		.WillRepeatedly(testing::Return("0xff99"));
 
@@ -30,7 +30,7 @@ TEST_F(TestShellFixture, testApp1) {
 
 	EXPECT_CALL(readerMock, fileRead)
 		.WillRepeatedly(testing::Return("0x12345678"));
-	EXPECT_CALL(exeMock, runner).Times(200);
+	EXPECT_CALL(exeMock, runner).Times(200).WillRepeatedly(testing::Return(true));
 	shell.TestExecute(inputData);
 
 }
@@ -40,7 +40,7 @@ TEST_F(TestShellFixture, testApp2) {
 
 	EXPECT_CALL(readerMock, fileRead)
 		.WillRepeatedly(testing::Return("0x12345678"));
-	EXPECT_CALL(exeMock, runner).Times(192);
+	EXPECT_CALL(exeMock, runner).Times(192).WillRepeatedly(testing::Return(true));
 	shell.TestExecute(inputData);
 
 }

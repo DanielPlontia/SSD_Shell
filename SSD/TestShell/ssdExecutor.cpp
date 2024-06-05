@@ -7,14 +7,16 @@ namespace fs = std::filesystem;
 
 class ssdExecutor : public exeRunner {
 public:
-	void runner(std::string cmd) override {
-		if(check_precondition(cmd) == false) return;
+	bool runner(std::string cmd) override {
+		if(check_precondition(cmd) == false) return false;
 
 		std::string exe_run_cmd = SSD_exe_path.string() + " " + cmd;
 		int exit_status = system(exe_run_cmd.c_str());
 		if (exit_status != 0) {
 			std::cerr << "SSD.exe not success return. return value : " << exit_status << std::endl;
+			return false;
 		}
+		return true;
 	}
 
 private:

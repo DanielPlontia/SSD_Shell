@@ -57,7 +57,7 @@ public:
 		check_validation_user_input(2);
 		std::string cmd = "R ";
 		cmd += readedData[1];
-		myExecuter->runner(cmd);
+		if (myExecuter->runner(cmd) == false) return;
 		cout << fileReader->fileRead() << endl;
 	}
 
@@ -67,7 +67,7 @@ public:
 		cmd += readedData[1];
 		cmd += " ";
 		cmd += readedData[2];
-		myExecuter->runner(cmd);
+		if (myExecuter->runner(cmd) == false) return;
 	}
 
 	void fullRead() {
@@ -75,7 +75,7 @@ public:
 		for (int index = 0; index < 100; ++index) {
 			std::string cmd = "R ";
 			cmd += to_string(index);
-			myExecuter->runner(cmd);
+			if (myExecuter->runner(cmd) == false) return;
 			cout << fileReader->fileRead() << endl;
 		}
 	}
@@ -87,7 +87,7 @@ public:
 			cmd += to_string(index);
 			cmd += " ";
 			cmd += readedData[1];
-			myExecuter->runner(cmd);
+			if (myExecuter->runner(cmd) == false) return;
 		}
 	}
 
