@@ -101,28 +101,34 @@ public:
 		fullRead();
 	}
 	void testApp2() {
+		int startLba = 0;
+		int endLba = 5;
 		int count = 0;
-		while (count < 30) {
-			for (int i = 0; i <= 5; i++) {
-				readedData.push_back("write");
-				readedData.push_back(to_string(i));
-				readedData.push_back("0xAAAABBBB");
-				write();
-				readedData.clear();
-			}
+		while (count < TEST_APP2_REPEAT_COUNT) {
+			repeatWriteOperation(startLba, endLba, "0xAAAABBBB");
 			count++;
 		}
-		for (int i = 0; i <= 5; i++) {
-			readedData.push_back("write");
-			readedData.push_back(to_string(i));
-			readedData.push_back("0x12345678");
-			write();
+		repeatWriteOperation(startLba, endLba, "0x12345678");
+		repeatReadOperation(startLba, endLba);
+	}
+
+	void repeatReadOperation(int start, int end)
+	{
+		for (int lba = start; lba <= end; lba++) {
+			readedData.push_back("read");
+			readedData.push_back(to_string(lba));
+			read();
 			readedData.clear();
 		}
-		for (int i = 0; i <= 5; i++) {
-			readedData.push_back("read");
-			readedData.push_back(to_string(i));
-			read();
+	}
+
+	void repeatWriteOperation(int start, int end, string data)
+	{
+		for (int lba = start; lba <= 5; lba++) {
+			readedData.push_back("write");
+			readedData.push_back(to_string(lba));
+			readedData.push_back(data);
+			write();
 			readedData.clear();
 		}
 	}
@@ -131,6 +137,8 @@ private:
 	vector<string> readedData;
 	exeRunner* myExecuter;
 	dataReader* fileReader;
+
+	const int TEST_APP2_REPEAT_COUNT = 30;
 
 	void split_input_data(string input) {
 		istringstream ss(input);
