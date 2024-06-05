@@ -5,7 +5,6 @@
 #include <string>
 #include <unordered_map>
 #include <functional>
-
 #include "exeRunner.h"
 
 using namespace std;
@@ -77,6 +76,7 @@ public:
 			cout << fileReader->fileRead() << endl;
 		}
 	}
+
 	void fullWrite() {
 		for (int index = 0; index < 100; ++index) {
 			std::string cmd = "W ";
@@ -86,11 +86,13 @@ public:
 			myExecuter->runner(cmd);
 		}
 	}
+
 	void showHelp() {
 		for (auto& test_func : test_func_map) {
 			std::cout << test_func.first << " : " << test_func.second.description << std::endl;
 		}
 	}
+
 	void testApp1() {
 		readedData.clear();
 		readedData.push_back("fullwrite");

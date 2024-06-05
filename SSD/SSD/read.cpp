@@ -1,4 +1,5 @@
 #pragma once
+
 #include <vector>
 #include <string>
 #include <stdexcept>
@@ -45,20 +46,24 @@ private:
 
         return true;
     }
+
     bool is_valid_args() {
         if (cmd_args.size() != 2) return false;
         return true;
     }
+
     bool is_matched_cmd() {
         if (cmd_args[0] != "R") return false;
         return true;
     }
+
     bool is_valid_address() {
         for (char ch : cmd_args[1]) {
             if (!isdigit(ch)) return false;
         }
         return true;
     }
+
     bool is_address_in_range() {
         int address = 0;
         try {
@@ -71,6 +76,7 @@ private:
         if (address > max_num) return false;
         return true;
     }
+
     void do_action() override {
         ssd_hw->read(LBA);
     }

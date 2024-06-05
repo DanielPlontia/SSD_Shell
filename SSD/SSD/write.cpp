@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include <stdexcept>
 
+#include <stdexcept>
 #include "SSD_HW.h"
 #include "Command.h"
 
@@ -53,10 +53,12 @@ private:
 	{
 		return cmd_arg.size() < 3;
 	}
+
 	bool is_not_matched_cmd_char()
 	{
 		return cmd_arg.at(0) != "W";
 	}
+
 	bool is_valid_address_arg()
 	{
 		if (is_valid_decimal_string(cmd_arg.at(1)) == false) return false;
@@ -70,6 +72,7 @@ private:
 		}
 		return true;
 	}
+
 	bool is_valid_data_arg()
 	{
 		if (cmd_arg.at(2).length() != 10) return false;
@@ -83,6 +86,7 @@ private:
 		}
 		return true;
 	}
+
 	bool is_valid_decimal_string(const std::string& decimalString) {
 		for (char ch : decimalString) {
 			if (!std::isdigit(ch)) {
@@ -91,6 +95,7 @@ private:
 		}
 		return true;
 	}
+
 	bool is_valid_hex_string(const std::string& hexString) {
 		for (char ch : hexString) {
 			if (!std::isxdigit(ch)) {

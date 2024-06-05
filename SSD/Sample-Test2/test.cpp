@@ -1,4 +1,3 @@
-
 #include "TestShellFixture.h"
 
 TEST_F(TestShellFixture, ReadData) {
