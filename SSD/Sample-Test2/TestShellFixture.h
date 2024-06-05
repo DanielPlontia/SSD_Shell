@@ -10,7 +10,7 @@ using namespace std;
 
 class ExeMock : public exeRunner {
 public:
-	MOCK_METHOD(void, runner, (string cmd), (override));
+	MOCK_METHOD(bool, runner, (string cmd), (override));
 };
 
 class dataReaderMock : public dataReader {
@@ -20,8 +20,8 @@ public:
 
 class TestShellFixture : public testing::Test {
 public:
-	ExeMock exeMock;
-	dataReaderMock readerMock;
+	testing::NiceMock<ExeMock> exeMock;
+	testing::NiceMock<dataReaderMock> readerMock;
 
 	TestShell shell{ &exeMock, &readerMock };
 };

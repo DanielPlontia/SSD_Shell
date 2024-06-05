@@ -70,7 +70,7 @@ public:
 	SSD_HW_Mock mock_ssd;
 	WriteCmd write_cmd{ &mock_ssd };
 };
-INSTANTIATE_TEST_CASE_P(WriteCmd_NormalTest, ParameterizedTestFixture,
+INSTANTIATE_TEST_SUITE_P(WriteCmd_NormalTest, ParameterizedTestFixture,
 	testing::Values("0x1234ABCD", "0x234ABCD1", "0x34ABCD12", "0x4ABCD123", "0xABCD1234"));
 
 TEST_P(ParameterizedTestFixture, WriteCmd_NormalTest) {

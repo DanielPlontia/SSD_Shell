@@ -5,5 +5,5 @@
 #define interface struct
 
 interface exeRunner {
-	virtual void runner(std::string cmd) = 0;
+	virtual bool runner(std::string cmd) = 0;
 };

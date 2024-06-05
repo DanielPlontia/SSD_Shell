@@ -15,19 +15,14 @@
 using std::vector;
 using std::string;
 
-class WriteCmd;
-class ReadCmd;
-
 class SSD_Invoker {
 public:
 	SSD_Invoker(vector<string> userCommand)
 	{
 		mapping_instance = "";
-
 		userCmd = userCommand;
 
 		SSD_Instance = std::move(getSSD());
-
 		command_Instance = std::move(getCmdInstance());
 	}
 
@@ -35,29 +30,25 @@ public:
 	{
 		if (command_Instance == nullptr)
 		{
-			std::cout << "INVALID COMMAND." << std::endl;
+			return "INVALID COMMAND.";
 		}
 		else {
 			try {
 				command_Instance->execute(userCmd);
 			}
-			catch (ReadException e) {
-				std::cout << e.what() << endl;
-				return "ReadException";
+			catch (ReadException& e) {
+				return e.what();
 			}
-			catch (WriteException e) {
-				std::cout << e.what() << endl;
-				return "WriteException";
+			catch (WriteException& e) {
+				return e.what();
 			}
-			catch (exception e) {
-				std::cout << e.what() << endl;
-				return "cmd validation check Throw something";
+			catch (exception& e) {
+				return e.what();
 			}
 		}
 
-		return mapping_instance;
+		return string();
 	}
-
 private:
 	vector<string> userCmd;
 	std::shared_ptr<Command> command_Instance;
@@ -66,23 +57,22 @@ private:
 
 	std::shared_ptr<SSD_HW> getSSD()
 	{
-		return std::shared_ptr<MySSD>(new MySSD);
+		return std::make_shared<MySSD>();
 	}
 
 	std::shared_ptr<Command> getCmdInstance()
 	{
-		if (SSD_Instance == nullptr)
+		if (SSD_Instance == nullptr || userCmd.empty())
 			return nullptr;
 
 		if (userCmd[0] == "R") {
 			mapping_instance = "read_instance";
-			return std::shared_ptr<ReadCmd>(new ReadCmd(SSD_Instance.get()));
+			return std::make_shared<ReadCmd>(SSD_Instance.get());
 		}
 		if (userCmd[0] == "W") {
 			mapping_instance = "write_instance";
-			return std::shared_ptr<WriteCmd>(new WriteCmd(SSD_Instance.get()));
+			return std::make_shared<WriteCmd>(SSD_Instance.get());
 		}
 		return nullptr;
-
 	}
 };
