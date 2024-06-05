@@ -54,6 +54,7 @@ public:
 		std::string cmd = "R ";
 		cmd += readedData[1];
 		myExecuter->runner(cmd);
+		cout << fileReader->fileRead() << endl;
 	}
 
 	void write() {
