@@ -1,15 +1,15 @@
 #pragma once
 
-#include "read.cpp"
-#include "write.cpp"
 #include<vector>
 #include<string>
 #include<algorithm>
 #include <cctype>
+#include<iostream>
 #include "Command.h"
 #include "SSD_HW.h"
 #include "MySSD.cpp"
-#include<iostream>
+#include "read.cpp"
+#include "write.cpp"
 
 using std::vector;
 using std::string;

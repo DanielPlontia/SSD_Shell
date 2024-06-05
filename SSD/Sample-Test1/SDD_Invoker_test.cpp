@@ -1,13 +1,16 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
+
+#include<vector>
 #include "../SSD/SSD_Invoker.cpp"
 #include "../SSD/SSD_HW.h"
 #include "../SSD/Command.h"
 #include "SSD_HW_Mock.h"
-#include<vector>
+
 
 using namespace std;
 using namespace testing;
+
 
 
 
@@ -39,7 +42,6 @@ TEST(InvokeTest, writeInvoke) {
 }
 
 TEST(InvokeTest, readInvoke) {
-
 	vector<string> userCmd = { "R","2" };
 	SSD_Invoker inv(userCmd);
 	string errorCheck = inv.run();
