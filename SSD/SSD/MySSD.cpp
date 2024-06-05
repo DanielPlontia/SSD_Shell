@@ -24,7 +24,7 @@ public:
 		nand_data_[addr] = data;
 	};
 
-	~MySSD() {
+	~MySSD() override {
 		dump_nand_data();
 	}
 
