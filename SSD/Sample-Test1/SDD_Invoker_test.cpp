@@ -15,9 +15,10 @@ using namespace testing;
 class InvokerFixture : public testing::Test {
 public:
 	SSD_Invoker inv{std::vector<std::string>()};
-	SSD_HW_Mock ssd_mock;
+	std::shared_ptr<SSD_HW_Mock> ssd_mock;
 	void SetUp() override {
-		inv.SSD_Instance = &ssd_mock;
+		ssd_mock = std::make_shared<SSD_HW_Mock>();
+		inv.SSD_Instance = ssd_mock;
 	}
 
 	void invoker_userCmd_Set(std::vector<std::string>& userCmd) {
@@ -30,7 +31,7 @@ TEST_F(InvokerFixture, writeInvoke) {
 	vector<string> userCmd = { "W","2","0x1234ABCD" };
 	invoker_userCmd_Set(userCmd);
 
-	EXPECT_CALL(ssd_mock, write(2, 0x1234ABCD)).Times(1);
+	EXPECT_CALL(*ssd_mock.get(), write(2, 0x1234ABCD)).Times(1);
 	EXPECT_EQ(inv.run(), "");
 }
 
@@ -38,7 +39,7 @@ TEST_F(InvokerFixture, readInvoke) {
 	vector<string> userCmd = { "R","2" };
 	invoker_userCmd_Set(userCmd);
 
-	EXPECT_CALL(ssd_mock, read(2)).Times(1);
+	EXPECT_CALL(*ssd_mock.get(), read(2)).Times(1);
 	EXPECT_EQ(inv.run(), "");
 }
 

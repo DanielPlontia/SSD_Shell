@@ -23,7 +23,6 @@ public:
 		userCmd = userCommand;
 
 		SSD_Instance = std::move(getSSD());
-
 		command_Instance = std::move(getCmdInstance());
 	}
 
@@ -58,14 +57,7 @@ private:
 
 	std::shared_ptr<SSD_HW> getSSD()
 	{
-		return std::shared_ptr<MySSD>(new MySSD);
-	}
-
-	void deleteInstance() {
-		delete SSD_Instance;
-		delete command_Instance;
-		SSD_Instance = nullptr;
-		command_Instance = nullptr;
+		return std::make_shared<MySSD>();
 	}
 
 	std::shared_ptr<Command> getCmdInstance()
@@ -75,11 +67,11 @@ private:
 
 		if (userCmd[0] == "R") {
 			mapping_instance = "read_instance";
-			return std::shared_ptr<ReadCmd>(new ReadCmd(SSD_Instance.get()));
+			return std::make_shared<ReadCmd>(SSD_Instance.get());
 		}
 		if (userCmd[0] == "W") {
 			mapping_instance = "write_instance";
-			return std::shared_ptr<WriteCmd>(new WriteCmd(SSD_Instance.get()));
+			return std::make_shared<WriteCmd>(SSD_Instance.get());
 		}
 		return nullptr;
 	}
