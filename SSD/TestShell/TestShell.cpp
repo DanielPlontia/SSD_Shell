@@ -18,8 +18,8 @@ int main()
                 break;
             }
         }
-        catch(exception e){
-            e.what();
+        catch(exception &e){
+            std::cout << e.what() << std::endl;
             continue;
         }
     }
