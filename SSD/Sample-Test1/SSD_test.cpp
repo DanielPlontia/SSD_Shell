@@ -32,6 +32,7 @@ TEST_F(SSDFixture, Write) {
 	std::string line;
 	std::getline(file, line);
 	EXPECT_EQ(5, std::stoi(line, 0, 16));
+	file.close();
 
 	EXPECT_NO_THROW(ssd.write(0, 0));
 }
