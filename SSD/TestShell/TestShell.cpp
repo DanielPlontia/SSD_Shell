@@ -2,8 +2,18 @@
 //
 
 #include <iostream>
+#include "ssdTestShell.cpp"
 
 int main()
 {
+    ssdExecutor ssdExe;
+    TestShell* shell = nullptr;
+
+    while (1) {
+        char userInput[100];
+        std::cin.getline(userInput, 100);
+        shell = new TestShell(&ssdExe, userInput);
+        break;
+    }
     std::cout << "Hello World!\n";
 }
