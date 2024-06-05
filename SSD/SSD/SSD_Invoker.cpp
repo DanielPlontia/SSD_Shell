@@ -40,6 +40,7 @@ public:
 		else {
 			try {
 				command_Instance->execute(userCmd);
+				deleteInstance();
 			}
 			catch (ReadException e) {
 				std::cout << e.what() << endl;
@@ -66,6 +67,13 @@ private:
 	SSD_HW* getSSD()
 	{
 		return new MySSD();
+	}
+
+	void deleteInstance() {
+		delete SSD_Instance;
+		delete command_Instance;
+		SSD_Instance = nullptr;
+		command_Instance = nullptr;
 	}
 
 	Command* getCmdInstance()
