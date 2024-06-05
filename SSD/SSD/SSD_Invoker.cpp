@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -20,8 +21,10 @@ public:
 	{
 		mapping_instance = "";
 		userCmd = userCommand;
-		SSD_Instance = getSSD();
-		command_Instance = getCmdInstance();
+
+		SSD_Instance = std::move(getSSD());
+
+		command_Instance = std::move(getCmdInstance());
 	}
 
 	string run()
@@ -49,27 +52,34 @@ public:
 	}
 private:
 	vector<string> userCmd;
-	Command* command_Instance;
-	SSD_HW* SSD_Instance;
+	std::shared_ptr<Command> command_Instance;
+	std::shared_ptr<SSD_HW> SSD_Instance;
 	string mapping_instance;
 
-	SSD_HW* getSSD()
+	std::shared_ptr<SSD_HW> getSSD()
 	{
-		return new MySSD();
+		return std::shared_ptr<MySSD>(new MySSD);
 	}
 
-	Command* getCmdInstance()
+	void deleteInstance() {
+		delete SSD_Instance;
+		delete command_Instance;
+		SSD_Instance = nullptr;
+		command_Instance = nullptr;
+	}
+
+	std::shared_ptr<Command> getCmdInstance()
 	{
 		if (SSD_Instance == nullptr || userCmd.empty())
 			return nullptr;
 
 		if (userCmd[0] == "R") {
 			mapping_instance = "read_instance";
-			return new ReadCmd(SSD_Instance);
+			return std::shared_ptr<ReadCmd>(new ReadCmd(SSD_Instance.get()));
 		}
 		if (userCmd[0] == "W") {
 			mapping_instance = "write_instance";
-			return new WriteCmd(SSD_Instance);
+			return std::shared_ptr<WriteCmd>(new WriteCmd(SSD_Instance.get()));
 		}
 		return nullptr;
 	}
