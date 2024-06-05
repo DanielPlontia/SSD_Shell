@@ -1,12 +1,19 @@
 ﻿#include <iostream>
+#include <signal.h>
+#include <stdlib.h>
 #include "ssdTestShell.cpp"
 #include "ssdExecutor.cpp"
 
+void my_handler(sig_atomic_t s) {
+    exit(1);
+}
 int main()
 {
     ssdExecutor ssdExe;
     SddDataReader datareader;
     TestShell shell{ &ssdExe, &datareader };
+
+    signal(SIGINT, my_handler);
 
     while (1) {
         char userInput[100];
