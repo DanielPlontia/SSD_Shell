@@ -51,7 +51,6 @@ public:
 			throw std::exception("Invalid Command");
 		}
 		test_func_map[readedData[0]].function();
-		readedData.clear();
 		return false;
 	}
 
@@ -59,6 +58,11 @@ public:
 		std::string cmd = "R ";
 		cmd += readedData[1];
 		myExecuter->runner(cmd);
+		int count = 0;
+		while (count < 1000)
+		{
+			count++;
+		}
 		cout << fileReader->fileRead() << endl;
 	}
 
@@ -124,6 +128,8 @@ private:
 		istringstream ss(input);
 		string subs1;
 
+		readedData.clear();
+
 		while (getline(ss, subs1, ' ')) {
 			readedData.push_back(subs1);
 		}
@@ -132,21 +138,21 @@ private:
 	void repeatReadOperation(int start, int end)
 	{
 		for (int lba = start; lba <= end; lba++) {
+			readedData.clear();
 			readedData.push_back("read");
 			readedData.push_back(to_string(lba));
 			read();
-			readedData.clear();
 		}
 	}
 
 	void repeatWriteOperation(int start, int end, string data)
 	{
 		for (int lba = start; lba <= end; lba++) {
+			readedData.clear();
 			readedData.push_back("write");
 			readedData.push_back(to_string(lba));
 			readedData.push_back(data);
 			write();
-			readedData.clear();
 		}
 	}
 
