@@ -1,7 +1,6 @@
 #include <cstdlib>
 #include <iostream>
 #include <filesystem>
-
 #include "exeRunner.h"
 
 namespace fs = std::filesystem;
@@ -17,6 +16,7 @@ public:
 			std::cerr << "SSD.exe not success return. return value : " << exit_status << std::endl;
 		}
 	}
+
 private:
 	fs::path SSD_exe_path = "SSD.exe";
 
