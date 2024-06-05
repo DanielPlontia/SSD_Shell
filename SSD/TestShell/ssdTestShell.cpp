@@ -28,7 +28,7 @@ public:
 		// file read
 		std::ifstream rfs;
 		char readData[100];
-		rfs.open("result.txt", 'r');
+		rfs.open("result.txt");
 		rfs.getline(readData, 100);
 		rfs.close();
 		return readData;
@@ -85,6 +85,7 @@ public:
 			cmd += " ";
 			cmd += readedData[1];
 			myExecuter->runner(cmd);
+			cmd = "W ";
 		}
 	}
 	void showHelp() {

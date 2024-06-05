@@ -11,6 +11,8 @@ int main()
     while (1) {
         char userInput[100];
         std::cin.getline(userInput, 100);
+        if (string(userInput) == "")
+            continue;
         if (shell.TestExecute(userInput) == true) {
             break;
         }
