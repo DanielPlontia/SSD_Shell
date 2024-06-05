@@ -50,8 +50,17 @@ public:
 	TestShell(exeRunner* exe, string inputData) : myExecuter(exe)
 	{
 		split_input_data(inputData);
-		if (readedData[0] == "Read") read();
-		if (readedData[0] == "Write") write();
+		if (readedData[0] == "read") read();
+		else if (readedData[0] == "exit") return;
+		else if (readedData[0] == "write") 	write();
+		else if (readedData[0] == "help") showHelp();
+		else if (readedData[0] == "fullread") {
+			SddDataReader dataReader;
+			fullRead(&dataReader);
+		}
+		else if (readedData[0] == "fullwrite")	fullWrite();
+		else
+			return;
 	}
 
 	void read() {
@@ -68,17 +77,25 @@ public:
 		myExecuter->runner(cmd);
 	}
 
-	inputData inputStrParser(std::string inputCmd) {
-		inputData ret;
-		return ret;
-	}
-
 	void fullRead(dataReader*fileReader) {
 		for (int index = 0; index < 100; ++index) {
 			std::string cmd = "R ";
 			cmd += to_string(index);
 			myExecuter->runner(cmd);
 			cout << fileReader->fileRead() << endl;
+		}
+	}
+
+	void showHelp() {
+	}
+
+	void fullWrite() {
+		std::string cmd = "W ";
+		for (int index = 0; index < 100; ++index) {
+			cmd += to_string(index);
+			cmd += " ";
+			cmd += readedData[1];
+			myExecuter->runner(cmd);
 		}
 	}
 

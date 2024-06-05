@@ -3,17 +3,18 @@
 
 #include <iostream>
 #include "ssdTestShell.cpp"
+#include "ssdExeRunner.cpp"
 
 int main()
 {
-    ssdExecutor ssdExe;
+    ssdExeRunner ssdExe;
     TestShell* shell = nullptr;
 
     while (1) {
         char userInput[100];
+        std::cout << "Insert the command " << std::endl;
         std::cin.getline(userInput, 100);
         shell = new TestShell(&ssdExe, userInput);
         break;
     }
-    std::cout << "Hello World!\n";
 }

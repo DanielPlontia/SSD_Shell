@@ -20,21 +20,21 @@ public:
 TEST(ShellTest, ReadData) {
 	ExeMock exeMock;
 	EXPECT_CALL(exeMock, runner).Times(1);
-	string inputData = "Read 3";
+	string inputData = "read 3";
 	TestShell shell(&exeMock, inputData);
 }
 
 TEST(ShellTest, WriteNormal) {
 	ExeMock exeMock;
 	EXPECT_CALL(exeMock, runner).Times(1);
-	string inputData = "Write 3 0x10000000";
+	string inputData = "write 3 0x10000000";
 	TestShell shell(&exeMock, inputData);
 }
 
 TEST(ShellTest, FullReadData) {
 	ExeMock exeMock;
 	dataReaderMock fileReaderMock;
-	string inputData = "FullRead";
+	string inputData = "fullread";
 	TestShell shell(&exeMock, inputData);
 	EXPECT_CALL(exeMock, runner).Times(100);
 	EXPECT_CALL(fileReaderMock, fileRead)
