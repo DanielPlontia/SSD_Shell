@@ -113,6 +113,22 @@ public:
 		repeatReadOperation(startLba, endLba);
 	}
 
+private:
+	vector<string> readedData;
+	exeRunner* myExecuter;
+	dataReader* fileReader;
+
+	const int TEST_APP2_REPEAT_COUNT = 30;
+
+	void split_input_data(string input) {
+		istringstream ss(input);
+		string subs1;
+
+		while (getline(ss, subs1, ' ')) {
+			readedData.push_back(subs1);
+		}
+	}
+
 	void repeatReadOperation(int start, int end)
 	{
 		for (int lba = start; lba <= end; lba++) {
@@ -131,22 +147,6 @@ public:
 			readedData.push_back(data);
 			write();
 			readedData.clear();
-		}
-	}
-
-private:
-	vector<string> readedData;
-	exeRunner* myExecuter;
-	dataReader* fileReader;
-
-	const int TEST_APP2_REPEAT_COUNT = 30;
-
-	void split_input_data(string input) {
-		istringstream ss(input);
-		string subs1;
-
-		while (getline(ss, subs1, ' ')) {
-			readedData.push_back(subs1);
 		}
 	}
 
