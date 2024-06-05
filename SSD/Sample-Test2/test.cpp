@@ -35,3 +35,13 @@ TEST_F(TestShellFixture, testApp1) {
 	shell.TestExecute(inputData);
 
 }
+
+TEST_F(TestShellFixture, testApp2) {
+	string inputData = "testapp2";
+
+	EXPECT_CALL(readerMock, fileRead)
+		.WillRepeatedly(testing::Return("0x12345678"));
+	EXPECT_CALL(exeMock, runner).Times(192);
+	shell.TestExecute(inputData);
+
+}
