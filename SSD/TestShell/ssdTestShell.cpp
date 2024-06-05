@@ -156,6 +156,6 @@ private:
 		test_func_map.emplace("fullwrite", test_func{ std::bind(&TestShell::fullWrite, this), "SSD 모든 메모리에 값을 적습니다. Data는 0x로 시작하는 4byte Hex string으로 작성해주셔야 합니다.\n사용법 : fullwrite [Data]\n" });
 		test_func_map.emplace("help", test_func{ std::bind(&TestShell::showHelp, this), "TestShell에서 사용할 수 있는 Command들에 대한 설명을 확인 할 수 있습니다.\n" });
 		test_func_map.emplace("testapp1", test_func{ std::bind(&TestShell::testApp1, this), "TestShell에서 사용할 수 있는 Command들에 대한 설명을 확인 할 수 있습니다.\n" });
-		test_func_map.emplace("testapp2", test_func{ std::bind(&TestShell::testApp2, this), "TestShell에서 사용할 수 있는 Command들에 대한 설명을 확인 할 수 있습니다.\n" });
+		test_func_map.emplace("testapp2", test_func{ std::bind(&TestShell::testApp2, this), "TestShell에서 TestScript2를 수행할수 있습니다. WriteAging 후 Read Validation\n" });
 	}
 };
