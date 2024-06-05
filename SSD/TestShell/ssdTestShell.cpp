@@ -51,7 +51,6 @@ public:
 			throw std::exception("Invalid Command");
 		}
 		test_func_map[readedData[0]].function();
-		readedData.clear();
 		return false;
 	}
 
@@ -110,6 +109,8 @@ private:
 	void split_input_data(string input) {
 		istringstream ss(input);
 		string subs1;
+
+		readedData.clear();
 
 		while (getline(ss, subs1, ' ')) {
 			readedData.push_back(subs1);

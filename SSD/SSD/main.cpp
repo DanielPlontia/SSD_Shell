@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
 	vector<string> command;
 
 	if (argc == 1) {
-		cout << "INVALID COMMAND" << endl;
+		std::cerr << "INVALID ARGUMENTS SIZE" << endl;
 		return -1;
 	}
 
@@ -17,5 +17,10 @@ int main(int argc, char *argv[]) {
 		command.push_back(argv[i]);
 	}
 	SSD_Invoker invoker{ command };
-	invoker.run();
+	std::string err_msg = invoker.run();
+	if (err_msg.empty() == false) {
+		std::cerr << err_msg << std::endl;
+		return -2;
+	}
+	return 0;
 }
