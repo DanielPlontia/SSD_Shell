@@ -52,7 +52,7 @@ public:
 		split_input_data(inputData);
 		if (readedData[0] == "read") read();
 		else if (readedData[0] == "exit") return;
-		else if (readedData[0] == "write") 	write();
+		else if (readedData[0] == "write") write();
 		else if (readedData[0] == "help") showHelp();
 		else if (readedData[0] == "fullread") {
 			SddDataReader dataReader;
