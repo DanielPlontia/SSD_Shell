@@ -93,8 +93,9 @@ public:
 		}
 	}
 	void testApp1() {
+		readedData.clear();
 		readedData.push_back("fullwrite");
-		readedData.push_back("0x123456787");
+		readedData.push_back("0x12345678");
 		fullWrite();
 		readedData.clear();
 		readedData.push_back("fullread");
