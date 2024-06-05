@@ -3,17 +3,20 @@
 
 #include <iostream>
 #include "ssdTestShell.cpp"
+#include "ssdExecutor.cpp"
 
 int main()
 {
     ssdExecutor ssdExe;
-    TestShell* shell = nullptr;
+    SddDataReader datareader;
+    TestShell shell{ &ssdExe, &datareader };
 
     while (1) {
         char userInput[100];
         std::cin.getline(userInput, 100);
-        shell = new TestShell(&ssdExe, userInput);
-        break;
+        if (shell.TestExecute(userInput) == true) {
+            break;
+        }
     }
-    std::cout << "Hello World!\n";
+    return 0;
 }

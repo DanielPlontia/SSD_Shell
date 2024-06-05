@@ -3,9 +3,13 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <unordered_map>
+#include <functional>
 
 #include "exeRunner.h"
+
 using namespace std;
+using test_func = std::function<void()>;
 
 interface dataReader {
 public:
@@ -27,31 +31,21 @@ public:
 
 class TestShell {
 public:
-	struct inputData {
-		std::string command;
-		int dataAddr{ 0 };
-		std::string data;
-	};
-
-private:
-	vector<string> readedData;
-	exeRunner* myExecuter;
-
-	void split_input_data(string input) {
-		istringstream ss (input);
-		string subs1;
-
-		while(getline(ss,subs1,' ')){
-			readedData.push_back(subs1);
-		}
+	TestShell(exeRunner* exe, dataReader* reader) : myExecuter{ exe }, fileReader{ reader } {
+		test_func_map.emplace("read", std::bind(&TestShell::read, this));
+		test_func_map.emplace("write", std::bind(&TestShell::write, this));
+		test_func_map.emplace("fullread", std::bind(&TestShell::write, this));
 	}
-	
-public:
-	TestShell(exeRunner* exe, string inputData) : myExecuter(exe)
+
+	bool TestExecute(std::string inputData)
 	{
 		split_input_data(inputData);
-		if (readedData[0] == "Read") read();
-		if (readedData[0] == "Write") write();
+		if (readedData[0] == "exit") return true;
+		
+		if (test_func_map.find(readedData[0]) == test_func_map.end()) {
+			throw std::exception("Invalid Command");
+		}
+		return false;
 	}
 
 	void read() {
@@ -68,12 +62,7 @@ public:
 		myExecuter->runner(cmd);
 	}
 
-	inputData inputStrParser(std::string inputCmd) {
-		inputData ret;
-		return ret;
-	}
-
-	void fullRead(dataReader*fileReader) {
+	void fullRead() {
 		for (int index = 0; index < 100; ++index) {
 			std::string cmd = "R ";
 			cmd += to_string(index);
@@ -82,5 +71,19 @@ public:
 		}
 	}
 
+private:
+	unordered_map<string, test_func> test_func_map;
+	vector<string> readedData;
+	exeRunner* myExecuter;
+	dataReader* fileReader;
+
+	void split_input_data(string input) {
+		istringstream ss (input);
+		string subs1;
+
+		while(getline(ss,subs1,' ')){
+			readedData.push_back(subs1);
+		}
+	}
 };
 
