@@ -26,11 +26,10 @@ class SddDataReader : public dataReader {
 public:
 	string fileRead() {
 		// file read
-		std::ifstream rfs("result.txt");
+		std::ifstream rfs;
 		char readData[100];
-		if (rfs.is_open()) {
-			rfs.getline(readData, 100);
-		}
+		rfs.open("result.txt");
+		rfs.getline(readData, 100);
 		rfs.close();
 		return readData;
 	}
