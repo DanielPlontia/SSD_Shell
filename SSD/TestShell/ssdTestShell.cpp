@@ -26,10 +26,11 @@ class SddDataReader : public dataReader {
 public:
 	string fileRead() {
 		// file read
-		std::ifstream rfs;
+		std::ifstream rfs("result.txt");
 		char readData[100];
-		rfs.open("result.txt");
-		rfs.getline(readData, 100);
+		if (rfs.is_open()) {
+			rfs.getline(readData, 100);
+		}
 		rfs.close();
 		return readData;
 	}
@@ -55,6 +56,7 @@ public:
 	}
 
 	void read() {
+		check_validation_user_input(2);
 		std::string cmd = "R ";
 		cmd += readedData[1];
 		myExecuter->runner(cmd);
@@ -62,6 +64,7 @@ public:
 	}
 
 	void write() {
+		check_validation_user_input(3);
 		std::string cmd = "W ";
 		cmd += readedData[1];
 		cmd += " ";
@@ -70,6 +73,7 @@ public:
 	}
 
 	void fullRead() {
+		check_validation_user_input(1);
 		for (int index = 0; index < 100; ++index) {
 			std::string cmd = "R ";
 			cmd += to_string(index);
@@ -78,6 +82,7 @@ public:
 		}
 	}
 	void fullWrite() {
+		check_validation_user_input(2);
 		for (int index = 0; index < 100; ++index) {
 			std::string cmd = "W ";
 			cmd += to_string(index);
@@ -92,6 +97,7 @@ public:
 		}
 	}
 	void testApp1() {
+		check_validation_user_input(1);
 		readedData.clear();
 		readedData.push_back("fullwrite");
 		readedData.push_back("0x12345678");
@@ -101,6 +107,7 @@ public:
 		fullRead();
 	}
 	void testApp2() {
+		check_validation_user_input(1);
 		int startLba = 0;
 		int endLba = 5;
 		int count = 0;
@@ -128,6 +135,11 @@ private:
 		while (getline(ss, subs1, ' ')) {
 			readedData.push_back(subs1);
 		}
+	}
+
+	void check_validation_user_input(int count)
+	{
+		if (readedData.size() != count) throw std::invalid_argument("Invalid Parameters.");
 	}
 
 	void repeatReadOperation(int start, int end)
