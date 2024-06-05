@@ -35,11 +35,19 @@ public:
 	{
 		if (command_Instance == nullptr)
 		{
-			std::cout << "Command Invalide. must R or W" <<std::endl;
+			std::cout << "INVALID COMMAND." << std::endl;
 		}
 		else {
 			try {
 				command_Instance->execute(userCmd);
+			}
+			catch (ReadException e) {
+				std::cout << e.what() << endl;
+				return "ReadException";
+			}
+			catch (WriteException e) {
+				std::cout << e.what() << endl;
+				return "WriteException";
 			}
 			catch (exception e) {
 				std::cout << e.what() << endl;
@@ -55,12 +63,6 @@ private:
 	SSD_HW* SSD_Instance;
 	string mapping_instance;
 
-	void makeLower(string& str)
-	{
-		std::transform(str.begin(), str.end(), str.begin(),
-			[](unsigned char c) { return std::tolower(c); });
-	}
-
 	SSD_HW* getSSD()
 	{
 		return new MySSD();
@@ -71,15 +73,12 @@ private:
 		if (SSD_Instance == nullptr)
 			return nullptr;
 
-		string cmdName = userCmd[0];
 
-		makeLower(cmdName);
-
-		if (cmdName == "r") {
+		if (userCmd[0] == "R") {
 			mapping_instance = "read_instance";
 			return new ReadCmd(SSD_Instance);
 		}
-		if (cmdName == "w") {
+		if (userCmd[0] == "W") {
 			mapping_instance = "write_instance";
 			return new WriteCmd(SSD_Instance);
 		}

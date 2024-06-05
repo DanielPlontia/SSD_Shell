@@ -68,3 +68,11 @@ TEST_F(writeTestFixtrue, WriteCmd_Call_SSD_Write_Method) {
 
 	write_cmd.execute(cmd_arg);
 }
+
+TEST_F(writeTestFixtrue, WriteCmd_Call_SSD_Write_Method2) {
+	std::vector<std::string> cmd_arg{ "W","2","0x1234abcd" };
+
+	EXPECT_CALL(mock_ssd, write(2, 0x1234ABCD)).Times(1);
+
+	write_cmd.execute(cmd_arg);
+}

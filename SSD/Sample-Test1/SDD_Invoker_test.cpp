@@ -14,25 +14,6 @@ using namespace testing;
 
 
 
-TEST(InvokeTest, CMDFailInvoke) {
-
-	vector<string> userCmd = { "A","2","0xAAAABBBB" };
-	SSD_Invoker inv(userCmd);
-	string errorCheck = inv.run();
-
-	EXPECT_EQ(errorCheck, "");
-}
-
-TEST(InvokeTest, WriteCMDFailInvoke) {
-
-	vector<string> userCmd = { "W","101","0xAABBBB" };
-	SSD_Invoker inv(userCmd);
-	string errorCheck = inv.run();
-	EXPECT_EQ(errorCheck, "cmd validation check Throw something");
-}
-
-
-
 TEST(InvokeTest, writeInvoke) {
 
 	vector<string> userCmd = { "W","2","0x1234ABCD" };
@@ -47,6 +28,32 @@ TEST(InvokeTest, readInvoke) {
 	string errorCheck = inv.run();
 	EXPECT_EQ(errorCheck, "read_instance");
 }
+
+TEST(InvokeTest, CMDFailInvoke) {
+
+	vector<string> userCmd = { "r","2","0xAAAABBBB" };
+	SSD_Invoker inv(userCmd);
+	string errorCheck = inv.run();
+
+	EXPECT_EQ(errorCheck, "");
+}
+
+TEST(InvokeTest, WriteCMDFailInvoke) {
+
+	vector<string> userCmd = { "W","101","0xAABBBB" };
+	SSD_Invoker inv(userCmd);
+	string errorCheck = inv.run();
+	EXPECT_EQ(errorCheck, "WriteException");
+}
+
+TEST(InvokeTest, ReadCMDFailInvoke) {
+
+	vector<string> userCmd = { "R","101" };
+	SSD_Invoker inv(userCmd);
+	string errorCheck = inv.run();
+	EXPECT_EQ(errorCheck, "ReadException");
+}
+
 
 
 //TEST_F(writeCmdFixtrue, readInvoke) {
