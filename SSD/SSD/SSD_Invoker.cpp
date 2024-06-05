@@ -35,7 +35,7 @@ public:
 	{
 		if (command_Instance == nullptr)
 		{
-			std::cout << "Command Invalide. must \"R\" or \"W\"" <<std::endl;
+			std::cout << "INVALID COMMAND." << std::endl;
 		}
 		else {
 			try {
@@ -63,12 +63,6 @@ private:
 	SSD_HW* SSD_Instance;
 	string mapping_instance;
 
-	//void makeLower(string& str)
-	//{
-	//	std::transform(str.begin(), str.end(), str.begin(),
-	//		[](unsigned char c) { return std::tolower(c); });
-	//}
-
 	SSD_HW* getSSD()
 	{
 		return new MySSD();
@@ -79,9 +73,6 @@ private:
 		if (SSD_Instance == nullptr)
 			return nullptr;
 
-		//string cmdName = userCmd[0];
-
-		//makeLower(cmdName);
 
 		if (userCmd[0] == "R") {
 			mapping_instance = "read_instance";
