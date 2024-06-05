@@ -3,17 +3,18 @@
 
 #include <iostream>
 #include "ssdTestShell.cpp"
+#include "ssdExeRunner.cpp"
 
 int main()
 {
-    ssdExecutor ssdExe;
+    ssdExeRunner ssdExe;
     TestShell* shell = nullptr;
 
     while (1) {
         char userInput[100];
+        std::cout << "Insert command " << std::endl;
         std::cin.getline(userInput, 100);
         shell = new TestShell(&ssdExe, userInput);
-        break;
+        break; // 현재 exit 코드가 없어 임의로 break 추가 됨. exit 코드 추가 시 삭제 요망
     }
-    std::cout << "Hello World!\n";
 }
