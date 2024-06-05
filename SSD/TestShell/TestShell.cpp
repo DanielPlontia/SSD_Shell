@@ -13,8 +13,14 @@ int main()
         std::cin.getline(userInput, 100);
         if (string(userInput) == "")
             continue;
-        if (shell.TestExecute(userInput) == true) {
-            break;
+        try {
+            if (shell.TestExecute(userInput) == true) {
+                break;
+            }
+        }
+        catch(exception e){
+            e.what();
+            continue;
         }
     }
     return 0;
