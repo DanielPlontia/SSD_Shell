@@ -1,8 +1,9 @@
 #pragma once
-#include "SSD_Invoker.cpp"
+
 #include <vector>
 #include <string>
-#include<iostream>
+#include <iostream>
+#include "SSD_Invoker.cpp"
 
 using namespace std;
 int main(int argc, char *argv[]) {

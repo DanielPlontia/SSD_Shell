@@ -1,10 +1,10 @@
 #pragma once
 
-#include<vector>
-#include<string>
-#include<algorithm>
+#include <vector>
+#include <string>
+#include <algorithm>
 #include <cctype>
-#include<iostream>
+#include <iostream>
 #include "Command.h"
 #include "SSD_HW.h"
 #include "MySSD.cpp"
