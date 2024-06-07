@@ -1,4 +1,5 @@
 #include "LogFileManager.h"
+#include "SharedMutex.h"
 
 LogFileManager::LogFileManager() : log_file{ "c:\\log\\lastest.log" }
 {

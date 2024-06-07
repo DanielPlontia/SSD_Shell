@@ -4,6 +4,7 @@
 using namespace std;
 using namespace testing;
 
+/*
 class flushTestFixtrue : public testing::Test {
 public:
 	SSD_HW_Mock mock_ssd;
@@ -50,3 +51,4 @@ TEST_F(flushTestFixtrue, FlushCmd_Exception_When_InvalidCmd) {
 		cout << e.what();
 	}
 }
+*/

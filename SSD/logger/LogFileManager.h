@@ -7,11 +7,11 @@
 #include <ctime>
 #include <mutex>
 #include <filesystem>
-#include "SharedMutex.h"
 
 #define KB 1024
 #define MAX_LOG_SIZE 10 * KB
 
+class SharedMutex;
 class LogFileManager {
 public:
 	LogFileManager();

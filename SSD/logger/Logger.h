@@ -2,13 +2,8 @@
 
 #include <string>
 #include <iostream>
-#include <chrono>
-#include <ctime>
-#include <format>
-#include <vector>
-#include <ranges>
-
 #include "LogFileManager.h"
+#include "LogFormatter.h"
 
 #ifdef LOGGER_EXPORTS
 #define LOGGER_DECLSPEC __declspec(dllexport)
@@ -25,8 +20,6 @@ public:
 
 	void writelog(const std::string& funcName, const std::string& msg);
 private:
-    std::string split(std::string_view str, std::string_view delim);
-
 	LogFileManager file_mng;
 
 	Logger() = default;
