@@ -2,6 +2,9 @@
 
 #include <string>
 #include <iostream>
+#include <chrono>
+#include <ctime>
+#include <format>
 
 #ifdef LOGGER_EXPORTS
 #define LOGGER_DECLSPEC __declspec(dllexport)
