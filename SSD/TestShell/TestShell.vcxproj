@@ -129,12 +129,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DataReader.cpp" />
     <ClCompile Include="ssdExecutor.cpp" />
-    <ClCompile Include="ssdTestShell.cpp" />
     <ClCompile Include="TestShell.cpp" />
+    <ClCompile Include="TestMode.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DataReader.h" />
     <ClInclude Include="exeRunner.h" />
+    <ClInclude Include="ssdExecutor.h" />
+    <ClInclude Include="TestMode.h" />
     <ClInclude Include="TestShell.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

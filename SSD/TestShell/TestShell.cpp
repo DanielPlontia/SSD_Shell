@@ -1,93 +1,116 @@
-﻿#include <iostream>
-#include "ssdTestShell.cpp"
-#include "ssdExecutor.cpp"
-#include "TestShell.h"
+﻿#include "TestShell.h"
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <stdexcept>
 
-int main(int argc, char* argv[])
-{
-    ssdExecutor ssdExe;
-    SddDataReader datareader;
-    TestShell shell{ &ssdExe, &datareader };
-
-    if (isRunnerMode(argc)) {
-        return RunnerMode(argv, shell);
-    }
-
-    while (1) {
-        char userInput[100];
-        std::cin.getline(userInput, 100);
-        if (string(userInput) == "")
-            continue;
-
-        try {
-            if (shell.TestExecute(userInput) == true) {
-                break;
-            }
-        }
-        catch (std::exception& e) {
-            std::cerr << e.what() << std::endl;
-        }
-    }
-    return 0;
+TestShell::TestShell(exeRunner* exe, dataReader* reader) : myExecuter{ exe }, fileReader{ reader } {
+    make_test_func_map();
 }
 
-int RunnerMode(char* argv[], TestShell& shell)
-{
-    ifstream fin;
-    fin.open(argv[1]);
+bool TestShell::TestExecute(std::string inputData) {
+    split_input_data(inputData);
+    if (readedData[0] == "exit") return true;
 
-    string line;
-    while (!fin.eof())
-    {
-        getline(fin, line);
-
-        vector<string> testScenario = split_test_scenario(line);
-
-        if (is_valid_check_of_scenario_list(testScenario) == false) return 0;
-
-        try {
-            cout << line << " ... ";
-            shell.TestExecute(line);
-            cout << "Pass" << endl;
-        }
-        catch (std::exception& e) {
-            cout << "FAIL!!" << endl;
-            break;
-        }
+    if (test_func_map.find(readedData[0]) == test_func_map.end()) {
+        throw std::runtime_error("Invalid Command");
     }
-    return 0;
+    test_func_map[readedData[0]].function();
+    return false;
 }
 
-std::vector<std::string> split_test_scenario(std::string& line)
-{
-    vector<string> testScenario;
-    istringstream ss(line);
-    string subs1;
-
-    while (getline(ss, subs1, ' ')) {
-        testScenario.push_back(subs1);
+void TestShell::read() {
+    check_validation_user_input(2);
+    std::string cmd = "R " + readedData[1];
+    if (myExecuter->runner(cmd)) {
+        std::cout << fileReader->fileRead() << std::endl;
     }
-    return testScenario;
 }
 
-bool isRunnerMode(int argc)
-{
-    return argc == 2;
+void TestShell::write() {
+    check_validation_user_input(3);
+    std::string cmd = "W " + readedData[1] + " " + readedData[2];
+    myExecuter->runner(cmd);
 }
 
-bool is_valid_check_of_scenario_list(std::vector<std::string>& testScenario)
-{
-    if (testScenario.empty()) {
-        cout << "please check scenario list file\n";
-        return false;
+void TestShell::fullRead() {
+    check_validation_user_input(1);
+    for (int index = 0; index < 100; ++index) {
+        std::string cmd = "R " + std::to_string(index);
+        if (!myExecuter->runner(cmd)) return;
+        std::cout << fileReader->fileRead() << std::endl;
     }
-    if (testScenario.size() > 1) {
-        cout << "please check Scenario CMD : " << testScenario[0] << endl;
-        return false;
-    }
+}
 
-    // TestShell 내부 CMD 수행 불가
-	std::string cmd[] = {"fullread", "fullwrite", "read", "write", "erase", "flush", "help", "exit"};
-	if (std::find(std::begin(cmd), std::end(cmd), testScenario[0]) != std::end(cmd)) return false;
-	return true;
+void TestShell::fullWrite() {
+    check_validation_user_input(2);
+    for (int index = 0; index < 100; ++index) {
+        std::string cmd = "W " + std::to_string(index) + " " + readedData[1];
+        myExecuter->runner(cmd);
+    }
+}
+
+void TestShell::showHelp() {
+    for (const auto& tf : test_func_map) {
+        std::cout << tf.first << " : " << tf.second.description << std::endl;
+    }
+}
+
+void TestShell::testApp1() {
+    check_validation_user_input(1);
+    readedData = {"fullwrite", "0x12345678"};
+    fullWrite();
+    readedData = {"fullread"};
+    fullRead();
+}
+
+void TestShell::testApp2() {
+    check_validation_user_input(1);
+    int startLba = 0;
+    int endLba = 5;
+    int count = 0;
+    while (count < TEST_APP2_REPEAT_COUNT) {
+        repeatWriteOperation(startLba, endLba, "0xAAAABBBB");
+        count++;
+    }
+    repeatWriteOperation(startLba, endLba, "0x12345678");
+    repeatReadOperation(startLba, endLba);
+}
+
+void TestShell::split_input_data(std::string input) {
+    std::istringstream ss(input);
+    std::string subs;
+    readedData.clear();
+    while (std::getline(ss, subs, ' ')) {
+        readedData.push_back(subs);
+    }
+}
+
+void TestShell::check_validation_user_input(int count) {
+    if (readedData.size() != count) throw std::invalid_argument("Invalid Parameters.");
+}
+
+void TestShell::repeatReadOperation(int start, int end) {
+    for (int lba = start; lba <= end; lba++) {
+        readedData = {"read", std::to_string(lba)};
+        read();
+    }
+}
+
+void TestShell::repeatWriteOperation(int start, int end, std::string data) {
+    for (int lba = start; lba <= end; lba++) {
+        readedData = {"write", std::to_string(lba), data};
+        write();
+    }
+}
+
+void TestShell::make_test_func_map() {
+    test_func_map.emplace("read", test_func{ std::bind(&TestShell::read, this), "SSD에 특정 메모리 값을 읽어 Console에 출력해줍니다.\n사용법 : read [주소]\n" });
+    test_func_map.emplace("write", test_func{ std::bind(&TestShell::write, this), "SSD 특정 메모리에 값을 적습니다. Data는 0x로 시작하는 4byte Hex string으로 작성해주셔야 합니다.\n사용법 : write [주소] [Data]\n" });
+    test_func_map.emplace("fullread", test_func{ std::bind(&TestShell::fullRead, this), "SSD 모든 메모리 값을 읽어 Console에 출력해줍니다.\n사용법 : fullread\n" });
+    test_func_map.emplace("fullwrite", test_func{ std::bind(&TestShell::fullWrite, this), "SSD 모든 메모리에 값을 적습니다. Data는 0x로 시작하는 4byte Hex string으로 작성해주셔야 합니다.\n사용법 : fullwrite [Data]\n" });
+    test_func_map.emplace("help", test_func{ std::bind(&TestShell::showHelp, this), "TestShell에서 사용할 수 있는 Command들에 대한 설명을 확인 할 수 있습니다.\n" });
+    test_func_map.emplace("testapp1", test_func{ std::bind(&TestShell::testApp1, this), "SSD 전체 메모리에 0x12345678을 작성하고 전체 메모리를 읽어 정상적으로 작성이 됐는지 확인합니다.\n사용법 : testapp1\n" });
+    test_func_map.emplace("testapp2", test_func{ std::bind(&TestShell::testApp2, this), "LBA 0~5에 0xAAAABBBB 30회 Write, 동일 LBA에 0x12345678 Overwrite후 Read하여 정상적으로 작성됐는지 확인합니다\n사용법 : testapp2\n" });
+    test_func_map.emplace("exit", test_func{ nullptr, "실행중인 TestShell을 종료합니다.\n사용법 : exit\n" });
 }
