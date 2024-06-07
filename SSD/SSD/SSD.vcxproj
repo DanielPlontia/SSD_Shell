@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="erase.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MySSD.cpp" />
     <ClCompile Include="read.cpp" />
