@@ -16,4 +16,5 @@ public:
 	bool is_enable_console_print_opt();
 private:
 	std::filesystem::path config_file;
+	void make_log_directory();
 };
