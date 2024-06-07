@@ -22,6 +22,14 @@ void Logger::writelog(const std::string& funcName, const std::string& msg) {
     if (!std::filesystem::exists(log_file)) {
         std::filesystem::create_directory(log_file.parent_path());
     }
+    else if (std::filesystem::file_size(log_file) > 10 * 1024) //10kb ³ÑÀ»‹š
+    {
+        char newFileName[100];
+        std::strftime(newFileName, sizeof(newFileName), "until_%y%m%d_%Hh_%Mm_%Ss.log", &localTime);
+        std::filesystem::path newfile_fullname = log_file.parent_path() / std::string(newFileName);
+
+        std::filesystem::rename(log_file, newfile_fullname);
+    }
 
     std::ofstream file(log_file, std::ios::app);
     if (file.is_open()) {
