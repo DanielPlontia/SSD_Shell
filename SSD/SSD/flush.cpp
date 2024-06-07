@@ -37,13 +37,8 @@ private:
     SSD_WriteBuffer* write_buffer;
 
     bool check_validation() override {
-        if (is_valid_args() == false) {
-            return false;
-        }
-        if (is_matched_cmd() == false) {
-            return false;
-        }
-
+        if (is_valid_args() == false) return false;
+        if (is_matched_cmd() == false) return false;
         return true;
     }
 
