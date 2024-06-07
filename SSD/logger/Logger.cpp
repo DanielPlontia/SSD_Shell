@@ -19,6 +19,10 @@ void Logger::writelog(const std::string& funcName, const std::string& msg) {
 
     std::lock_guard<std::mutex> lock(fileMutex);
 
+    if (!std::filesystem::exists(log_file)) {
+        std::filesystem::create_directory(log_file.parent_path());
+    }
+
     std::ofstream file(log_file, std::ios::app);
     if (file.is_open()) {
         file.write(formated_str.c_str(), formated_str.length());

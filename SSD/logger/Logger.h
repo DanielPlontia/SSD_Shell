@@ -23,7 +23,7 @@ public:
 private:
     std::string split(std::string_view str, std::string_view delim);
 	std::mutex fileMutex;
-	const std::string log_file = "c:\\log\\lastest.log";
+	const std::filesystem::path log_file = "c:\\log\\lastest.log";
 };
 
 extern "C" {
