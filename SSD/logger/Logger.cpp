@@ -13,9 +13,20 @@ void Logger::writelog(const std::string& funcName, const std::string& msg) {
     char buffer[20];
     std::strftime(buffer, sizeof(buffer), "[%y.%m.%d %H:%M]", &localTime);
 
-    std::string formated_str = std::format("{} {:30}: {}", buffer, funcName.c_str(), msg.c_str());
+    std::string formated_str = std::format("{} {:30}: {}", buffer, split(funcName, "::").c_str(), msg.c_str());
 
     std::cout << formated_str << std::endl;
+}
+
+std::string Logger::split(std::string_view str, std::string_view delim) {
+    auto view{ str
+    | std::ranges::views::split(delim)
+    | std::ranges::views::transform([](auto&& elem) {
+            return std::string_view(&*elem.begin(), std::ranges::distance(elem));
+    }) };
+
+    std::vector<std::string> strings{ view.begin(), view.end() };
+    return strings[1] + "()";
 }
 
 Logger _log;
