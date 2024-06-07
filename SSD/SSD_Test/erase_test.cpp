@@ -7,8 +7,8 @@ using namespace testing;
 class eraseTestFixtrue : public testing::Test {
 public:
 	SSD_HW_Mock mock_ssd;
-	SSD_WriteBuffer& write_buffer = SSD_WriteBuffer::getInstance();
-	EraseCmd erase_cmd{ &mock_ssd, &write_buffer };
+	SSD_WriteBuffer* write_buffer = SSD_WriteBuffer::getInstance().get();
+	EraseCmd erase_cmd{ &mock_ssd, write_buffer };
 };
 
 TEST_F(eraseTestFixtrue, EraseCmd_Exception_When_InvalidArgs) {
