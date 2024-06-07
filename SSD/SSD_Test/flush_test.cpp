@@ -50,16 +50,3 @@ TEST_F(flushTestFixtrue, FlushCmd_Exception_When_InvalidCmd) {
 		cout << e.what();
 	}
 }
-
-TEST_F(flushTestFixtrue, EraseCmd_Behavior_Read_Method) {
-	vector<string> cmd_arg1{ "F" };
-	EXPECT_CALL(mock_ssd, write);
-	flush_cmd.execute(cmd_arg1);
-
-	vector<string> cmd_arg2{ "F" };
-	EXPECT_CALL(mock_ssd, write).Times(4);
-	flush_cmd.execute(cmd_arg2);
-	flush_cmd.execute(cmd_arg2);
-	flush_cmd.execute(cmd_arg2);
-	flush_cmd.execute(cmd_arg2);
-}

@@ -34,6 +34,10 @@ public:
 
 	}
 
+	void flush() {
+
+	}
+
 private:
 	SSD_WriteBuffer()
 	{
@@ -82,10 +86,6 @@ private:
 		catch (std::exception& e) {
 			throw e;
 		}
-	}
-
-	void flush() {
-
 	}
 
 	void optimize() {

@@ -37,31 +37,20 @@ private:
     SSD_WriteBuffer* write_buffer;
 
     bool check_validation() override {
-        if (check_args() == false) {
-            return false;
-        }
-        if (check_cmd() == false) {
-            return false;
-        }
-
+        if (is_valid_args() == false) return false;
+        if (is_matched_cmd() == false) return false;
         return true;
     }
 
-    bool check_args() {
-        if (cmd_args.size() != 1) {
-            return false;
-        }
-        return true;
+    bool is_valid_args() {
+        return (cmd_args.size() != 1)? false : true;
     }
 
-    bool check_cmd() {
-        if (cmd_args[0] != "F") {
-            return false;
-        }
-        return true;
+    bool is_matched_cmd() {
+        return (cmd_args[0] != "F")? false : true;
     }
 
     void do_action() override {
-        ssd_hw->write(1,0x12345678);
+        write_buffer->flush();
     }
 };
