@@ -18,9 +18,9 @@ class TestShell {
 public:
     TestShell(exeRunner* exe, dataReader* reader);
     bool TestExecute(std::string inputData);
+    std::unordered_map<std::string, test_func> test_func_map;
 
 private:
-    std::unordered_map<std::string, test_func> test_func_map;
     std::vector<std::string> readedData;
     exeRunner* myExecuter;
     dataReader* fileReader;
@@ -29,12 +29,16 @@ private:
 
     void split_input_data(std::string input);
     void check_validation_user_input(int count);
+    void erase_validation_check(int size, int startLba);
     void repeatReadOperation(int start, int end);
     void repeatWriteOperation(int start, int end, std::string data);
     void make_test_func_map();
 
     void read();
     void write();
+    void erase();
+    void erase_range();
+    void flush();
     void fullRead();
     void fullWrite();
     void showHelp();

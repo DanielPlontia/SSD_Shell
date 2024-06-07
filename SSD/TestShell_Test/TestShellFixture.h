@@ -4,7 +4,7 @@
 #include <string>
 #include <stdexcept>
 
-#include "../TestShell/ssdTestShell.cpp"
+#include "../SSDShellLibrary/TestShell.h"
 
 using namespace std;
 

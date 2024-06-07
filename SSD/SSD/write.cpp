@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include <stdexcept>
-#include "SSD_HW.h"
 #include "SSD_WriteBuffer.cpp"
 #include "Command.h"
 
@@ -15,8 +14,8 @@ public:
 class WriteCmd : public Command {
 	// Command을(를) 통해 상속됨
 public:
-	WriteCmd(SSD_HW* _ssd, SSD_WriteBuffer* _write_buffer)
-		: ssd_hw{ _ssd }, write_buffer(_write_buffer) {};
+	WriteCmd(SSD_WriteBuffer* _write_buffer)
+		: write_buffer(_write_buffer) {};
 
 	void execute(const std::vector<std::string>& operation) override
 	{
@@ -30,7 +29,6 @@ public:
 private:
 	const int MIN_ADDR_NUM = 0;
 	const int MAX_ADDR_NUM = 99;
-	SSD_HW* ssd_hw;
 	SSD_WriteBuffer* write_buffer;
 	std::vector<std::string> cmd_arg;
 
