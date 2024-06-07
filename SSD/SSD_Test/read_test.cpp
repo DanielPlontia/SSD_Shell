@@ -1,18 +1,18 @@
 #include "SSD_HW_Mock.h"
 #include "../SSD/read.cpp"
+#include "../SSD/SSD_WriteBuffer.cpp"
 
 using namespace std;
 using namespace testing;
 
-/*
-class readTestFixtrue : public testing::Test {
+class DISABLED_readTestFixtrue : public testing::Test {
 public:
 	SSD_HW_Mock mock_ssd;
 	SSD_WriteBuffer* write_buffer = SSD_WriteBuffer::getInstance().get();
-	ReadCmd read_cmd{ &mock_ssd, write_buffer };
+	ReadCmd read_cmd{ write_buffer };
 };
 
-TEST_F(readTestFixtrue, ReadCmd_Exception_When_InvalidArgs) {
+TEST_F(DISABLED_readTestFixtrue, ReadCmd_Exception_When_InvalidArgs) {
 	try {
 		vector<string> cmd_arg1{ "R","10", "XX" };
 		read_cmd.execute(cmd_arg1);
@@ -32,7 +32,7 @@ TEST_F(readTestFixtrue, ReadCmd_Exception_When_InvalidArgs) {
 	}
 }
 
-TEST_F(readTestFixtrue, ReadCmd_Exception_When_InvalidCmd) {
+TEST_F(DISABLED_readTestFixtrue, ReadCmd_Exception_When_InvalidCmd) {
 	try {
 		vector<string> cmd_arg1{ "W","10" };
 		read_cmd.execute(cmd_arg1);
@@ -52,7 +52,7 @@ TEST_F(readTestFixtrue, ReadCmd_Exception_When_InvalidCmd) {
 	}
 }
 
-TEST_F(readTestFixtrue, ReadCmd_Exception_When_InvalidAddressValue) {
+TEST_F(DISABLED_readTestFixtrue, ReadCmd_Exception_When_InvalidAddressValue) {
 	vector<string> cmd_arg1{ "R","TEN" };
 	EXPECT_THROW(read_cmd.execute(cmd_arg1), ReadException);
 
@@ -60,7 +60,7 @@ TEST_F(readTestFixtrue, ReadCmd_Exception_When_InvalidAddressValue) {
 	EXPECT_THROW(read_cmd.execute(cmd_arg2), ReadException);
 }
 
-TEST_F(readTestFixtrue, ReadCmd_Exception_When_InvalidAddressRange) {
+TEST_F(DISABLED_readTestFixtrue, ReadCmd_Exception_When_InvalidAddressRange) {
 	vector<string> cmd_arg1{ "R","100" };
 	EXPECT_THROW(read_cmd.execute(cmd_arg1), ReadException);
 
@@ -68,7 +68,7 @@ TEST_F(readTestFixtrue, ReadCmd_Exception_When_InvalidAddressRange) {
 	EXPECT_THROW(read_cmd.execute(cmd_arg2), ReadException);
 }
 
-TEST_F(readTestFixtrue, ReadCmd_Behavior_Read_Method) {
+TEST_F(DISABLED_readTestFixtrue, ReadCmd_Behavior_Read_Method) {
 	vector<string> cmd_arg1{ "R","7" };
 	EXPECT_CALL(mock_ssd, read);
 	read_cmd.execute(cmd_arg1);
@@ -80,4 +80,3 @@ TEST_F(readTestFixtrue, ReadCmd_Behavior_Read_Method) {
 	read_cmd.execute(cmd_arg2);
 	read_cmd.execute(cmd_arg2);
 }
-*/
