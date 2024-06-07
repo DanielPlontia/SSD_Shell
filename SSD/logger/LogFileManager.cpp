@@ -33,6 +33,8 @@ void LogFileManager::make_log_directory()
 
 void LogFileManager::manage_file_size()
 {
+    if (false == std::filesystem::exists(log_file))
+        return;
     if (std::filesystem::file_size(log_file) <= MAX_LOG_SIZE)
         return;
 
