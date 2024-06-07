@@ -14,9 +14,6 @@
 #include "write.cpp"
 #include "erase.cpp"
 
-#include "../logger/Logger.h"
-#pragma comment (lib, "../x64/Debug/logger.lib")
-
 using std::vector;
 using std::string;
 
@@ -24,7 +21,6 @@ class SSD_Invoker {
 public:
 	SSD_Invoker(vector<string> userCommand)
 	{
-		WriteLog(__FUNCTION__, "test");
 		userCmd = userCommand;
 		SSD_Instance = std::move(getSSD());
 		command_Instance = std::move(getCmdInstance());
