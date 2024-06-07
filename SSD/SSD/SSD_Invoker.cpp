@@ -11,6 +11,7 @@
 #include "read.cpp"
 #include "write.cpp"
 #include "erase.cpp"
+#include "flush.cpp"
 
 using std::vector;
 using std::string;
@@ -39,6 +40,12 @@ public:
 			catch (WriteException& e) {
 				return e.what();
 			}
+			catch (EraseException& e) {
+				return e.what();
+			}
+			catch (FlushException& e) {
+				return e.what();
+			}
 			catch (exception& e) {
 				return e.what();
 			}
@@ -64,6 +71,9 @@ private:
 		}
 		if (userCmd[0] == "E") {
 			return std::make_shared<EraseCmd>(write_buffer.get());
+		}
+		if (userCmd[0] == "F") {
+			return std::make_shared<FlushCmd>(write_buffer.get());
 		}
 		return nullptr;
 	}
