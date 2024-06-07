@@ -1,13 +1,7 @@
 #include "Logger.h"
 
-Logger _log;
 void WriteLog(const std::string& funcName, const std::string& msg) {
-    _log.writelog(funcName, msg);
-}
-
-Logger::Logger()
-{
-    
+    Logger::getInstance().writelog(funcName, msg);
 }
 
 void Logger::writelog(const std::string& funcName, const std::string& msg) {
