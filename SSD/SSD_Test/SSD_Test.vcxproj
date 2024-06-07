@@ -103,6 +103,7 @@
   <ItemGroup>
     <ClCompile Include="..\packages\gmock.1.11.0\lib\native\src\gmock\src\gmock_main.cc" />
     <ClCompile Include="erase_test.cpp" />
+    <ClCompile Include="flush_test.cpp" />
     <ClCompile Include="SDD_Invoker_test.cpp" />
     <ClCompile Include="read_test.cpp" />
     <ClCompile Include="SSD_test.cpp" />
