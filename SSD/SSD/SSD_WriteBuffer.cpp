@@ -7,14 +7,18 @@
 #include <vector>
 
 class SSD_WriteBuffer {
+	friend std::unique_ptr<SSD_WriteBuffer> std::make_unique<SSD_WriteBuffer>();
 public:
-	static SSD_WriteBuffer& getInstance() {
-		static SSD_WriteBuffer write_buffer;
+	static std::unique_ptr<SSD_WriteBuffer>& getInstance() {
+		static std::unique_ptr<SSD_WriteBuffer> write_buffer{ std::make_unique<SSD_WriteBuffer>() };
 		return write_buffer;
 	}
 
-	void read(int addr) {
+	~SSD_WriteBuffer() {
+		dump_buffer_data();
+	}
 
+	void read(int addr) {
 		if (commands.size() == 10) {
 			flush();
 		}
@@ -44,10 +48,6 @@ private:
 		buffer_file_ = "./buffer.txt";
 
 		load_buffer_data();
-	}
-
-	~SSD_WriteBuffer() {
-		dump_buffer_data();
 	}
 
 	SSD_WriteBuffer& operator=(const SSD_WriteBuffer& other) = delete;

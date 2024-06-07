@@ -7,8 +7,8 @@ using namespace testing;
 class readTestFixtrue : public testing::Test {
 public:
 	SSD_HW_Mock mock_ssd;
-	SSD_WriteBuffer& write_buffer = SSD_WriteBuffer::getInstance();
-	ReadCmd read_cmd{ &mock_ssd, &write_buffer };
+	SSD_WriteBuffer* write_buffer = SSD_WriteBuffer::getInstance().get();
+	ReadCmd read_cmd{ &mock_ssd, write_buffer };
 };
 
 TEST_F(readTestFixtrue, ReadCmd_Exception_When_InvalidArgs) {

@@ -7,8 +7,8 @@ using namespace testing;
 class flushTestFixtrue : public testing::Test {
 public:
 	SSD_HW_Mock mock_ssd;
-	SSD_WriteBuffer& write_buffer = SSD_WriteBuffer::getInstance();
-	FlushCmd flush_cmd{ &mock_ssd, &write_buffer };
+	SSD_WriteBuffer* write_buffer = SSD_WriteBuffer::getInstance().get();
+	FlushCmd flush_cmd{ &mock_ssd, write_buffer };
 };
 
 TEST_F(flushTestFixtrue, FlushCmd_Exception_When_InvalidArgs) {

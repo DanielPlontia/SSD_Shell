@@ -14,6 +14,9 @@
 #include "write.cpp"
 #include "erase.cpp"
 
+#include "../logger/Logger.h"
+#pragma comment (lib, "../x64/Debug/logger.lib")
+
 using std::vector;
 using std::string;
 
@@ -21,6 +24,7 @@ class SSD_Invoker {
 public:
 	SSD_Invoker(vector<string> userCommand)
 	{
+		WriteLog(__FUNCTION__, "test");
 		userCmd = userCommand;
 		SSD_Instance = std::move(getSSD());
 		command_Instance = std::move(getCmdInstance());
@@ -50,7 +54,7 @@ public:
 		return string();
 	}
 private:
-	SSD_WriteBuffer& write_buffer = SSD_WriteBuffer::getInstance();;
+	std::unique_ptr<SSD_WriteBuffer> write_buffer = std::move(SSD_WriteBuffer::getInstance());
 	vector<string> userCmd;
 	std::shared_ptr<Command> command_Instance;
 	std::shared_ptr<SSD_HW> SSD_Instance;
@@ -66,13 +70,13 @@ private:
 			return nullptr;
 
 		if (userCmd[0] == "R") {
-			return std::make_shared<ReadCmd>(SSD_Instance.get(), &write_buffer);
+			return std::make_shared<ReadCmd>(SSD_Instance.get(), write_buffer.get());
 		}
 		if (userCmd[0] == "W") {
-			return std::make_shared<WriteCmd>(SSD_Instance.get(), &write_buffer);
+			return std::make_shared<WriteCmd>(SSD_Instance.get(), write_buffer.get());
 		}
 		if (userCmd[0] == "E") {
-			return std::make_shared<EraseCmd>(SSD_Instance.get(), &write_buffer);
+			return std::make_shared<EraseCmd>(SSD_Instance.get(), write_buffer.get());
 		}
 		return nullptr;
 	}
