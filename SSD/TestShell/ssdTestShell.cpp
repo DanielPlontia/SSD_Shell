@@ -44,37 +44,42 @@ public:
 	bool TestExecute(std::string inputData)
 	{
 		split_input_data(inputData);
-		if (readedData[0] == "exit") return true;
+		check_validation_command_name();
 
-		if (test_func_map.find(readedData[0]) == test_func_map.end()) {
-			throw std::exception("Invalid Command");
-		}
-		test_func_map[readedData[0]].function();
+		if (is_cmd_exit(readedData[0])) return true;
+		run_test_function();
 		return false;
+	}
+
+private:
+	vector<string> readedData;
+	exeRunner* myExecuter;
+	dataReader* fileReader;
+
+	const int TEST_APP2_REPEAT_COUNT = 30;
+
+	void run_test_function()
+	{
+		test_func_map[readedData[0]].function();
 	}
 
 	void read() {
 		check_validation_user_input(2);
-		std::string cmd = "R ";
-		cmd += readedData[1];
+		std::string cmd = "R " + readedData[1];
 		if (myExecuter->runner(cmd) == false) return;
 		cout << fileReader->fileRead() << endl;
 	}
 
 	void write() {
 		check_validation_user_input(3);
-		std::string cmd = "W ";
-		cmd += readedData[1];
-		cmd += " ";
-		cmd += readedData[2];
+		std::string cmd = "W " + readedData[1] + " " + readedData[2];
 		if (myExecuter->runner(cmd) == false) return;
 	}
 
 	void fullRead() {
 		check_validation_user_input(1);
 		for (int index = 0; index < 100; ++index) {
-			std::string cmd = "R ";
-			cmd += to_string(index);
+			std::string cmd = "R " + to_string(index);
 			if (myExecuter->runner(cmd) == false) return;
 			cout << fileReader->fileRead() << endl;
 		}
@@ -83,10 +88,7 @@ public:
 	void fullWrite() {
 		check_validation_user_input(2);
 		for (int index = 0; index < 100; ++index) {
-			std::string cmd = "W ";
-			cmd += to_string(index);
-			cmd += " ";
-			cmd += readedData[1];
+			std::string cmd = "W " + to_string(index) + " " + readedData[1];
 			if (myExecuter->runner(cmd) == false) return;
 		}
 	}
@@ -120,13 +122,6 @@ public:
 		repeatReadOperation(startLba, endLba);
 	}
 
-private:
-	vector<string> readedData;
-	exeRunner* myExecuter;
-	dataReader* fileReader;
-
-	const int TEST_APP2_REPEAT_COUNT = 30;
-
 	void split_input_data(string input) {
 		istringstream ss(input);
 		string subs1;
@@ -136,6 +131,15 @@ private:
 		while (getline(ss, subs1, ' ')) {
 			readedData.push_back(subs1);
 		}
+	}
+	void check_validation_command_name()
+	{
+		if (test_func_map.find(readedData[0]) == test_func_map.end()) {
+			throw std::exception("Invalid Command");
+		}
+	}
+	bool is_cmd_exit(const std::string& cmd) {
+		return cmd == "exit";
 	}
 
 	void check_validation_user_input(int count)
