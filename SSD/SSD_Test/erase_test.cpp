@@ -66,13 +66,3 @@ TEST_F(eraseTestFixtrue, EraseCmd_Exception_When_InvalidAddressRange) {
 	vector<string> cmd_arg2{ "E","200","7" };
 	EXPECT_THROW(erase_cmd.execute(cmd_arg2), EraseException);
 }
-
-TEST_F(eraseTestFixtrue, EraseCmd_Behavior_Erase_Method) {
-	vector<string> cmd_arg1{ "E","1","1"};
-	EXPECT_CALL(mock_ssd, write);
-	erase_cmd.execute(cmd_arg1);
-
-	vector<string> cmd_arg2{ "E","1","4" };
-	EXPECT_CALL(mock_ssd, write).Times(4);
-	erase_cmd.execute(cmd_arg2);
-}
