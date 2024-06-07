@@ -5,16 +5,27 @@
 #include <fstream>
 #include <chrono>
 #include <ctime>
+#include <mutex>
+#include <filesystem>
 #include "SharedMutex.h"
+
+#define KB 1024
+#define MAX_LOG_SIZE 10 * KB
 
 class LogFileManager {
 public:
-	bool WriteFile(const std::string& msg);
-private:
-	const std::filesystem::path log_file = "c:\\log\\lastest.log";
-	bool backup_file();
-	bool zip_file();
+	LogFileManager();
+	void WriteFile(const std::string& msg);
 
-	std::vector<std::filesystem::path> existFileList;
-	void find_log_files(const std::filesystem::path& directory);
+private:
+	void write_file(const std::string& msg);
+	void make_log_directory();
+	void manage_file_size();
+	void backup_file();
+	void zip_file();
+	std::vector<std::filesystem::path> find_log_files(const std::filesystem::path& directory);
+	std::tm get_cur_time();
+
+	std::shared_ptr<SharedMutex> fileMutex;
+	const std::filesystem::path log_file;
 };
