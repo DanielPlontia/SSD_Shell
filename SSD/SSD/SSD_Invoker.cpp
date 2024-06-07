@@ -9,6 +9,7 @@
 #include "Command.h"
 #include "SSD_HW.h"
 #include "MySSD.cpp"
+#include "SSD_WriteBuffer.cpp"
 #include "read.cpp"
 #include "write.cpp"
 
@@ -19,9 +20,7 @@ class SSD_Invoker {
 public:
 	SSD_Invoker(vector<string> userCommand)
 	{
-		mapping_instance = "";
 		userCmd = userCommand;
-
 		SSD_Instance = std::move(getSSD());
 		command_Instance = std::move(getCmdInstance());
 	}
@@ -50,10 +49,10 @@ public:
 		return string();
 	}
 private:
+	SSD_WriteBuffer& write_buffer = SSD_WriteBuffer::getInstance();;
 	vector<string> userCmd;
 	std::shared_ptr<Command> command_Instance;
 	std::shared_ptr<SSD_HW> SSD_Instance;
-	string mapping_instance;
 
 	std::shared_ptr<SSD_HW> getSSD()
 	{
@@ -66,12 +65,10 @@ private:
 			return nullptr;
 
 		if (userCmd[0] == "R") {
-			mapping_instance = "read_instance";
-			return std::make_shared<ReadCmd>(SSD_Instance.get());
+			return std::make_shared<ReadCmd>(SSD_Instance.get(), &write_buffer);
 		}
 		if (userCmd[0] == "W") {
-			mapping_instance = "write_instance";
-			return std::make_shared<WriteCmd>(SSD_Instance.get());
+			return std::make_shared<WriteCmd>(SSD_Instance.get(), &write_buffer);
 		}
 		return nullptr;
 	}

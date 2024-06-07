@@ -12,5 +12,6 @@ public:
 
 private:
     fs::path SSD_exe_path = "SSD.exe";
+    bool execute_exe(std::string& cmd);
     bool check_precondition(std::string& cmd);
 };
