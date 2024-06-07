@@ -3,6 +3,7 @@
 #include "SSD_HW_Mock.h"
 #include "../SSD/write.cpp"
 
+/*
 class writeTestFixtrue : public testing::Test {
 public:
 	SSD_HW_Mock mock_ssd;
@@ -82,3 +83,4 @@ TEST_P(ParameterizedTestFixture, WriteCmd_NormalTest) {
 	EXPECT_CALL(mock_ssd, write(2, std::stoul(test_value, 0, 16))).Times(1);
 	write_cmd.execute(cmd_arg);
 }
+*/

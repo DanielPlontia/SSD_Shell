@@ -4,7 +4,6 @@
 #include <string>
 #include <stdexcept>
 #include "Command.h"
-#include "SSD_HW.h"
 #include "SSD_WriteBuffer.cpp"
 
 using namespace std;
@@ -18,8 +17,8 @@ public:
 
 class ReadCmd : public Command {
 public:
-    ReadCmd(SSD_HW* _ssd, SSD_WriteBuffer* _write_buffer)
-        : ssd_hw{ _ssd }, write_buffer(_write_buffer) {};
+    ReadCmd(SSD_WriteBuffer* _write_buffer)
+        : write_buffer(_write_buffer) {};
 
     void execute(const vector<string>& operation) override {
         cmd_args = operation;
@@ -38,7 +37,6 @@ private:
     const int min_num = 0;
     int LBA = 0;
     vector<string> cmd_args;
-    SSD_HW* ssd_hw;
     SSD_WriteBuffer* write_buffer;
 
     bool check_validation() override {
@@ -81,7 +79,6 @@ private:
     }
 
     void do_action() override {
-        ssd_hw->read(LBA);
-        //write_buffer->read(LBA);
+        write_buffer->read(LBA);
     }
 };

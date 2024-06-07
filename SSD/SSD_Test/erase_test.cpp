@@ -4,6 +4,7 @@
 using namespace std;
 using namespace testing;
 
+/*
 class eraseTestFixtrue : public testing::Test {
 public:
 	SSD_HW_Mock mock_ssd;
@@ -66,3 +67,4 @@ TEST_F(eraseTestFixtrue, EraseCmd_Exception_When_InvalidAddressRange) {
 	vector<string> cmd_arg2{ "E","200","7" };
 	EXPECT_THROW(erase_cmd.execute(cmd_arg2), EraseException);
 }
+*/

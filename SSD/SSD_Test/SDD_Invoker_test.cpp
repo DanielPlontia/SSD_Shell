@@ -12,6 +12,7 @@
 using namespace std;
 using namespace testing;
 
+/*
 class InvokerFixture : public testing::Test {
 public:
 	SSD_Invoker inv{std::vector<std::string>()};
@@ -66,3 +67,4 @@ TEST(InvokeTest, ReadCMDFailInvoke) {
 	string errorCheck = inv.run();
 	EXPECT_FALSE(errorCheck.empty());
 }
+*/

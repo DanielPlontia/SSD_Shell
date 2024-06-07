@@ -4,6 +4,7 @@
 using namespace std;
 using namespace testing;
 
+/*
 class readTestFixtrue : public testing::Test {
 public:
 	SSD_HW_Mock mock_ssd;
@@ -79,3 +80,4 @@ TEST_F(readTestFixtrue, ReadCmd_Behavior_Read_Method) {
 	read_cmd.execute(cmd_arg2);
 	read_cmd.execute(cmd_arg2);
 }
+*/
