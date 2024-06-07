@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
     SddDataReader datareader;
     TestShell shell{ &ssdExe, &datareader };
 
-    if (argc > 1) {
+    if (argc == 2) {
 		ifstream fin;
 		fin.open(argv[1]);
 
@@ -16,10 +16,25 @@ int main(int argc, char* argv[])
 		while (!fin.eof())
 		{
 			getline(fin, line);
-            if (line == "") {
+
+			istringstream ss(line);
+			string subs1;
+            vector<string> testScenario;
+
+			while (getline(ss, subs1, ' ')) {
+				testScenario.push_back(subs1);
+			}
+
+            if (testScenario.empty())
+            {
                 cout << "please check file : " << argv[1] << endl;
                 return 0;
             }
+            if (testScenario.size() > 1) {
+                cout << "please check Scenario CMD : " << testScenario[0] << endl;
+                return 0;
+            }
+
             try {
                 cout << line << " ... ";
                 if (shell.TestExecute(line) == true) {
