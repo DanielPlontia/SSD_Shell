@@ -1,30 +1,7 @@
 ﻿#include <iostream>
 #include "ssdTestShell.cpp"
 #include "ssdExecutor.cpp"
-
-bool is_valid_check_of_scenario_list(std::vector<std::string>& testScenario)
-{
-    if (testScenario.empty())
-    {
-        cout << "please check scenario list file\n";
-        return false;
-    }
-    if (testScenario.size() > 1) {
-        cout << "please check Scenario CMD : " << testScenario[0] << endl;
-        return false;
-    }
-
-    // TestShell 내부 CMD 수행 불가
-    if (testScenario[0] == "fullread") return false;
-    if (testScenario[0] == "fullwrite") return false;
-    if (testScenario[0] == "read") return false;
-    if (testScenario[0] == "write") return false;
-    if (testScenario[0] == "erase") return false;
-    if (testScenario[0] == "flush") return false;
-    if (testScenario[0] == "help") return false;
-    if (testScenario[0] == "exit") return false;
-    return true;
-}
+#include "TestShell.h"
 
 int main(int argc, char* argv[])
 {
@@ -32,7 +9,7 @@ int main(int argc, char* argv[])
     SddDataReader datareader;
     TestShell shell{ &ssdExe, &datareader };
 
-    if (argc == 2) {
+    if (isRunnerMode(argc)) {
 		ifstream fin;
 		fin.open(argv[1]);
 
@@ -80,4 +57,26 @@ int main(int argc, char* argv[])
         }
     }
     return 0;
+}
+
+bool isRunnerMode(int argc)
+{
+    return argc == 2;
+}
+
+bool is_valid_check_of_scenario_list(std::vector<std::string>& testScenario)
+{
+    if (testScenario.empty()) {
+        cout << "please check scenario list file\n";
+        return false;
+    }
+    if (testScenario.size() > 1) {
+        cout << "please check Scenario CMD : " << testScenario[0] << endl;
+        return false;
+    }
+
+    // TestShell 내부 CMD 수행 불가
+	std::string cmd[] = {"fullread", "fullwrite", "read", "write", "erase", "flush", "help", "exit"};
+	if (std::find(std::begin(cmd), std::end(cmd), testScenario[0]) != std::end(cmd)) return false;
+	return true;
 }

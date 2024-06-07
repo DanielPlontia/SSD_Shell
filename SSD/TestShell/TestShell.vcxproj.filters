@@ -29,5 +29,8 @@
     <ClInclude Include="exeRunner.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="TestShell.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
