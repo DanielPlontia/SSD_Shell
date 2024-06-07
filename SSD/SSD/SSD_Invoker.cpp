@@ -12,6 +12,7 @@
 #include "SSD_WriteBuffer.cpp"
 #include "read.cpp"
 #include "write.cpp"
+#include "erase.cpp"
 
 using std::vector;
 using std::string;
@@ -69,6 +70,9 @@ private:
 		}
 		if (userCmd[0] == "W") {
 			return std::make_shared<WriteCmd>(SSD_Instance.get(), write_buffer.get());
+		}
+		if (userCmd[0] == "E") {
+			return std::make_shared<EraseCmd>(SSD_Instance.get(), &write_buffer);
 		}
 		return nullptr;
 	}
