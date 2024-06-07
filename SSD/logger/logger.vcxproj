@@ -149,7 +149,10 @@
     <ClCompile Include="Logger.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LogFileManager.h" />
+    <ClInclude Include="LogFormatter.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="SharedMutex.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

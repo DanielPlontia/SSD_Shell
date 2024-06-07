@@ -1,20 +1,16 @@
 #include "Logger.h"
 
+Logger _log;
+void WriteLog(const std::string& funcName, const std::string& msg) {
+    _log.writelog(funcName, msg);
+}
 
-
-
-void Logger::findLogFiles(const std::filesystem::path & directory) {
-    for (const auto& entry : std::filesystem::directory_iterator(directory)) {
-        if (!entry.is_directory()) {
-            if (entry.path().has_extension() && entry.path().extension() == ".log") {
-                existFileList.push_back(entry.path());
-            }
-        }
-    }
+Logger::Logger()
+{
+    fileMutex = std::make_shared<SharedMutex>("loggerMTX");
 }
 
 void Logger::writelog(const std::string& funcName, const std::string& msg) {
-
     auto now = std::chrono::system_clock::now();
     std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
 
@@ -26,11 +22,9 @@ void Logger::writelog(const std::string& funcName, const std::string& msg) {
     char buffer[20];
     std::strftime(buffer, sizeof(buffer), "[%y.%m.%d %H:%M]", &localTime);
 
-    std::string formated_str = std::format("{} {:30}: {}", buffer, split(funcName, "::").c_str(), msg.c_str());
+    std::string formated_str = std::format("{} {:30}: {}\n", buffer, split(funcName, "::").c_str(), msg.c_str());
 
-    std::cout << formated_str << std::endl;
-
-    std::lock_guard<std::mutex> lock(fileMutex);
+    std::lock_guard<SharedMutex> lock(*fileMutex.get());
 
     if (!std::filesystem::exists(log_file)) {
         std::filesystem::create_directory(log_file.parent_path());
@@ -55,21 +49,16 @@ void Logger::writelog(const std::string& funcName, const std::string& msg) {
             }
         }
 
-
-
         std::filesystem::rename(log_file, newfile_fullname);
     }
 
     std::ofstream file(log_file, std::ios::app);
     if (file.is_open()) {
+        std::cout << msg << std::endl;
         file.write(formated_str.c_str(), formated_str.length());
         file.close();
     }
 }
-
-
-
-
 
 std::string Logger::split(std::string_view str, std::string_view delim) {
     auto view{ str
@@ -82,7 +71,12 @@ std::string Logger::split(std::string_view str, std::string_view delim) {
     return strings[1] + "()";
 }
 
-Logger _log;
-void WriteLog(const std::string& funcName, const std::string& msg) {
-    _log.writelog(funcName, msg);
+void Logger::findLogFiles(const std::filesystem::path& directory) {
+    for (const auto& entry : std::filesystem::directory_iterator(directory)) {
+        if (!entry.is_directory()) {
+            if (entry.path().has_extension() && entry.path().extension() == ".log") {
+                existFileList.push_back(entry.path());
+            }
+        }
+    }
 }
