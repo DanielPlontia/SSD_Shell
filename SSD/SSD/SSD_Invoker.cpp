@@ -22,7 +22,6 @@ public:
 	{
 		userCmd = userCommand;
 		command_Instance = std::move(getCmdInstance());
-		write_buffer->setSSD(SSD_Instance);
 	}
 
 	string run()

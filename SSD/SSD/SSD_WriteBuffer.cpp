@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include "SSD_HW.h"
+#include "MySSD.cpp"
 
 class SSD_WriteBuffer {
 	friend std::unique_ptr<SSD_WriteBuffer> std::make_unique<SSD_WriteBuffer>();
@@ -53,15 +54,12 @@ public:
 		commands.clear();
 	}
 
-	void setSSD(std::shared_ptr<SSD_HW> ssd) {
-		ssd_hw = std::move(ssd);
-	}
-
 private:
 	SSD_WriteBuffer()
 	{
 		buffer_file_ = "./buffer.txt";
 		result_file_ = "./result.txt";
+		ssd_hw = std::make_shared<MySSD>();
 
 		load_buffer_data();
 	}
