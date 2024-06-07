@@ -2,11 +2,39 @@
 #include "ssdTestShell.cpp"
 #include "ssdExecutor.cpp"
 
-int main()
+int main(int argc, char* argv[])
 {
     ssdExecutor ssdExe;
     SddDataReader datareader;
     TestShell shell{ &ssdExe, &datareader };
+
+    if (argc > 1) {
+		ifstream fin;
+		fin.open(argv[1]);
+
+		string line;
+		while (!fin.eof())
+		{
+			getline(fin, line);
+            if (line == "") {
+                cout << "please check file : " << argv[1] << endl;
+                return 0;
+            }
+            try {
+                cout << line << " ... ";
+                if (shell.TestExecute(line) == true) {
+					cout << "Pass" << endl;
+                    break;
+                }
+                cout << "Pass" << endl;
+            }
+            catch (std::exception& e) {
+                cout << "FAIL!!" << endl;
+                break;
+            }
+		}
+        return 0;
+    }
 
     while (1) {
         char userInput[100];
