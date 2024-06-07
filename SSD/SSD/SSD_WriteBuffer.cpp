@@ -23,7 +23,6 @@ public:
 	}
 
 	void read(int addr) {
-		// TODO command를 거꾸로 돌면서 해당하는 게 있는지.
 		std::string command = check_fast_read(addr);
 		if (commands.empty() || command.empty()) {
 			ssd_hw->read(addr);
