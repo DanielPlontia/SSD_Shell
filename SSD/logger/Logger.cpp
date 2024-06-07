@@ -1,5 +1,6 @@
 #include "Logger.h"
 
+
 Logger _log;
 void WriteLog(const std::string& funcName, const std::string& msg) {
     _log.writelog(funcName, msg);
@@ -11,18 +12,20 @@ Logger::Logger()
 }
 
 void Logger::writelog(const std::string& funcName, const std::string& msg) {
-    auto now = std::chrono::system_clock::now();
-    std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
+    //auto now = std::chrono::system_clock::now();
+    //std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
 
-    // localtime을 사용하여 tm 구조체로 시간 변환
-    struct std::tm localTime;
-    localtime_s(&localTime, &currentTime);
+    //// localtime을 사용하여 tm 구조체로 시간 변환
+    //struct std::tm localTime;
+    //localtime_s(&localTime, &currentTime);
 
-    // 시간 형식을 변경하여 출력
-    char buffer[20];
-    std::strftime(buffer, sizeof(buffer), "[%y.%m.%d %H:%M]", &localTime);
+    //// 시간 형식을 변경하여 출력
+    //char buffer[20];
+    //std::strftime(buffer, sizeof(buffer), "[%y.%m.%d %H:%M]", &localTime);
 
-    std::string formated_str = std::format("{} {:30}: {}\n", buffer, split(funcName, "::").c_str(), msg.c_str());
+    //std::string formated_str = std::format("{} {:30}: {}\n", buffer, split(funcName, "::").c_str(), msg.c_str());
+
+    std::string formated_str = LogFormatter::get_log_formatted(funcName, msg);
 
     std::lock_guard<SharedMutex> lock(*fileMutex.get());
 
@@ -31,8 +34,9 @@ void Logger::writelog(const std::string& funcName, const std::string& msg) {
     }
     else if (std::filesystem::file_size(log_file) > 10 * 1024) //10kb 넘을떄
     {
-        char newFileName[100];
-        std::strftime(newFileName, sizeof(newFileName), "until_%y%m%d_%Hh_%Mm_%Ss.log", &localTime);
+        //char newFileName[100];
+        std::string newFileName = LogFormatter::get_formatted_time("until_%y%m%d_%Hh_%Mm_%Ss.log");
+        //std::strftime(newFileName, sizeof(newFileName), form.c_str(), &(LogFormatter::get_cur_time()));
         std::filesystem::path newfile_fullname = log_file.parent_path() / std::string(newFileName);
 
         existFileList.clear();

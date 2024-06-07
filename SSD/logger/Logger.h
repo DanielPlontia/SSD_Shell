@@ -11,6 +11,7 @@
 #include <mutex>
 #include <filesystem>
 #include "SharedMutex.h"
+#include "LogFormatter.h"
 
 #ifdef LOGGER_EXPORTS
 #define LOGGER_DECLSPEC __declspec(dllexport)

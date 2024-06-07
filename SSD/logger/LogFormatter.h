@@ -4,11 +4,15 @@
 #include <chrono>
 #include <ctime>
 #include <format>
+#include <ranges>
+
 
 class LogFormatter {
 public:
-	std::string get_log_formatted(const std::string& funcName, const std::string& msg);
+	static std::string get_log_formatted(const std::string& funcName, const std::string& msg);
+	static std::string get_formatted_time(const std::string& format);
+
 private:
-	std::string get_cur_time();
-	std::string get_split_funcNmae(const std::string& funcName);
+	static std::tm get_cur_time();
+	static std::string get_split_funcName(const std::string& funcName, std::string_view delim="::");
 };
