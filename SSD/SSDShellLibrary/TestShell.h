@@ -18,9 +18,9 @@ class TestShell {
 public:
     TestShell(exeRunner* exe, dataReader* reader);
     bool TestExecute(std::string inputData);
+    std::unordered_map<std::string, test_func> test_func_map;
 
 private:
-    std::unordered_map<std::string, test_func> test_func_map;
     std::vector<std::string> readedData;
     exeRunner* myExecuter;
     dataReader* fileReader;
