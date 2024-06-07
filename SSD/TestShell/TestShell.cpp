@@ -10,35 +10,7 @@ int main(int argc, char* argv[])
     TestShell shell{ &ssdExe, &datareader };
 
     if (isRunnerMode(argc)) {
-		ifstream fin;
-		fin.open(argv[1]);
-
-		string line;
-		while (!fin.eof())
-		{
-			getline(fin, line);
-
-			istringstream ss(line);
-			string subs1;
-            vector<string> testScenario;
-
-			while (getline(ss, subs1, ' ')) {
-				testScenario.push_back(subs1);
-			}
-
-            if(is_valid_check_of_scenario_list(testScenario) == false) return 0;
-
-            try {
-                cout << line << " ... ";
-                shell.TestExecute(line);
-                cout << "Pass" << endl;
-            }
-            catch (std::exception& e) {
-                cout << "FAIL!!" << endl;
-                break;
-            }
-		}
-        return 0;
+        return RunnerMode(argv, shell);
     }
 
     while (1) {
@@ -57,6 +29,45 @@ int main(int argc, char* argv[])
         }
     }
     return 0;
+}
+
+int RunnerMode(char* argv[], TestShell& shell)
+{
+    ifstream fin;
+    fin.open(argv[1]);
+
+    string line;
+    while (!fin.eof())
+    {
+        getline(fin, line);
+
+        vector<string> testScenario = split_test_scenario(line);
+
+        if (is_valid_check_of_scenario_list(testScenario) == false) return 0;
+
+        try {
+            cout << line << " ... ";
+            shell.TestExecute(line);
+            cout << "Pass" << endl;
+        }
+        catch (std::exception& e) {
+            cout << "FAIL!!" << endl;
+            break;
+        }
+    }
+    return 0;
+}
+
+std::vector<std::string> split_test_scenario(std::string& line)
+{
+    vector<string> testScenario;
+    istringstream ss(line);
+    string subs1;
+
+    while (getline(ss, subs1, ' ')) {
+        testScenario.push_back(subs1);
+    }
+    return testScenario;
 }
 
 bool isRunnerMode(int argc)
