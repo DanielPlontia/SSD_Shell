@@ -2,6 +2,30 @@
 #include "ssdTestShell.cpp"
 #include "ssdExecutor.cpp"
 
+bool is_valid_check_of_scenario_list(std::vector<std::string>& testScenario)
+{
+    if (testScenario.empty())
+    {
+        cout << "please check scenario list file\n";
+        return false;
+    }
+    if (testScenario.size() > 1) {
+        cout << "please check Scenario CMD : " << testScenario[0] << endl;
+        return false;
+    }
+
+    // TestShell 내부 CMD 수행 불가
+    if (testScenario[0] == "fullread") return false;
+    if (testScenario[0] == "fullwrite") return false;
+    if (testScenario[0] == "read") return false;
+    if (testScenario[0] == "write") return false;
+    if (testScenario[0] == "erase") return false;
+    if (testScenario[0] == "flush") return false;
+    if (testScenario[0] == "help") return false;
+    if (testScenario[0] == "exit") return false;
+    return true;
+}
+
 int main(int argc, char* argv[])
 {
     ssdExecutor ssdExe;
@@ -25,22 +49,11 @@ int main(int argc, char* argv[])
 				testScenario.push_back(subs1);
 			}
 
-            if (testScenario.empty())
-            {
-                cout << "please check file : " << argv[1] << endl;
-                return 0;
-            }
-            if (testScenario.size() > 1) {
-                cout << "please check Scenario CMD : " << testScenario[0] << endl;
-                return 0;
-            }
+            if(is_valid_check_of_scenario_list(testScenario) == false) return 0;
 
             try {
                 cout << line << " ... ";
-                if (shell.TestExecute(line) == true) {
-					cout << "Pass" << endl;
-                    break;
-                }
+                shell.TestExecute(line);
                 cout << "Pass" << endl;
             }
             catch (std::exception& e) {
