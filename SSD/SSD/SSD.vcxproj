@@ -131,6 +131,7 @@
     <ClCompile Include="MySSD.cpp" />
     <ClCompile Include="read.cpp" />
     <ClCompile Include="SSD_Invoker.cpp" />
+    <ClCompile Include="SSD_WriteBuffer.cpp" />
     <ClCompile Include="write.cpp" />
   </ItemGroup>
   <ItemGroup>

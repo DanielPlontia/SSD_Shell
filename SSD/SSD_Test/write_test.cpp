@@ -6,7 +6,8 @@
 class writeTestFixtrue : public testing::Test {
 public:
 	SSD_HW_Mock mock_ssd;
-	WriteCmd write_cmd{ &mock_ssd };
+	SSD_WriteBuffer& write_buffer = SSD_WriteBuffer::getInstance();
+	WriteCmd write_cmd{ &mock_ssd, &write_buffer };
 };
 
 TEST_F(writeTestFixtrue, WriteCmd_Exception_When_InvalidArg_NotMatch_ArgCount) {
@@ -68,7 +69,8 @@ TEST_F(writeTestFixtrue, WriteCmd_Exception_When_InvalidArg_Data_Format) {
 class ParameterizedTestFixture : public testing::TestWithParam<std::string> {
 public:
 	SSD_HW_Mock mock_ssd;
-	WriteCmd write_cmd{ &mock_ssd };
+	SSD_WriteBuffer& write_buffer = SSD_WriteBuffer::getInstance();
+	WriteCmd write_cmd{ &mock_ssd, &write_buffer };
 };
 INSTANTIATE_TEST_SUITE_P(WriteCmd_NormalTest, ParameterizedTestFixture,
 	testing::Values("0x1234ABCD", "0x234ABCD1", "0x34ABCD12", "0x4ABCD123", "0xABCD1234"));
