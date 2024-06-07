@@ -81,7 +81,6 @@ private:
     }
 
     void do_action() override {
-        ssd_hw->read(LBA);
-        //write_buffer->read(LBA);
+        write_buffer->read(LBA);
     }
 };
