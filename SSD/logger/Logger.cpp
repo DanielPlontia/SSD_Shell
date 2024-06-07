@@ -16,6 +16,14 @@ void Logger::writelog(const std::string& funcName, const std::string& msg) {
     std::string formated_str = std::format("{} {:30}: {}", buffer, split(funcName, "::").c_str(), msg.c_str());
 
     std::cout << formated_str << std::endl;
+
+    std::lock_guard<std::mutex> lock(fileMutex);
+
+    std::ofstream file(log_file, std::ios::app);
+    if (file.is_open()) {
+        file.write(formated_str.c_str(), formated_str.length());
+        file.close();
+    }
 }
 
 std::string Logger::split(std::string_view str, std::string_view delim) {
