@@ -147,14 +147,12 @@
   <ItemGroup>
     <ClInclude Include="DataReader.h" />
     <ClInclude Include="exeRunner.h" />
-    <ClInclude Include="framework.h" />
     <ClInclude Include="ssdExecutor.h" />
     <ClInclude Include="TestShell.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataReader.cpp" />
     <ClCompile Include="ssdExecutor.cpp" />
-    <ClCompile Include="SSDShellLibrary.cpp" />
     <ClCompile Include="TestShell.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
