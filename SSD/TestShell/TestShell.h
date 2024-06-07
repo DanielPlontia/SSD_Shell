@@ -29,12 +29,16 @@ private:
 
     void split_input_data(std::string input);
     void check_validation_user_input(int count);
+    void erase_validation_check(int size, int startLba);
     void repeatReadOperation(int start, int end);
     void repeatWriteOperation(int start, int end, std::string data);
     void make_test_func_map();
 
     void read();
     void write();
+    void erase();
+    void erase_range();
+    void flush();
     void fullRead();
     void fullWrite();
     void showHelp();
