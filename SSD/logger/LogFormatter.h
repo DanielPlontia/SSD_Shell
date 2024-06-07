@@ -6,7 +6,6 @@
 #include <format>
 #include <ranges>
 
-
 class LogFormatter {
 public:
 	static std::string get_log_formatted(const std::string& funcName, const std::string& msg);

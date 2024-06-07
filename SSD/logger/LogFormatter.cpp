@@ -6,9 +6,17 @@ std::string LogFormatter::get_log_formatted(const std::string& funcName, const s
 			get_formatted_time("[%y.%m.%d %H:%M]").c_str(), \
 			get_split_funcName(funcName).c_str(), \
 			msg.c_str());
-
-
 	return formated_str;
+}
+
+std::string LogFormatter::get_formatted_time(const std::string& format)
+{
+    struct std::tm localTime = get_cur_time();
+
+    char formattedTime[20];
+    std::strftime(formattedTime, sizeof(formattedTime), format.c_str(), &localTime);
+
+    return formattedTime;
 }
 
 std::tm LogFormatter::get_cur_time()
@@ -21,17 +29,6 @@ std::tm LogFormatter::get_cur_time()
     localtime_s(&localTime, &currentTime);
 
 	return localTime;
-}
-
-std::string LogFormatter::get_formatted_time(const std::string &format)
-{
-    struct std::tm localTime = get_cur_time();
-
-    char formattedTime[20];
-    std::strftime(formattedTime, sizeof(formattedTime), format.c_str(), &localTime);
-
-
-    return formattedTime;
 }
 
 std::string LogFormatter::get_split_funcName(const std::string& funcName, std::string_view delim)
