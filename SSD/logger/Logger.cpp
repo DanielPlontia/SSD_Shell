@@ -1,5 +1,18 @@
 #include "Logger.h"
 
+
+
+
+void Logger::findLogFiles(const std::filesystem::path & directory) {
+    for (const auto& entry : std::filesystem::directory_iterator(directory)) {
+        if (!entry.is_directory()) {
+            if (entry.path().has_extension() && entry.path().extension() == ".log") {
+                existFileList.push_back(entry.path());
+            }
+        }
+    }
+}
+
 void Logger::writelog(const std::string& funcName, const std::string& msg) {
 
     auto now = std::chrono::system_clock::now();
@@ -28,6 +41,22 @@ void Logger::writelog(const std::string& funcName, const std::string& msg) {
         std::strftime(newFileName, sizeof(newFileName), "until_%y%m%d_%Hh_%Mm_%Ss.log", &localTime);
         std::filesystem::path newfile_fullname = log_file.parent_path() / std::string(newFileName);
 
+        existFileList.clear();
+        findLogFiles(log_file.parent_path());
+        if (existFileList.size() >= 2)
+        {
+            for (auto now : existFileList )
+            {
+                if (now == log_file)
+                    continue;
+
+                std::filesystem::path oldPath = now;
+                std::filesystem::rename(oldPath, now.replace_extension(".zip"));
+            }
+        }
+
+
+
         std::filesystem::rename(log_file, newfile_fullname);
     }
 
@@ -37,6 +66,10 @@ void Logger::writelog(const std::string& funcName, const std::string& msg) {
         file.close();
     }
 }
+
+
+
+
 
 std::string Logger::split(std::string_view str, std::string_view delim) {
     auto view{ str

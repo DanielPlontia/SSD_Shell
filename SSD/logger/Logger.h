@@ -23,6 +23,8 @@ public:
 private:
     std::string split(std::string_view str, std::string_view delim);
 	std::mutex fileMutex;
+	std::vector<std::filesystem::path> existFileList;
+	void findLogFiles(const std::filesystem::path & directory);
 	const std::filesystem::path log_file = "c:\\log\\lastest.log";
 };
 
