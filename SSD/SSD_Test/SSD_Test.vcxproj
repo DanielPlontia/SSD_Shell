@@ -109,6 +109,7 @@
     <ClCompile Include="SDD_Invoker_test.cpp" />
     <ClCompile Include="read_test.cpp" />
     <ClCompile Include="SSD_test.cpp" />
+    <ClCompile Include="SSD_WriteBuffer_test.cpp" />
     <ClCompile Include="write_test.cpp" />
   </ItemGroup>
   <ItemGroup>
