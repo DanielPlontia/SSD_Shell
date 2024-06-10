@@ -11,11 +11,12 @@
 #include "MySSD.cpp"
 
 class SSD_WriteBuffer {
-	friend std::unique_ptr<SSD_WriteBuffer> std::make_unique<SSD_WriteBuffer>();
 public:
-	static std::unique_ptr<SSD_WriteBuffer>& getInstance() {
-		static std::unique_ptr<SSD_WriteBuffer> write_buffer{ std::make_unique<SSD_WriteBuffer>() };
-		return write_buffer;
+	static SSD_WriteBuffer* getInstance() {
+		std::call_once(m_onceFlag, [] {
+			write_buffer.reset(new SSD_WriteBuffer);
+			});
+		return write_buffer.get();
 	}
 
 	~SSD_WriteBuffer() {
@@ -54,6 +55,9 @@ public:
 	}
 
 private:
+	static std::shared_ptr<SSD_WriteBuffer> write_buffer;
+	static std::once_flag m_onceFlag;
+
 	SSD_WriteBuffer()
 	{
 		buffer_file_ = "./buffer.txt";
@@ -82,6 +86,7 @@ private:
 				line += '\n';
 				commands.push_back(line);
 			}
+			file.close();
 		}
 		catch (std::exception& e) {
 			throw e;
@@ -143,7 +148,7 @@ private:
 			int addr = stoi(words.at(1));
 			int value = stoi(words.at(2));
 			if (opcode == "W" && addr == target_addr) return command;
-			if (opcode == "E" && (addr <= target_addr && target_addr <= (addr + value))) return command;
+			if (opcode == "E" && (addr <= target_addr && target_addr < (addr + value))) return command;
 		}
 		return "";
 	}
@@ -165,7 +170,7 @@ private:
 			}
 			else if (opcode == "E") {
 				int size = stoi(words.at(2));
-				for (int a = addr; a <= addr + size; a++) {
+				for (int a = addr; a < addr + size; a++) {
 					ssd_hw->write(addr, 0);
 				}
 			}
