@@ -4,7 +4,7 @@
 #include <windows.h>
 #include <stdexcept>
 #include "libloaderapi.h"
-#include "TestScenarioFactory.h"
+#include "TestScenario.h"
 
 typedef bool (WINAPI* DllFunction)();
 

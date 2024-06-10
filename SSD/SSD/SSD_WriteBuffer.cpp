@@ -1,9 +1,11 @@
 #pragma once
 
+#include <algorithm>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <regex>
+#include <set>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -120,12 +122,66 @@ private:
 		return false;
 	}
 
+	// 역순으로 동일한 address에 access하는 command를 제거
+	// erase는 모든 범위가 포함되어야 삭제 가능
 	void optimize() {
-		auto rit = commands.rbegin();
-		std::string command = *rit;
+		std::vector<std::string> new_commands = {};
+		std::set<unsigned int> addrs = {};
 		for (auto rit = commands.rbegin(); rit != commands.rend(); ++rit) {
+			std::string command = *rit;
+			std::vector<std::string> words = parse_command(command);
+			std::string opcode = words.at(0);
+			int addr = stoi(words.at(1));
+			if (opcode == "W" && addrs.find(addr) == addrs.end()) {
+				addrs.insert(addr);
+				new_commands.push_back(command);
+			}
+			else if (opcode == "E") {
+				int size = stoi(words.at(2));
 
+				// check already existing range
+				bool range_exist = true;
+				for (int a = addr; a < addr + size; a++) {
+					if (addrs.find(a) == addrs.end()) {
+						range_exist = false;
+					}
+				}
+				if (range_exist) continue;
+
+				// check if we can modify start_addr and size
+				int size_left = size;
+				int start_addr = addr;
+				// from start
+				for (int a = addr; a < addr + size; a++) {
+					if (addrs.find(a) != addrs.end()) {
+						size_left--;
+						start_addr++;
+						continue;
+					}
+					break;
+				}
+				// from end
+				for (int a = addr + size - 1; size_left > 0 && a >= addr; a--) {
+					if (addrs.find(a) != addrs.end()) {
+						size_left--;
+						continue;
+					}
+					break;
+				}
+
+				if (size_left != 0) {
+					std::stringstream ss;
+					ss << "E " << start_addr << " " << size_left << std::endl;
+					new_commands.push_back(ss.str());
+
+					for (int a = start_addr; a < start_addr + size_left; a++) {
+						addrs.insert(a);
+					}
+				}
+			}
 		}
+		reverse(new_commands.begin(), new_commands.end());
+		commands = new_commands;
 	}
 
 	void fast_read(std::string command) {
