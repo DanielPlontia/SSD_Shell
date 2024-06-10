@@ -111,6 +111,7 @@ private:
         catch (exception e) {
             throw EraseException();
         }
+        return address;
     }
 
     int get_erase_size(int address, int size) {
