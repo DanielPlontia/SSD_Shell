@@ -44,4 +44,5 @@ private:
     void check_user_input_count(int count);
     void erase_validation_check(int size, int startLba);
     void make_test_func_map();
+    void run_executer(std::string& cmd);
 };

@@ -34,11 +34,21 @@ void TestScenario::run(std::string scenario) {
     }
 
     dll_function = (DllFunction)GetProcAddress(dll_handle, "Run");
-    if (NULL != dll_function)
+    if (NULL == dll_function)
     {
-        dll_function();
+        FreeLibrary(dll_handle); // DLL 언로드
+        return;
     }
  
+    std::string dll_action_err;
+    try {
+        dll_function();
+    }
+    catch (std::exception& e) {
+        dll_action_err = e.what();
+    }
+
     FreeLibrary(dll_handle); // DLL 언로드
+    if (dll_action_err.empty() == false) throw std::exception{ dll_action_err.c_str() };
     return;
 };
