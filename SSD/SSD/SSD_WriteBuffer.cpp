@@ -91,7 +91,7 @@ private:
 			while (std::getline(file, line)) {
 				line += '\n';
 				commands.push_back(line);
-				WRITE_LOG_WITHOUT_CONSOLE("Buffer Laod : " + line);
+				WRITE_LOG_WITHOUT_CONSOLE("Buffer Load : " + line);
 			}
 			file.close();
 		}
