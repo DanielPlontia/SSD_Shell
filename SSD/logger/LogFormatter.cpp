@@ -1,11 +1,12 @@
 #include "LogFormatter.h"
 
-std::string LogFormatter::get_log_formatted(const std::string& funcName, const std::string& msg)
+std::string LogFormatter::get_log_formatted(const std::string& funcName, const std::string& msg, const std::source_location& loc)
 {
-	std::string formated_str = std::format("{} {:30}: {}\n", \
+    std::filesystem::path file_name{ loc.file_name() };
+	std::string formated_str = std::format("{} {:30}: {} \t[{}({})]\n", \
 			get_formatted_time("[%y.%m.%d %H:%M]").c_str(), \
 			get_split_funcName(funcName).c_str(), \
-			msg.c_str());
+			msg.c_str(), file_name.filename().string(), loc.line());
 	return formated_str;
 }
 
@@ -40,5 +41,7 @@ std::string LogFormatter::get_split_funcName(const std::string& funcName, std::s
     }) };
 
     std::vector<std::string> strings{ view.begin(), view.end() };
+
+    if (strings.size() == 1) return strings[0] + "()";
     return strings[1] + "()";
 }

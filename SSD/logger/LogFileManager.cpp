@@ -1,7 +1,7 @@
 #include "LogFileManager.h"
 #include "SharedMutex.h"
 
-LogFileManager::LogFileManager() : log_file{ "c:\\log\\lastest.log" }
+LogFileManager::LogFileManager() : log_file{ "c:\\log\\latest.log" }
 {
     fileMutex = std::make_shared<SharedMutex>("loggerMTX");
 }

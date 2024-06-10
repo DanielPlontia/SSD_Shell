@@ -24,7 +24,7 @@ void TestShell::read() {
     check_validation_user_input(2);
     std::string cmd = "R " + readedData[1];
     if (myExecuter->runner(cmd)) {
-        WriteLog(__FUNCTION__, fileReader->fileRead());
+        WRITE_LOG(fileReader->fileRead());
     }
 }
 

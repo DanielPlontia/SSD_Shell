@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
 	vector<string> command;
 
 	if (argc == 1) {
-		WriteLog("SSD::main", "INVALID ARGUMENTS SIZE");
+		WRITE_LOG("INVALID ARGUMENTS SIZE");
 		return -1;
 	}
 
@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
 	SSD_Invoker invoker{ command };
 	std::string err_msg = invoker.run();
 	if (err_msg.empty() == false) {
-		WriteLog("SSD::main", err_msg);
+		WRITE_LOG(err_msg);
 		return -2;
 	}
 	return 0;

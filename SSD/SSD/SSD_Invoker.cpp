@@ -63,15 +63,19 @@ private:
 			return nullptr;
 
 		if (userCmd[0] == "R") {
+			WRITE_LOG_WITHOUT_CONSOLE("ReadCmd Instance Return"); 
 			return std::make_shared<ReadCmd>();
 		}
 		if (userCmd[0] == "W") {
+			WRITE_LOG_WITHOUT_CONSOLE("WriteCmd Instance Return"); 
 			return std::make_shared<WriteCmd>();
 		}
 		if (userCmd[0] == "E") {
+			WRITE_LOG_WITHOUT_CONSOLE("EraseCmd Instance Return"); 
 			return std::make_shared<EraseCmd>();
 		}
 		if (userCmd[0] == "F") {
+			WRITE_LOG_WITHOUT_CONSOLE("FlushCmd Instance Return"); 
 			return std::make_shared<FlushCmd>();
 		}
 		return nullptr;
