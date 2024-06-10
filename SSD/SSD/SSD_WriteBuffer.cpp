@@ -175,7 +175,7 @@ private:
 			else if (opcode == "E") {
 				int size = stoi(words.at(2));
 				for (int a = addr; a < addr + size; a++) {
-					ssd_hw->write(addr, 0);
+					ssd_hw->write(a, 0);
 				}
 			}
 		}
