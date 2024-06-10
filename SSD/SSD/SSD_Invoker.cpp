@@ -34,20 +34,8 @@ public:
 			try {
 				command_Instance->execute(userCmd);
 			}
-			catch (ReadException& e) {
-				return e.what();
-			}
-			catch (WriteException& e) {
-				return e.what();
-			}
-			catch (EraseException& e) {
-				return e.what();
-			}
-			catch (FlushException& e) {
-				return e.what();
-			}
 			catch (exception& e) {
-				return e.what();
+				return exceptionTypeHandle(e);
 			}
 		}
 
@@ -56,6 +44,23 @@ public:
 private:
 	vector<string> userCmd;
 	std::shared_ptr<Command> command_Instance;
+
+	string exceptionTypeHandle(exception& e)
+	{
+		if (std::is_same<decltype(e), ReadException>::value)
+			return dynamic_cast<ReadException*>(&e)->what();
+
+		if (std::is_same<decltype(e), WriteException>::value)
+			return dynamic_cast<WriteException*>(&e)->what();
+
+		if (std::is_same<decltype(e), EraseException>::value)
+			return dynamic_cast<EraseException*>(&e)->what();
+
+		if (std::is_same<decltype(e), FlushException>::value)
+			return dynamic_cast<FlushException*>(&e)->what();
+
+		return e.what();
+	}
 
 	std::shared_ptr<Command> getCmdInstance()
 	{
