@@ -1,8 +1,9 @@
-#include "TestMode.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include "TestMode.h"
+#include "include_logger.h"
 
 TestMode::TestMode(int argc, char* argv[], TestShell& shell)
     : argc(argc), argv(argv), shell(shell) {}
@@ -23,7 +24,7 @@ bool TestMode::isRunnerMode() {
 int TestMode::runnerMode() {
     std::ifstream fin(argv[1]);
     if (!fin) {
-        std::cerr << "Failed to open scenario list file\n";
+        WriteLog(__FUNCTION__, "Failed to open scenario list file");
         return -1;
     }
 
@@ -36,12 +37,20 @@ int TestMode::runnerMode() {
         }
 
         try {
+            DisableConsole();
+            WriteLog(__FUNCTION__, line + " ... ");
             std::cout << line << " ... ";
             shell.TestExecute(line);
+
+            WriteLog(__FUNCTION__, "Pass");
             std::cout << "Pass" << std::endl;
+
+            EnableConsole();
         }
         catch (const std::exception& e) {
+            WriteLog(__FUNCTION__, "FAIL!! : " + std::string(e.what()));
             std::cout << "FAIL!!" << std::endl;
+            EnableConsole();
             break;
         }
     }
@@ -61,7 +70,7 @@ void TestMode::interactiveMode() {
             }
         }
         catch (const std::exception& e) {
-            std::cerr << e.what() << std::endl;
+            WriteLog(__FUNCTION__, e.what());
         }
     }
 }
@@ -79,11 +88,11 @@ std::vector<std::string> TestMode::splitTestScenario(const std::string& line) {
 
 bool TestMode::isValidScenario(const std::vector<std::string>& testScenario) {
     if (testScenario.empty()) {
-        std::cout << "Please check scenario list file\n";
+        WriteLog(__FUNCTION__, "Please check scenario list file");
         return false;
     }
     if (testScenario.size() > 1) {
-        std::cout << "Please check Scenario CMD: " << testScenario[0] << std::endl;
+        WriteLog(__FUNCTION__, "Please check Scenario CMD: " + testScenario[0]);
         return false;
     }
 
