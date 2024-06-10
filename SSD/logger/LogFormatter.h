@@ -5,10 +5,12 @@
 #include <ctime>
 #include <format>
 #include <ranges>
+#include <filesystem>
+#include <source_location>
 
 class LogFormatter {
 public:
-	static std::string get_log_formatted(const std::string& funcName, const std::string& msg);
+	static std::string get_log_formatted(const std::string& funcName, const std::string& msg, const std::source_location& loc);
 	static std::string get_formatted_time(const std::string& format);
 
 private:

@@ -1,7 +1,7 @@
 #include "Logger.h"
 
-void WriteLog(const std::string& funcName, const std::string& msg) {
-    Logger::getInstance().writelog(funcName, msg);
+void WriteLog(const std::string& funcName, const std::source_location& loc, const std::string& msg, bool console_print) {
+    Logger::getInstance().writelog(funcName, loc, msg, console_print);
 }
 
 void DisableConsole() {
@@ -12,11 +12,11 @@ void EnableConsole() {
     Logger::getInstance().getConfigMng().set_console_print_opt(true);
 }
 
-void Logger::writelog(const std::string& funcName, const std::string& msg) {
-    std::string formated_str = LogFormatter::get_log_formatted(funcName, msg);
+void Logger::writelog(const std::string& funcName, const std::source_location& loc, const std::string& msg, bool console_print) {
+    std::string formated_str = LogFormatter::get_log_formatted(funcName, msg, loc);
     file_mng.WriteFile(formated_str);
 
-    if (cfg_mng.is_enable_console_print_opt() == false) return;
+    if (cfg_mng.is_enable_console_print_opt() == false || console_print == false) return;
     std::cout << msg << std::endl;
 }
 

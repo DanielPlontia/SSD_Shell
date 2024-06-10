@@ -25,7 +25,7 @@ bool TestMode::isRunnerMode() {
 int TestMode::runnerMode() {
     std::ifstream fin(argv[1]);
     if (!fin) {
-        WriteLog(__FUNCTION__, "Failed to open scenario list file");
+        WRITE_LOG("Failed to open scenario list file");
         return -1;
     }
 
@@ -39,7 +39,7 @@ int TestMode::runnerMode() {
 
         try {
             DisableConsole();
-            WriteLog(__FUNCTION__, line + " ... ");
+            WRITE_LOG(line + " ... ");
             std::cout << line << " ... ";
             TestScenario testapp;
             testapp.run("TestApp1");
@@ -48,7 +48,7 @@ int TestMode::runnerMode() {
             EnableConsole();
         }
         catch (const std::exception& e) {
-            WriteLog(__FUNCTION__, "FAIL!! : " + std::string(e.what()));
+            WRITE_LOG("FAIL!! : " + std::string(e.what()));
             std::cout << "FAIL!!" << std::endl;
             EnableConsole();
             break;
@@ -70,7 +70,7 @@ void TestMode::interactiveMode() {
             }
         }
         catch (const std::exception& e) {
-            WriteLog(__FUNCTION__, e.what());
+            WRITE_LOG(e.what());
         }
     }
 }
@@ -88,11 +88,11 @@ std::vector<std::string> TestMode::splitTestScenario(const std::string& line) {
 
 bool TestMode::isValidScenario(const std::vector<std::string>& testScenario) {
     if (testScenario.empty()) {
-        WriteLog(__FUNCTION__, "Please check scenario list file");
+        WRITE_LOG("Please check scenario list file");
         return false;
     }
     if (testScenario.size() > 1) {
-        WriteLog(__FUNCTION__, "Please check Scenario CMD: " + testScenario[0]);
+        WRITE_LOG("Please check Scenario CMD: " + testScenario[0]);
         return false;
     }
 

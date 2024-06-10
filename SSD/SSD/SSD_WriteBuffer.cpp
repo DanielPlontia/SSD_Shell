@@ -9,6 +9,7 @@
 #include <vector>
 #include "SSD_HW.h"
 #include "MySSD.cpp"
+#include "include_logger.h"
 
 class SSD_WriteBuffer {
 public:
@@ -26,6 +27,7 @@ public:
 	void read(int addr) {
 		std::string command = check_fast_read(addr);
 		if (commands.empty() || command.empty()) {
+			WRITE_LOG_WITHOUT_CONSOLE("Can't Fast Read Address : " + std::to_string(addr) + " nand.txt read!!");
 			ssd_hw->read(addr);
 			return;
 		}
@@ -85,6 +87,7 @@ private:
 			while (std::getline(file, line)) {
 				line += '\n';
 				commands.push_back(line);
+				WRITE_LOG_WITHOUT_CONSOLE("Buffer Laod : " + line);
 			}
 			file.close();
 		}
@@ -155,6 +158,7 @@ private:
 
 	unsigned int get_value(std::string command) {
 		std::vector<std::string> words = parse_command(command);
+		WRITE_LOG_WITHOUT_CONSOLE(words.back() + " stoul unsigned int");
 		unsigned int value = std::stoul(words.back(), nullptr, 16);
 		return value;
 	}

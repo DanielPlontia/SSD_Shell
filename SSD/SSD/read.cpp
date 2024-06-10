@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include "Command.h"
 #include "SSD_WriteBuffer.cpp"
+#include "include_logger.h"
 
 using namespace std;
 
@@ -26,7 +27,7 @@ public:
         if (check_validation() == false) {
             throw ReadException();
         }
-
+        WRITE_LOG_WITHOUT_CONSOLE("Read Command Validation Pass");
         LBA = stoi(operation[1]);
 
         do_action();
@@ -79,6 +80,7 @@ private:
     }
 
     void do_action() override {
+        WRITE_LOG_WITHOUT_CONSOLE("Try Fast Read");
         write_buffer->read(LBA);
     }
 };
