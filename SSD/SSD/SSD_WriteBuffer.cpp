@@ -118,7 +118,9 @@ private:
 	}
 
 	void optimize() {
+		for (auto rit = commands.rbegin(); rit != commands.rend(); ++rit) {
 
+		}
 	}
 
 	void fast_read(std::string command) {
@@ -150,9 +152,11 @@ private:
 			std::vector<std::string> words = parse_command(command);
 			std::string opcode = words.at(0);
 			int addr = stoi(words.at(1));
-			int value = stoi(words.at(2));
 			if (opcode == "W" && addr == target_addr) return command;
-			if (opcode == "E" && (addr <= target_addr && target_addr < (addr + value))) return command;
+			if (opcode == "E") {
+				int value = stoi(words.at(2));
+				if (addr <= target_addr && target_addr < (addr + value)) return command;
+			}
 		}
 		return "";
 	}
