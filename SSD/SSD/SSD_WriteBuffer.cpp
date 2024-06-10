@@ -46,6 +46,10 @@ public:
 		std::stringstream ss;
 		ss << "E " << addr << " " << size << std::endl;
 		commands.push_back(ss.str());
+
+		if (need_self_flush()) {
+			flush();
+		}
 	}
 
 	void flush() {
