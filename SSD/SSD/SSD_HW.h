@@ -1,6 +1,7 @@
 #pragma once
 #define interface struct
 
+
 interface SSD_HW{
 public:
 	SSD_HW() = default;

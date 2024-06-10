@@ -1,5 +1,5 @@
-#include "ssdExecutor.h"
-#include "TestShell.h"
+#include "../SSDShellLibrary/ssdExecutor.h"
+#include "../SSDShellLibrary/TestShell.h"
 #include "TestScenarioInterface.h"
 
 void TestScenarioInterface::execute() {
