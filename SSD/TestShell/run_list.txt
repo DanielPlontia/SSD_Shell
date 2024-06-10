@@ -1,1 +1,3 @@
 ReadTest
+FullWriteAndRead
+StressTest
