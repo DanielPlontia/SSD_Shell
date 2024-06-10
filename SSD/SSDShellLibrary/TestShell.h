@@ -18,21 +18,18 @@ class TestShell {
 public:
     TestShell(exeRunner* exe, dataReader* reader);
     bool TestExecute(std::string inputData);
-    std::unordered_map<std::string, test_func> test_func_map;
 
 private:
+    std::unordered_map<std::string, test_func> test_func_map;
     std::vector<std::string> readedData;
     exeRunner* myExecuter;
     dataReader* fileReader;
 
     const int TEST_APP2_REPEAT_COUNT = 30;
-
-    void split_input_data(std::string input);
-    void check_validation_user_input(int count);
-    void erase_validation_check(int size, int startLba);
-    void repeatReadOperation(int start, int end);
-    void repeatWriteOperation(int start, int end, std::string data);
-    void make_test_func_map();
+    const int MIN_LBA = 0;
+    const int MAX_LBA = 99;
+    const int MIN_ERASE_SIZE = 1;
+    const int MAX_ERASE_SIZE = 100;
 
     void read();
     void write();
@@ -42,6 +39,9 @@ private:
     void fullRead();
     void fullWrite();
     void showHelp();
-    void testApp1();
-    void testApp2();
+
+    void split_input_data(std::string input);
+    void check_user_input_count(int count);
+    void erase_validation_check(int size, int startLba);
+    void make_test_func_map();
 };

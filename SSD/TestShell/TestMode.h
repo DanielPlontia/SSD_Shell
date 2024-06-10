@@ -16,10 +16,10 @@ private:
     TestShell& shell;
     TestScenario* scenarioExcutor;
 
-    bool isRunnerMode();
     int runnerMode();
-    void interactiveMode();
-    std::vector<std::string> splitTestScenario(const std::string& line);
+    int interactiveMode();
+    bool isRunnerMode();
     bool IsScenarioCommand(const std::vector<std::string>& testScenario);
     bool IsValidScenarioCommand_size(const std::vector<std::string>& testScenario);
+    std::vector<std::string> splitTestScenario(const std::string& line);
 };

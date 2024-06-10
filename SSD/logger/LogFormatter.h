@@ -8,6 +8,8 @@
 #include <filesystem>
 #include <source_location>
 
+#define MAX_LEN 30
+
 class LogFormatter {
 public:
 	static std::string get_log_formatted(const std::string& funcName, const std::string& msg, const std::source_location& loc);

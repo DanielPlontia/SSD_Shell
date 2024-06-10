@@ -19,4 +19,3 @@ ReadTest _app;
 void Run() {
 	_app.execute();
 }
-

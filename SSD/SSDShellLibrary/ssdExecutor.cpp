@@ -4,8 +4,7 @@
 
 bool ssdExecutor::runner(std::string cmd) {
     if (!check_precondition(cmd)) return false;
-	if (check_precondition(cmd) == false) return false;
-	if (execute_exe(cmd) == false) return false;
+	if (!execute_exe(cmd)) return false;
 	return true;
 }
 
