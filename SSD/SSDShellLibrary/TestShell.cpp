@@ -52,6 +52,7 @@ void TestShell::erase() {
         }
         else {
             cmd = "E " + readedData[1] + " " + std::to_string(size);
+            myExecuter->runner(cmd);
             break;
         }
     }
