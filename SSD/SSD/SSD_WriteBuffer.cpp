@@ -58,8 +58,8 @@ public:
 
 	void flush() {
 		optimize();
-		//execute_ssd();
-		//commands.clear();
+		execute_ssd();
+		commands.clear();
 	}
 
 private:
@@ -120,7 +120,7 @@ private:
 
 	bool need_self_flush() {
 		if (commands.size() >= 10) return true;
-		return true;
+		return false;
 	}
 
 	void optimize() {
@@ -192,21 +192,39 @@ private:
 
 	void merge_erase_command() {
 		std::vector<std::string> new_commands = {};
+		std::set< std::set<int> > erase_sets = {};
 		std::set<std::string> erase_commands = {};
 		std::set<unsigned int> addrs = {};
-		for (auto rit = commands.rbegin(); rit != commands.rend(); ++rit) {
-			std::string command = *rit;
+		for (auto it = commands.begin(); it != commands.end(); ++it) {
+			std::string command = *it;
 			std::vector<std::string> words = parse_command(command);
 			std::string opcode = words.at(0);
 			int addr = stoi(words.at(1));
 			if (opcode == "W") {
 				new_commands.push_back(command);
 			}
-			if (opcode == "E") {
+			else if (opcode == "E") {
 				int size = stoi(words.at(2));
-				int size_added = 0;
 
+				// check subset
+				std::set<int> target{};
+				for (int a = addr; a < addr + size; a++) {
+					target.insert(a);
+				}
+
+				bool is_subset = false;
+				for (auto erase_set : erase_sets) {
+					if (std::includes(erase_set.begin(), erase_set.end(), target.begin(), target.end())) {
+						// target is subset of erase_set
+						is_subset = true;
+						break;;
+					}
+				}
+				if (is_subset) continue;
+
+				// check concat
 				// from end
+				int size_added = 0;
 				int start_addr = addr + size;
 				while (1) {
 					if (addrs.find(start_addr + size_added) == addrs.end()) break;
@@ -217,6 +235,12 @@ private:
 					std::stringstream ss;
 					ss << "E " << start_addr << " " << size_added << std::endl;
 					erase_commands.erase(ss.str());
+
+					target.clear();
+					for (int a = start_addr; a < start_addr + size_added; a++) {
+						target.insert(a);
+					}
+					erase_sets.erase(target);
 				}
 
 				// from start
@@ -232,20 +256,28 @@ private:
 					std::stringstream ss;
 					ss << "E " << start_addr << " " << size_added << std::endl;
 					erase_commands.erase(ss.str());
+
+					target.clear();
+					for (int a = start_addr; a < start_addr + size_added; a++) {
+						target.insert(a);
+					}
+					erase_sets.erase(target);
 				}
 
 				std::stringstream ss;
 				ss << "E " << start_addr << " " << size << std::endl;
 				erase_commands.insert(ss.str());
+				target.clear();
 				for (int a = addr; a < addr + size; a++) {
 					addrs.insert(a);
+					target.insert(a);
 				}
+				erase_sets.insert(target);
 			}
 		}
 		for (std::string command : erase_commands) {
-			new_commands.push_back(command);
+			new_commands.insert(new_commands.begin(), command);
 		}
-		reverse(new_commands.begin(), new_commands.end());
 		commands = new_commands;
 	}
 
