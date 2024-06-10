@@ -42,7 +42,9 @@ int TestMode::runnerMode() {
             DisableConsole();
             WRITE_LOG(line + " ... ");
             std::cout << line << " ... ";
-            scenarioExcutor->run(testScenario[0]);
+            scenarioExcutor->run(testScenario[0]);          
+          
+            WRITE_LOG(line + " ... Pass");
             std::cout << "Pass" << std::endl;
 
             EnableConsole();
