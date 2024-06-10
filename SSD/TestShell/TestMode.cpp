@@ -72,7 +72,8 @@ void TestMode::interactiveMode() {
                     throw std::runtime_error("Invalid Command");
                 scenarioExcutor->run(testScenario[0]);
             } else {
-                shell.TestExecute(userInput);
+                if (shell.TestExecute(userInput))
+                    break;
             }
         }
         catch (const std::exception& e) {
