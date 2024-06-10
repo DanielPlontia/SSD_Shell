@@ -7,6 +7,9 @@
 #include "include_logger.h"
 
 using namespace std;
+
+std::shared_ptr<SSD_WriteBuffer> SSD_WriteBuffer::write_buffer = NULL;
+std::once_flag SSD_WriteBuffer::m_onceFlag;
 int main(int argc, char *argv[]) {
 	vector<string> command;
 

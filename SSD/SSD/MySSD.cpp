@@ -47,6 +47,7 @@ private:
 				unsigned int value = std::stoul(line.substr(pos + 1, line.size()), nullptr, 16);
 				nand_data_[index] = value;
 			}
+			file.close();
 		}
 		catch (std::exception& e) {
 			throw e;
