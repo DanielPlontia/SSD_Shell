@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "../TestScenarioInterface/TestScenarioInterface.h"
 #pragma comment (lib, "../x64/Debug/TestScenarioInterface.lib")
 #include <string>
@@ -24,13 +24,13 @@ void TestScenario::run(std::string scenario) {
     std::string dllName = scenario + ".dll";
     HINSTANCE hDLL = LoadLibrary(StringToLPCWSTR(dllName));
     if (hDLL == NULL) {
-        std::cerr << "DLLÀ» ·ÎµåÇÒ ¼ö ¾ø½À´Ï´Ù." << std::endl;
+        std::cerr << "DLLì„ ë¡œë“œí•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤." << std::endl;
         return;
     }
 
     Run();
 
-    // DLL ¾ð·Îµå
+    // DLL ì–¸ë¡œë“œ
     FreeLibrary(hDLL);
 
     return;
