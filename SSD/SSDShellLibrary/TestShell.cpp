@@ -23,15 +23,14 @@ bool TestShell::TestExecute(std::string inputData) {
 void TestShell::read() {
     check_user_input_count(2);
     std::string cmd = "R " + readedData[1];
-    if (myExecuter->runner(cmd)) {
-        WRITE_LOG(fileReader->fileRead());
-    }
+    run_executer(cmd);
+    WRITE_LOG(fileReader->fileRead());
 }
 
 void TestShell::write() {
     check_user_input_count(3);
     std::string cmd = "W " + readedData[1] + " " + readedData[2];
-    myExecuter->runner(cmd);
+    run_executer(cmd);
 }
 
 void TestShell::erase() {
@@ -48,14 +47,14 @@ void TestShell::erase() {
             readedData[2] = std::to_string(10);
             cmd = "E " + readedData[1] + " " + readedData[2];
             size -= 10;
-            myExecuter->runner(cmd);
+            run_executer(cmd);
             startLba = stoi(readedData[1]);
             startLba += 10;
             readedData[1] = std::to_string(startLba);
         }
         else {
             cmd = "E " + readedData[1] + " " + std::to_string(size);
-            myExecuter->runner(cmd);
+            run_executer(cmd);
             break;
         }
     }
@@ -77,14 +76,14 @@ void TestShell::erase_range() {
 void TestShell::flush() {
     check_user_input_count(1);
     std::string cmd = "F";
-    myExecuter->runner(cmd);
+    run_executer(cmd);
 }
 
 void TestShell::fullRead() {
     check_user_input_count(1);
     for (int index = MIN_LBA; index <= MAX_LBA; ++index) {
         std::string cmd = "R " + std::to_string(index);
-        if (!myExecuter->runner(cmd)) return;
+        run_executer(cmd);
         std::cout << fileReader->fileRead() << std::endl;
     }
 }
@@ -93,7 +92,7 @@ void TestShell::fullWrite() {
     check_user_input_count(2);
     for (int index = MIN_LBA; index <= MAX_LBA; ++index) {
         std::string cmd = "W " + std::to_string(index) + " " + readedData[1];
-        if (!myExecuter->runner(cmd)) return;
+        run_executer(cmd);
     }
 }
 
@@ -132,4 +131,12 @@ void TestShell::make_test_func_map() {
     test_func_map.emplace("fullwrite", test_func{ std::bind(&TestShell::fullWrite, this), "SSD 모든 메모리에 값을 적습니다. Data는 0x로 시작하는 4byte Hex string으로 작성해주셔야 합니다.\n사용법 : fullwrite [Data]\n" });
     test_func_map.emplace("help", test_func{ std::bind(&TestShell::showHelp, this), "TestShell에서 사용할 수 있는 Command들에 대한 설명을 확인 할 수 있습니다.\n" });
     test_func_map.emplace("exit", test_func{ nullptr, "실행중인 TestShell을 종료합니다.\n사용법 : exit\n" });
+}
+
+void TestShell::run_executer(std::string& cmd)
+{
+    if (!myExecuter->runner(cmd)) {
+        std::string err_msg = cmd + " command execute fail";
+        throw std::exception{ err_msg.c_str() };
+    }
 }

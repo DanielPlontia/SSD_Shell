@@ -65,14 +65,14 @@ int TestMode::interactiveMode() {
                 if(!IsValidScenarioCommand_size(testScenario))
                     throw std::runtime_error("Invalid Command");
                 scenarioExcutor->run(testScenario[0]);
-            } else {
-                if (shell.TestExecute(userInput))
-                    break;
+            }
+            else if (shell.TestExecute(userInput)) {
+                break;
             }
         }
         catch (const std::exception& e) {
             WRITE_LOG(e.what());
-            return -3;
+            continue;
         }
     }
     return 0;
