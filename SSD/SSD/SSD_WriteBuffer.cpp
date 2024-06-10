@@ -121,6 +121,8 @@ private:
 	}
 
 	void optimize() {
+		auto rit = commands.rbegin();
+		std::string command = *rit;
 		for (auto rit = commands.rbegin(); rit != commands.rend(); ++rit) {
 
 		}
@@ -166,9 +168,14 @@ private:
 
 	unsigned int get_value(std::string command) {
 		std::vector<std::string> words = parse_command(command);
-		WRITE_LOG_WITHOUT_CONSOLE(words.back() + " stoul unsigned int"); 
-		unsigned int value = std::stoul(words.back(), nullptr, 10);
-		return value;
+		std::string opcode = words.at(0);
+		if (opcode == "W") {
+			WRITE_LOG_WITHOUT_CONSOLE(words.back() + " stoul unsigned int");
+			return std::stoul(words.back(), nullptr, 10);
+		}
+		if (opcode == "E") {
+			return 0;
+		}
 	}
 
 	void execute_ssd() {
