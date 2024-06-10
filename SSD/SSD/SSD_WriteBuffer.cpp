@@ -48,6 +48,10 @@ public:
 		std::stringstream ss;
 		ss << "E " << addr << " " << size << std::endl;
 		commands.push_back(ss.str());
+
+		if (need_self_flush()) {
+			flush();
+		}
 	}
 
 	void flush() {
@@ -158,8 +162,8 @@ private:
 
 	unsigned int get_value(std::string command) {
 		std::vector<std::string> words = parse_command(command);
-		WRITE_LOG_WITHOUT_CONSOLE(words.back() + " stoul unsigned int");
-		unsigned int value = std::stoul(words.back(), nullptr, 16);
+		WRITE_LOG_WITHOUT_CONSOLE(words.back() + " stoul unsigned int"); 
+		unsigned int value = std::stoul(words.back(), nullptr, 10);
 		return value;
 	}
 
@@ -169,7 +173,7 @@ private:
 			std::string opcode = words.at(0);
 			int addr = stoi(words.at(1));
 			if (opcode == "W") {
-				unsigned int value = std::stoul(words.at(2), nullptr, 16);
+				unsigned int value = std::stoul(words.at(2), nullptr, 10);
 				ssd_hw->write(addr, value);
 			}
 			else if (opcode == "E") {

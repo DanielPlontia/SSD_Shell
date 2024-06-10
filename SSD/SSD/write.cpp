@@ -14,9 +14,6 @@ public:
 class WriteCmd : public Command {
 	// Command을(를) 통해 상속됨
 public:
-	WriteCmd(SSD_WriteBuffer* _write_buffer)
-		: write_buffer(_write_buffer) {};
-
 	void execute(const std::vector<std::string>& operation) override
 	{
 		cmd_arg = operation;
@@ -29,8 +26,8 @@ public:
 private:
 	const int MIN_ADDR_NUM = 0;
 	const int MAX_ADDR_NUM = 99;
-	SSD_WriteBuffer* write_buffer;
 	std::vector<std::string> cmd_arg;
+	SSD_WriteBuffer* write_buffer = SSD_WriteBuffer::getInstance();
 
 	int write_address = -1;
 	unsigned int write_data = 0;
