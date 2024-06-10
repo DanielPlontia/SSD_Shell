@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include "TestScenarioFactory.h"
 
 TestMode::TestMode(int argc, char* argv[], TestShell& shell)
     : argc(argc), argv(argv), shell(shell) {}
@@ -37,7 +38,8 @@ int TestMode::runnerMode() {
 
         try {
             std::cout << line << " ... ";
-            shell.TestExecute(line);
+            TestScenario testapp;
+            testapp.run("TestApp1");
             std::cout << "Pass" << std::endl;
         }
         catch (const std::exception& e) {
