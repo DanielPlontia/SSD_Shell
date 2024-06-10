@@ -27,8 +27,8 @@ public:
             throw EraseException();
         }
 
-        LBA = stoi(operation[1]);
-        SIZE = resize_in_range(LBA, stoi(operation[2]));
+        LBA = get_address(operation[1]);
+        SIZE = get_erase_size(LBA, stoi(operation[2]));
 
         do_action();
     }
@@ -103,10 +103,20 @@ private:
         return true;
     }
 
-    int resize_in_range(int address, int size) {
+    int get_address(string oper) {
+        int address = 0;
+        try {
+            address = stoi(oper);
+        }
+        catch (exception e) {
+            throw EraseException();
+        }
+    }
+
+    int get_erase_size(int address, int size) {
         int resize = size;
         if (address + size - 1 > max_address_num) {
-            resize = size - (address + size - max_address_num -1);
+            resize = size - (address + size - max_address_num - 1);
         }
         return resize;
     }

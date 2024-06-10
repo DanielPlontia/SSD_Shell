@@ -4,6 +4,7 @@
 #include <algorithm>
 #include "TestMode.h"
 #include "include_logger.h"
+#include "TestScenarioFactory.h"
 
 TestMode::TestMode(int argc, char* argv[], TestShell& shell)
     : argc(argc), argv(argv), shell(shell) {}
@@ -40,9 +41,8 @@ int TestMode::runnerMode() {
             DisableConsole();
             WriteLog(__FUNCTION__, line + " ... ");
             std::cout << line << " ... ";
-            shell.TestExecute(line);
-
-            WriteLog(__FUNCTION__, "Pass");
+            TestScenario testapp;
+            testapp.run("TestApp1");
             std::cout << "Pass" << std::endl;
 
             EnableConsole();
