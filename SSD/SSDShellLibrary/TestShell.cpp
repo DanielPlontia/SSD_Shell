@@ -16,25 +16,28 @@ bool TestShell::TestExecute(std::string inputData) {
     if (test_func_map.find(readedData[0]) == test_func_map.end()) {
         throw std::runtime_error("Invalid Command");
     }
-    test_func_map[readedData[0]].function();
+    bool a = test_func_map[readedData[0]].function();
     return false;
 }
 
-void TestShell::read() {
+bool TestShell::read() {
     check_validation_user_input(2);
     std::string cmd = "R " + readedData[1];
-    if (myExecuter->runner(cmd)) {
+    bool state = myExecuter->runner(cmd);
+    if (state) {
         WRITE_LOG(fileReader->fileRead());
     }
+
+    return state;
 }
 
-void TestShell::write() {
+bool TestShell::write() {
     check_validation_user_input(3);
     std::string cmd = "W " + readedData[1] + " " + readedData[2];
-    myExecuter->runner(cmd);
+    return myExecuter->runner(cmd);
 }
 
-void TestShell::erase() {
+bool TestShell::erase() {
     check_validation_user_input(3);
 
     int startLba = stoi(readedData[1]);
@@ -59,10 +62,12 @@ void TestShell::erase() {
             break;
         }
     }
+
+    return true;
 }
 
 
-void TestShell::erase_range() {
+bool TestShell::erase_range() {
     check_validation_user_input(3);
     int startLba = stoi(readedData[1]);
     int endLba = stoi(readedData[2]);
@@ -72,46 +77,51 @@ void TestShell::erase_range() {
     readedData[2] = std::to_string(endLba - startLba);
 
     erase();
+    return true;
 }
 
-void TestShell::flush() {
+bool TestShell::flush() {
     check_validation_user_input(1);
     std::string cmd = "F";
-    myExecuter->runner(cmd);
+    return myExecuter->runner(cmd);
 }
 
-void TestShell::fullRead() {
+bool TestShell::fullRead() {
     check_validation_user_input(1);
     for (int index = 0; index < 100; ++index) {
         std::string cmd = "R " + std::to_string(index);
-        if (!myExecuter->runner(cmd)) return;
+        if (!myExecuter->runner(cmd)) return false;
         std::cout << fileReader->fileRead() << std::endl;
     }
+    return true;
 }
 
-void TestShell::fullWrite() {
+bool TestShell::fullWrite() {
     check_validation_user_input(2);
     for (int index = 0; index < 100; ++index) {
         std::string cmd = "W " + std::to_string(index) + " " + readedData[1];
-        if (!myExecuter->runner(cmd)) return;
+        if (!myExecuter->runner(cmd)) return false;
     }
+    return true;
 }
 
-void TestShell::showHelp() {
+bool TestShell::showHelp() {
     for (const auto& tf : test_func_map) {
         std::cout << tf.first << " : " << tf.second.description << std::endl;
     }
+    return true;
 }
 
-void TestShell::testApp1() {
+bool TestShell::testApp1() {
     check_validation_user_input(1);
     readedData = {"fullwrite", "0x12345678"};
     fullWrite();
     readedData = {"fullread"};
     fullRead();
+    return true;
 }
 
-void TestShell::testApp2() {
+bool TestShell::testApp2() {
     check_validation_user_input(1);
     int startLba = 0;
     int endLba = 5;
@@ -122,6 +132,7 @@ void TestShell::testApp2() {
     }
     repeatWriteOperation(startLba, endLba, "0x12345678");
     repeatReadOperation(startLba, endLba);
+    return true;
 }
 
 void TestShell::split_input_data(std::string input) {

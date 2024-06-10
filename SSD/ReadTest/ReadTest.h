@@ -9,9 +9,9 @@
 
 class ReadTest : public TestScenarioInterface {
 public:
-	void execute();
+	bool execute();
 };
 
 extern "C" {
-	READTEST_DECLSPEC void Run();
+	READTEST_DECLSPEC bool Run();
 }

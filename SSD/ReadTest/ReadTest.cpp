@@ -8,15 +8,21 @@
 #pragma comment (lib, "../x64/Release/SSDShellLibrary.lib")
 #endif // _DEBUG
 
-void ReadTest::execute() {
+bool ReadTest::execute() {
 	ssdExecutor ssdExe;
 	SddDataReader datareader;
 	TestShell shell{ &ssdExe, &datareader };
-	shell.TestExecute("read 3 ");
+	try {
+		return shell.TestExecute("read 100 ");
+	}
+	catch (std::exception e)
+	{
+		return false;
+	}
 };
 
 ReadTest _app;
-void Run() {
-	_app.execute();
+bool Run() {
+	return _app.execute();
 }
 

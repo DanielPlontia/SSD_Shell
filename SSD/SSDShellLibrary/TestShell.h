@@ -9,8 +9,8 @@
 
 struct test_func {
     test_func() = default;
-    test_func(std::function<void()> _func, const char* _desc) : function{ _func }, description{ _desc } {}
-    std::function<void()> function;
+    test_func(std::function<bool()> _func, const char* _desc) : function{ _func }, description{ _desc } {}
+    std::function<bool()> function;
     std::string description;
 };
 
@@ -34,14 +34,14 @@ private:
     void repeatWriteOperation(int start, int end, std::string data);
     void make_test_func_map();
 
-    void read();
-    void write();
-    void erase();
-    void erase_range();
-    void flush();
-    void fullRead();
-    void fullWrite();
-    void showHelp();
-    void testApp1();
-    void testApp2();
+    bool read();
+    bool write();
+    bool erase();
+    bool erase_range();
+    bool flush();
+    bool fullRead();
+    bool fullWrite();
+    bool showHelp();
+    bool testApp1();
+    bool testApp2();
 };
