@@ -18,5 +18,6 @@ private:
     int runnerMode();
     void interactiveMode();
     std::vector<std::string> splitTestScenario(const std::string& line);
-    bool isValidScenario(const std::vector<std::string>& testScenario);
+    bool IsScenarioCommand(const std::vector<std::string>& testScenario);
+    bool IsValidScenarioCommand(const std::vector<std::string>& testScenario);
 };

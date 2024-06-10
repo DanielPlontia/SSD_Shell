@@ -21,7 +21,7 @@
     <ClCompile Include="TestMode.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="TestScenarioFactory.cpp">
+    <ClCompile Include="TestScenario.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,7 +29,7 @@
     <ClInclude Include="TestMode.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="TestScenarioFactory.h">
+    <ClInclude Include="TestScenario.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="include_logger.h">

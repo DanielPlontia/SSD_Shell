@@ -4,7 +4,7 @@
 #include <algorithm>
 #include "TestMode.h"
 #include "include_logger.h"
-#include "TestScenarioFactory.h"
+#include "TestScenario.h"
 
 TestMode::TestMode(int argc, char* argv[], TestShell& shell)
     : argc(argc), argv(argv), shell(shell) {}
@@ -33,7 +33,7 @@ int TestMode::runnerMode() {
     while (std::getline(fin, line)) {
         std::vector<std::string> testScenario = splitTestScenario(line);
 
-        if (!isValidScenario(testScenario)) {
+        if (!IsScenarioCommand(testScenario) || !IsValidScenarioCommand(testScenario)) {
             return 0;
         }
 
@@ -64,9 +64,16 @@ void TestMode::interactiveMode() {
         if (std::string(userInput).empty())
             continue;
 
+        std::vector<std::string> testScenario = splitTestScenario(userInput);
+
         try {
-            if (shell.TestExecute(userInput)) {
-                break;
+            if (IsScenarioCommand(testScenario)) {
+                if(!IsValidScenarioCommand(testScenario))
+                    throw std::runtime_error("Invalid Command");
+                TestScenario testapp;
+                testapp.run(testScenario[0]);
+            } else {
+                shell.TestExecute(userInput);
             }
         }
         catch (const std::exception& e) {
@@ -86,13 +93,9 @@ std::vector<std::string> TestMode::splitTestScenario(const std::string& line) {
     return testScenario;
 }
 
-bool TestMode::isValidScenario(const std::vector<std::string>& testScenario) {
+bool TestMode::IsScenarioCommand(const std::vector<std::string>& testScenario) {
     if (testScenario.empty()) {
         WRITE_LOG("Please check scenario list file");
-        return false;
-    }
-    if (testScenario.size() > 1) {
-        WRITE_LOG("Please check Scenario CMD: " + testScenario[0]);
         return false;
     }
 
@@ -101,4 +104,11 @@ bool TestMode::isValidScenario(const std::vector<std::string>& testScenario) {
         return false;
     }
     return true;
+}
+
+bool TestMode::IsValidScenarioCommand(const std::vector<std::string>& testScenario) {
+    if (testScenario.size() > 1) {
+        WRITE_LOG("Please check Scenario CMD: " + testScenario[0]);
+        return false;
+    }
 }
