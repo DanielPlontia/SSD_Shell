@@ -140,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Command.h" />
+    <ClInclude Include="include_logger.h" />
     <ClInclude Include="SSD_HW.h" />
   </ItemGroup>
   <ItemGroup>
