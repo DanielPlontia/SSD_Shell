@@ -176,6 +176,8 @@ private:
 		if (opcode == "E") {
 			return 0;
 		}
+		WRITE_LOG_WITHOUT_CONSOLE("Unreachable");
+		return 0;
 	}
 
 	void execute_ssd() {
