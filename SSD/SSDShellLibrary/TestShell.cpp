@@ -49,6 +49,9 @@ void TestShell::erase() {
             cmd = "E " + readedData[1] + " " + readedData[2];
             size -= 10;
             myExecuter->runner(cmd);
+            startLba = stoi(readedData[1]);
+            startLba += 10;
+            readedData[1] = std::to_string(startLba);
         }
         else {
             cmd = "E " + readedData[1] + " " + std::to_string(size);

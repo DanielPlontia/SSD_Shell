@@ -89,7 +89,8 @@ private:
 
 			std::string line;
 			while (std::getline(file, line)) {
-				WRITE_LOG_WITHOUT_CONSOLE("Buffer Laod : " + line);
+				if (line == "") continue;
+				WRITE_LOG_WITHOUT_CONSOLE("Buffer Load : " + line);
 				line += '\n';
 				commands.push_back(line);
 			}
