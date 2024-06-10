@@ -93,7 +93,7 @@ void TestShell::fullWrite() {
     check_validation_user_input(2);
     for (int index = 0; index < 100; ++index) {
         std::string cmd = "W " + std::to_string(index) + " " + readedData[1];
-        myExecuter->runner(cmd);
+        if (!myExecuter->runner(cmd)) return;
     }
 }
 
