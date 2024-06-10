@@ -17,9 +17,6 @@ public:
 
 class ReadCmd : public Command {
 public:
-    ReadCmd(SSD_WriteBuffer* _write_buffer)
-        : write_buffer(_write_buffer) {};
-
     void execute(const vector<string>& operation) override {
         cmd_args = operation;
 
@@ -37,7 +34,7 @@ private:
     const int min_num = 0;
     int LBA = 0;
     vector<string> cmd_args;
-    SSD_WriteBuffer* write_buffer;
+    SSD_WriteBuffer* write_buffer = SSD_WriteBuffer::getInstance();
 
     bool check_validation() override {
         if (is_valid_args() == false) return false;

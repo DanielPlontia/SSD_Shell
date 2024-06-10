@@ -54,7 +54,6 @@ public:
 		return string();
 	}
 private:
-	SSD_WriteBuffer* write_buffer = SSD_WriteBuffer::getInstance();
 	vector<string> userCmd;
 	std::shared_ptr<Command> command_Instance;
 
@@ -64,16 +63,16 @@ private:
 			return nullptr;
 
 		if (userCmd[0] == "R") {
-			return std::make_shared<ReadCmd>(write_buffer);
+			return std::make_shared<ReadCmd>();
 		}
 		if (userCmd[0] == "W") {
-			return std::make_shared<WriteCmd>(write_buffer);
+			return std::make_shared<WriteCmd>();
 		}
 		if (userCmd[0] == "E") {
-			return std::make_shared<EraseCmd>(write_buffer);
+			return std::make_shared<EraseCmd>();
 		}
 		if (userCmd[0] == "F") {
-			return std::make_shared<FlushCmd>(write_buffer);
+			return std::make_shared<FlushCmd>();
 		}
 		return nullptr;
 	}
