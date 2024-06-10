@@ -58,8 +58,8 @@ public:
 
 	void flush() {
 		optimize();
-		execute_ssd();
-		commands.clear();
+		//execute_ssd();
+		//commands.clear();
 	}
 
 private:
@@ -120,12 +120,17 @@ private:
 
 	bool need_self_flush() {
 		if (commands.size() >= 10) return true;
-		return false;
+		return true;
+	}
+
+	void optimize() {
+		remove_redundant_command();
+		merge_erase_command();
 	}
 
 	// 역순으로 동일한 address에 access하는 command를 제거
 	// erase는 모든 범위가 포함되어야 삭제 가능
-	void optimize() {
+	void remove_redundant_command() {
 		std::vector<std::string> new_commands = {};
 		std::set<unsigned int> addrs = {};
 		for (auto rit = commands.rbegin(); rit != commands.rend(); ++rit) {
@@ -180,6 +185,65 @@ private:
 					}
 				}
 			}
+		}
+		reverse(new_commands.begin(), new_commands.end());
+		commands = new_commands;
+	}
+
+	void merge_erase_command() {
+		std::vector<std::string> new_commands = {};
+		std::set<std::string> erase_commands = {};
+		std::set<unsigned int> addrs = {};
+		for (auto rit = commands.rbegin(); rit != commands.rend(); ++rit) {
+			std::string command = *rit;
+			std::vector<std::string> words = parse_command(command);
+			std::string opcode = words.at(0);
+			int addr = stoi(words.at(1));
+			if (opcode == "W") {
+				new_commands.push_back(command);
+			}
+			if (opcode == "E") {
+				int size = stoi(words.at(2));
+				int size_added = 0;
+
+				// from end
+				int start_addr = addr + size;
+				while (1) {
+					if (addrs.find(start_addr + size_added) == addrs.end()) break;
+					size_added++;
+				}
+				size += size_added;
+				if (size_added > 0) {
+					std::stringstream ss;
+					ss << "E " << start_addr << " " << size_added << std::endl;
+					erase_commands.erase(ss.str());
+				}
+
+				// from start
+				size_added = 0;
+				start_addr = addr;
+				while (1) {
+					if (addrs.find(start_addr - size_added - 1) == addrs.end()) break;
+					size_added++;
+				}
+				size += size_added;
+				start_addr -= size_added;
+				if (size_added > 0) {
+					std::stringstream ss;
+					ss << "E " << start_addr << " " << size_added << std::endl;
+					erase_commands.erase(ss.str());
+				}
+
+				std::stringstream ss;
+				ss << "E " << start_addr << " " << size << std::endl;
+				erase_commands.insert(ss.str());
+				for (int a = addr; a < addr + size; a++) {
+					addrs.insert(a);
+				}
+			}
+		}
+		for (std::string command : erase_commands) {
+			new_commands.push_back(command);
 		}
 		reverse(new_commands.begin(), new_commands.end());
 		commands = new_commands;
