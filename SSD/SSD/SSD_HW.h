@@ -1,12 +1,6 @@
 #pragma once
 #define interface struct
 
-#ifdef DEBUG
-#pragma comment (lib, "../x64/Debug/logger.lib")
-#else
-#pragma comment (lib, "../x64/Release/logger.lib")
-#endif // DEBUG
-
 
 interface SSD_HW{
 public:
