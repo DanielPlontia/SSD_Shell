@@ -137,12 +137,12 @@
   <ItemGroup>
     <ClCompile Include="TestMode.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="TestScenarioFactory.cpp" />
+    <ClCompile Include="TestScenario.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include_logger.h" />
     <ClInclude Include="TestMode.h" />
-    <ClInclude Include="TestScenarioFactory.h" />
+    <ClInclude Include="TestScenario.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
