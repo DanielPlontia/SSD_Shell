@@ -12,9 +12,6 @@ void ReadTest::execute() {
 	ssdExecutor ssdExe;
 	SddDataReader datareader;
 	TestShell shell{ &ssdExe, &datareader };
-
-	std::cout << "DLL started" << std::endl;
-
 	shell.TestExecute("read 3 ");
 };
 
