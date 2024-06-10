@@ -92,7 +92,6 @@ private:
 			std::string line;
 			while (std::getline(file, line)) {
 				if (line == "") continue;
-				WRITE_LOG_WITHOUT_CONSOLE("Buffer Load : " + line);
 				line += '\n';
 				commands.push_back(line);
 			}
@@ -227,7 +226,6 @@ private:
 		std::vector<std::string> words = parse_command(command);
 		std::string opcode = words.at(0);
 		if (opcode == "W") {
-			WRITE_LOG_WITHOUT_CONSOLE(words.back() + " stoul unsigned int");
 			return std::stoul(words.back(), nullptr, 10);
 		}
 		if (opcode == "E") {

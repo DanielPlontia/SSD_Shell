@@ -166,7 +166,5 @@ void TestShell::make_test_func_map() {
     test_func_map.emplace("fullread", test_func{ std::bind(&TestShell::fullRead, this), "SSD 모든 메모리 값을 읽어 Console에 출력해줍니다.\n사용법 : fullread\n" });
     test_func_map.emplace("fullwrite", test_func{ std::bind(&TestShell::fullWrite, this), "SSD 모든 메모리에 값을 적습니다. Data는 0x로 시작하는 4byte Hex string으로 작성해주셔야 합니다.\n사용법 : fullwrite [Data]\n" });
     test_func_map.emplace("help", test_func{ std::bind(&TestShell::showHelp, this), "TestShell에서 사용할 수 있는 Command들에 대한 설명을 확인 할 수 있습니다.\n" });
-    test_func_map.emplace("testapp1", test_func{ std::bind(&TestShell::testApp1, this), "SSD 전체 메모리에 0x12345678을 작성하고 전체 메모리를 읽어 정상적으로 작성이 됐는지 확인합니다.\n사용법 : testapp1\n" });
-    test_func_map.emplace("testapp2", test_func{ std::bind(&TestShell::testApp2, this), "LBA 0~5에 0xAAAABBBB 30회 Write, 동일 LBA에 0x12345678 Overwrite후 Read하여 정상적으로 작성됐는지 확인합니다\n사용법 : testapp2\n" });
     test_func_map.emplace("exit", test_func{ nullptr, "실행중인 TestShell을 종료합니다.\n사용법 : exit\n" });
 }

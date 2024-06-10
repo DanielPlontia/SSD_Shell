@@ -32,6 +32,7 @@ public:
 		}
 		else {
 			try {
+				execute_cmd_logging();
 				command_Instance->execute(userCmd);
 			}
 			catch (ReadException& e) {
@@ -79,5 +80,13 @@ private:
 			return std::make_shared<FlushCmd>();
 		}
 		return nullptr;
+	}
+	void execute_cmd_logging()
+	{
+		std::string raw_cmd;
+		for (const auto& cmd : userCmd) {
+			raw_cmd += cmd + " ";
+		}
+		WRITE_LOG_WITHOUT_CONSOLE("Execute!! " + raw_cmd);
 	}
 };
