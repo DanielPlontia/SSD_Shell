@@ -114,7 +114,7 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile />
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -134,7 +134,7 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile />
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="DataReader.h" />
     <ClInclude Include="exeRunner.h" />
+    <ClInclude Include="include_logger.h" />
     <ClInclude Include="ssdExecutor.h" />
     <ClInclude Include="TestShell.h" />
   </ItemGroup>

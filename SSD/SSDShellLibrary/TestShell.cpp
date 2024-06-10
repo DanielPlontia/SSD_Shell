@@ -1,8 +1,9 @@
-﻿#include "TestShell.h"
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
+#include "TestShell.h"
+#include "include_logger.h"
 
 TestShell::TestShell(exeRunner* exe, dataReader* reader) : myExecuter{ exe }, fileReader{ reader } {
     make_test_func_map();
@@ -23,7 +24,7 @@ void TestShell::read() {
     check_validation_user_input(2);
     std::string cmd = "R " + readedData[1];
     if (myExecuter->runner(cmd)) {
-        std::cout << fileReader->fileRead() << std::endl;
+        WriteLog(__FUNCTION__, fileReader->fileRead());
     }
 }
 
