@@ -1,6 +1,6 @@
 #include "../SSDShellLibrary/ssdExecutor.h"
 #include "../SSDShellLibrary/TestShell.h"
-#include "TestScenarioInterface.h"
+#include "ReadTest.h"
 
 #ifdef _DEBUG
 #pragma comment (lib, "../x64/Debug/SSDShellLibrary.lib")
@@ -8,15 +8,17 @@
 #pragma comment (lib, "../x64/Release/SSDShellLibrary.lib")
 #endif // _DEBUG
 
-void TestScenarioInterface::execute() {
+void ReadTest::execute() {
 	ssdExecutor ssdExe;
 	SddDataReader datareader;
 	TestShell shell{ &ssdExe, &datareader };
 
+	std::cout << "DLL started" << std::endl;
+
 	shell.TestExecute("read 3 ");
 };
 
-TestScenarioInterface _app;
+ReadTest _app;
 void Run() {
 	_app.execute();
 }

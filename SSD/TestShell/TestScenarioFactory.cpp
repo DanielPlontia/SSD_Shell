@@ -1,9 +1,8 @@
 ﻿#pragma once
-#include "../TestScenarioInterface/TestScenarioInterface.h"
-#pragma comment (lib, "../x64/Debug/TestScenarioInterface.lib")
 #include <string>
 #include <iostream>
 #include <windows.h>
+#include "libloaderapi.h"
 #include "TestScenarioFactory.h"
 
 LPCWSTR StringToLPCWSTR(const std::string& str) {
@@ -19,19 +18,25 @@ LPCWSTR StringToLPCWSTR(const std::string& str) {
     return buffer;
 }
 
+typedef void (WINAPI* PGNSI)();
 
 void TestScenario::run(std::string scenario) {
     std::string dllName = scenario + ".dll";
-    HINSTANCE hDLL = LoadLibrary(StringToLPCWSTR(dllName));
-    if (hDLL == NULL) {
+    HINSTANCE hDLL; // Handle to DLL
+    PGNSI pGNSI;
+    hDLL = LoadLibrary(StringToLPCWSTR(dllName));
+    if(hDLL == NULL) {
         std::cerr << "DLL을 로드할 수 없습니다." << std::endl;
         return;
     }
 
-    Run();
-
-    // DLL 언로드
-    FreeLibrary(hDLL);
+    pGNSI = (PGNSI)GetProcAddress(hDLL, "Run");
+    if (NULL != pGNSI)
+    {
+        pGNSI();
+    }
+ 
+    FreeLibrary(hDLL); // DLL 언로드
 
     return;
 };
