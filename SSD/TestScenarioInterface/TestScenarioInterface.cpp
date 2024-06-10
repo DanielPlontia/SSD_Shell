@@ -10,7 +10,7 @@ void TestScenarioInterface::execute() {
 	shell.TestExecute("read 3 ");
 };
 
-testApp _app;
+TestScenarioInterface _app;
 void Run() {
 	_app.execute();
 }
