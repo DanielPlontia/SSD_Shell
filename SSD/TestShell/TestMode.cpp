@@ -4,10 +4,11 @@
 #include <algorithm>
 #include "TestMode.h"
 #include "include_logger.h"
-#include "TestScenario.h"
 
 TestMode::TestMode(int argc, char* argv[], TestShell& shell)
-    : argc(argc), argv(argv), shell(shell) {}
+    : argc(argc), argv(argv), shell(shell) {
+    scenarioExcutor = new TestScenario();
+}
 
 int TestMode::run() {
     if (isRunnerMode()) {
@@ -33,7 +34,7 @@ int TestMode::runnerMode() {
     while (std::getline(fin, line)) {
         std::vector<std::string> testScenario = splitTestScenario(line);
 
-        if (!IsScenarioCommand(testScenario) || !IsValidScenarioCommand(testScenario)) {
+        if (!IsScenarioCommand(testScenario) || !IsValidScenarioCommand_size(testScenario)) {
             return 0;
         }
 
@@ -41,8 +42,7 @@ int TestMode::runnerMode() {
             DisableConsole();
             WRITE_LOG(line + " ... ");
             std::cout << line << " ... ";
-            TestScenario testapp;
-            testapp.run(testScenario[0]);
+            scenarioExcutor->run(testScenario[0]);
             std::cout << "Pass" << std::endl;
 
             EnableConsole();
@@ -68,10 +68,9 @@ void TestMode::interactiveMode() {
 
         try {
             if (IsScenarioCommand(testScenario)) {
-                if(!IsValidScenarioCommand(testScenario))
+                if(!IsValidScenarioCommand_size(testScenario))
                     throw std::runtime_error("Invalid Command");
-                TestScenario testapp;
-                testapp.run(testScenario[0]);
+                scenarioExcutor->run(testScenario[0]);
             } else {
                 shell.TestExecute(userInput);
             }
@@ -106,9 +105,10 @@ bool TestMode::IsScenarioCommand(const std::vector<std::string>& testScenario) {
     return true;
 }
 
-bool TestMode::IsValidScenarioCommand(const std::vector<std::string>& testScenario) {
+bool TestMode::IsValidScenarioCommand_size(const std::vector<std::string>& testScenario) {
     if (testScenario.size() > 1) {
         WRITE_LOG("Please check Scenario CMD: " + testScenario[0]);
         return false;
     }
+    return true;
 }
