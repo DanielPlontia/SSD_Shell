@@ -1,16 +1,16 @@
 #pragma once
 
-#ifdef TESTAPP_EXPORT
-#define TESTAPP_DECLSPEC __declspec(dllexport)
+#ifdef TESTSCENARIO_EXPORT
+#define TESTSCENARIO_DECLSPEC __declspec(dllexport)
 #else
-#define TESTAPP_DECLSPEC __declspec(dllimport)
+#define TESTSCENARIO_DECLSPEC __declspec(dllimport)
 #endif
 
-class testApp {
+class TestScenarioInterface {
 public:
 	void execute();
 };
 
 extern "C" {
-	TESTAPP_DECLSPEC void Run();
+	TESTSCENARIO_DECLSPEC void Run();
 }

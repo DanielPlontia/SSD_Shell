@@ -2,7 +2,7 @@
 #include "TestShell.h"
 #include "TestScenarioInterface.h"
 
-void testApp::execute() {
+void TestScenarioInterface::execute() {
 	ssdExecutor ssdExe;
 	SddDataReader datareader;
 	TestShell shell{ &ssdExe, &datareader };
