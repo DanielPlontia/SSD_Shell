@@ -27,8 +27,16 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ReadTest", "ReadTest\ReadTe
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FullWriteAndRead", "FullWriteAndRead\FullWriteAndRead.vcxproj", "{863B4EB7-8CAF-4403-9345-AC6D50ED1B33}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A8E82DE6-CA72-4180-B1D5-24837EF0E118} = {A8E82DE6-CA72-4180-B1D5-24837EF0E118}
+		{EDD685C9-6D7F-42D7-B1CB-F6FB0471D4D6} = {EDD685C9-6D7F-42D7-B1CB-F6FB0471D4D6}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StressTest", "StressTest\StressTest.vcxproj", "{5301B705-406E-4C69-89F8-33C3F8AE629C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A8E82DE6-CA72-4180-B1D5-24837EF0E118} = {A8E82DE6-CA72-4180-B1D5-24837EF0E118}
+		{EDD685C9-6D7F-42D7-B1CB-F6FB0471D4D6} = {EDD685C9-6D7F-42D7-B1CB-F6FB0471D4D6}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
