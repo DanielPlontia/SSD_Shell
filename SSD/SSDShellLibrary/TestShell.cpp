@@ -21,7 +21,7 @@ bool TestShell::TestExecute(std::string inputData) {
 }
 
 void TestShell::read() {
-    check_validation_user_input(2);
+    check_user_input_count(2);
     std::string cmd = "R " + readedData[1];
     if (myExecuter->runner(cmd)) {
         WRITE_LOG(fileReader->fileRead());
@@ -29,13 +29,13 @@ void TestShell::read() {
 }
 
 void TestShell::write() {
-    check_validation_user_input(3);
+    check_user_input_count(3);
     std::string cmd = "W " + readedData[1] + " " + readedData[2];
     myExecuter->runner(cmd);
 }
 
 void TestShell::erase() {
-    check_validation_user_input(3);
+    check_user_input_count(3);
 
     int startLba = stoi(readedData[1]);
     int size = stoi(readedData[2]);
@@ -63,7 +63,7 @@ void TestShell::erase() {
 
 
 void TestShell::erase_range() {
-    check_validation_user_input(3);
+    check_user_input_count(3);
     int startLba = stoi(readedData[1]);
     int endLba = stoi(readedData[2]);
 
@@ -75,14 +75,14 @@ void TestShell::erase_range() {
 }
 
 void TestShell::flush() {
-    check_validation_user_input(1);
+    check_user_input_count(1);
     std::string cmd = "F";
     myExecuter->runner(cmd);
 }
 
 void TestShell::fullRead() {
-    check_validation_user_input(1);
-    for (int index = 0; index < 100; ++index) {
+    check_user_input_count(1);
+    for (int index = MIN_LBA; index <= MAX_LBA; ++index) {
         std::string cmd = "R " + std::to_string(index);
         if (!myExecuter->runner(cmd)) return;
         std::cout << fileReader->fileRead() << std::endl;
@@ -90,8 +90,8 @@ void TestShell::fullRead() {
 }
 
 void TestShell::fullWrite() {
-    check_validation_user_input(2);
-    for (int index = 0; index < 100; ++index) {
+    check_user_input_count(2);
+    for (int index = MIN_LBA; index <= MAX_LBA; ++index) {
         std::string cmd = "W " + std::to_string(index) + " " + readedData[1];
         if (!myExecuter->runner(cmd)) return;
     }
@@ -103,27 +103,6 @@ void TestShell::showHelp() {
     }
 }
 
-void TestShell::testApp1() {
-    check_validation_user_input(1);
-    readedData = {"fullwrite", "0x12345678"};
-    fullWrite();
-    readedData = {"fullread"};
-    fullRead();
-}
-
-void TestShell::testApp2() {
-    check_validation_user_input(1);
-    int startLba = 0;
-    int endLba = 5;
-    int count = 0;
-    while (count < TEST_APP2_REPEAT_COUNT) {
-        repeatWriteOperation(startLba, endLba, "0xAAAABBBB");
-        count++;
-    }
-    repeatWriteOperation(startLba, endLba, "0x12345678");
-    repeatReadOperation(startLba, endLba);
-}
-
 void TestShell::split_input_data(std::string input) {
     std::istringstream ss(input);
     std::string subs;
@@ -133,28 +112,14 @@ void TestShell::split_input_data(std::string input) {
     }
 }
 
-void TestShell::check_validation_user_input(int count) {
+void TestShell::check_user_input_count(int count) {
     if (readedData.size() != count) throw std::invalid_argument("Invalid Parameters.");
 }
 
 void TestShell::erase_validation_check(int size, int startLba)
 {
-    if (size > 100 || size < 1) throw std::invalid_argument("Size 값을 다시 입력해주세요");
-    if (startLba + size > 100 || startLba + size < 1) throw std::invalid_argument("Size 값을 다시 입력해주세요");
-}
-
-void TestShell::repeatReadOperation(int start, int end) {
-    for (int lba = start; lba <= end; lba++) {
-        readedData = {"read", std::to_string(lba)};
-        read();
-    }
-}
-
-void TestShell::repeatWriteOperation(int start, int end, std::string data) {
-    for (int lba = start; lba <= end; lba++) {
-        readedData = {"write", std::to_string(lba), data};
-        write();
-    }
+    if (size > MAX_ERASE_SIZE || size < MIN_ERASE_SIZE) throw std::invalid_argument("Size 값을 다시 입력해주세요");
+    if (startLba + size > MAX_ERASE_SIZE || startLba + size < MIN_ERASE_SIZE) throw std::invalid_argument("Size 값을 다시 입력해주세요");
 }
 
 void TestShell::make_test_func_map() {

@@ -11,42 +11,34 @@ TestMode::TestMode(int argc, char* argv[], TestShell& shell)
 }
 
 int TestMode::run() {
-    if (isRunnerMode()) {
-        return runnerMode();
-    }
-
-    interactiveMode();
-    return 0;
-}
-
-bool TestMode::isRunnerMode() {
-    return argc == 2;
+    if (isRunnerMode()) return runnerMode();
+    return interactiveMode();
 }
 
 int TestMode::runnerMode() {
-    std::ifstream fin(argv[1]);
-    if (!fin) {
+    std::ifstream runner_scenario(argv[1]);
+    if (!runner_scenario) {
         WRITE_LOG("Failed to open scenario list file");
         return -1;
     }
 
     std::string line;
-    while (std::getline(fin, line)) {
+    while (std::getline(runner_scenario, line)) {
         std::vector<std::string> testScenario = splitTestScenario(line);
 
         if (!IsScenarioCommand(testScenario) || !IsValidScenarioCommand_size(testScenario)) {
-            return 0;
+            return -2;
         }
 
         try {
             DisableConsole();
             WRITE_LOG(line + " ... ");
             std::cout << line << " ... ";
+
             scenarioExcutor->run(testScenario[0]);          
           
             WRITE_LOG(line + " ... Pass");
             std::cout << "Pass" << std::endl;
-
             EnableConsole();
         }
         catch (const std::exception& e) {
@@ -59,7 +51,7 @@ int TestMode::runnerMode() {
     return 0;
 }
 
-void TestMode::interactiveMode() {
+int TestMode::interactiveMode() {
     while (true) {
         char userInput[100];
         std::cin.getline(userInput, 100);
@@ -79,19 +71,14 @@ void TestMode::interactiveMode() {
         }
         catch (const std::exception& e) {
             WRITE_LOG(e.what());
+            return -3;
         }
     }
+    return 0;
 }
 
-std::vector<std::string> TestMode::splitTestScenario(const std::string& line) {
-    std::vector<std::string> testScenario;
-    std::istringstream ss(line);
-    std::string subs;
-
-    while (ss >> subs) {
-        testScenario.push_back(subs);
-    }
-    return testScenario;
+bool TestMode::isRunnerMode() {
+    return argc == 2;
 }
 
 bool TestMode::IsScenarioCommand(const std::vector<std::string>& testScenario) {
@@ -113,4 +100,14 @@ bool TestMode::IsValidScenarioCommand_size(const std::vector<std::string>& testS
         return false;
     }
     return true;
+}
+std::vector<std::string> TestMode::splitTestScenario(const std::string& line) {
+    std::vector<std::string> testScenario;
+    std::istringstream ss(line);
+    std::string subs;
+
+    while (ss >> subs) {
+        testScenario.push_back(subs);
+    }
+    return testScenario;
 }

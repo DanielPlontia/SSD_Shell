@@ -24,7 +24,7 @@ public:
         if (check_validation() == false) {
             throw ReadException();
         }
-        LBA = stoi(operation[1]);
+        LBA = get_address(operation[1]);
 
         do_action();
     }
@@ -73,6 +73,17 @@ private:
         if (address < min_num) return false;
         if (address > max_num) return false;
         return true;
+    }
+
+    int get_address(string oper) {
+        int address = 0;
+        try {
+            address = stoi(oper);
+        }
+        catch (exception e) {
+            throw ReadException();
+        }
+        return address;
     }
 
     void do_action() override {

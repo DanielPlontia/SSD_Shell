@@ -6,8 +6,8 @@ std::string SddDataReader::fileRead() {
     if (!rfs) {
         return "Failed to open file.";
     }
-    char readData[100];
-    rfs.getline(readData, 100);
+    char readData[MAX_RESULT_LEN];
+    rfs.getline(readData, MAX_RESULT_LEN);
     rfs.close();
     return readData;
 }

@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 
+#define MAX_RESULT_LEN 100
+
 class dataReader {
 public:
     virtual std::string fileRead() = 0;
