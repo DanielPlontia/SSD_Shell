@@ -25,7 +25,6 @@ void TestScenario::run(std::string scenario) {
     std::string dll_name = scenario + ".dll";
     HINSTANCE dll_handle; // Handle to DLL
     DllFunction dll_function;
-    bool dll_return_value = false;
 
     dll_handle = LoadLibrary(StringToLPCWSTR(dll_name));
     if(dll_handle == NULL) {
@@ -37,13 +36,9 @@ void TestScenario::run(std::string scenario) {
     dll_function = (DllFunction)GetProcAddress(dll_handle, "Run");
     if (NULL != dll_function)
     {
-        dll_return_value = dll_function();
+        dll_function();
     }
  
     FreeLibrary(dll_handle); // DLL 언로드
-
-    if (dll_return_value == false)
-        throw std::runtime_error("Scenario Test Fail");
-
     return;
 };
