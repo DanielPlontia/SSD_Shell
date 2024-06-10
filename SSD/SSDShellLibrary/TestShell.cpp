@@ -49,6 +49,9 @@ void TestShell::erase() {
             cmd = "E " + readedData[1] + " " + readedData[2];
             size -= 10;
             myExecuter->runner(cmd);
+            startLba = stoi(readedData[1]);
+            startLba += 10;
+            readedData[1] = std::to_string(startLba);
         }
         else {
             cmd = "E " + readedData[1] + " " + std::to_string(size);
@@ -90,7 +93,7 @@ void TestShell::fullWrite() {
     check_validation_user_input(2);
     for (int index = 0; index < 100; ++index) {
         std::string cmd = "W " + std::to_string(index) + " " + readedData[1];
-        myExecuter->runner(cmd);
+        if (!myExecuter->runner(cmd)) return;
     }
 }
 

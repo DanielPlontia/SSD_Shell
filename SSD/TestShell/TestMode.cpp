@@ -42,7 +42,7 @@ int TestMode::runnerMode() {
             WRITE_LOG(line + " ... ");
             std::cout << line << " ... ";
             TestScenario testapp;
-            testapp.run("TestApp1");
+            testapp.run(testScenario[0]);
             std::cout << "Pass" << std::endl;
 
             EnableConsole();
