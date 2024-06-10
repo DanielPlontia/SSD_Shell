@@ -2,17 +2,6 @@
 #include "../SSDShellLibrary/TestShell.h"
 #include "TestScenarioInterface.h"
 
-
-#ifdef DEBUG
-#pragma comment (lib, "../x64/Debug/SSDShellLibrary.lib")
-#else
-#pragma comment (lib, "../x64/Release/SSDShellLibrary.lib")
-#endif // DEBUG
-
-
-
-
-
 void TestScenarioInterface::execute() {
 	ssdExecutor ssdExe;
 	SddDataReader datareader;
