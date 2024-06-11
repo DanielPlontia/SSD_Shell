@@ -23,7 +23,7 @@ LPCWSTR StringToLPCWSTR(const std::string& str) {
 
 void TestScenario::run(std::string scenario) {
     std::string dll_name = scenario + ".dll";
-    HINSTANCE dll_handle; // Handle to DLL
+    HINSTANCE dll_handle;
     DllFunction dll_function;
 
     dll_handle = LoadLibrary(StringToLPCWSTR(dll_name));

@@ -7,13 +7,13 @@
 
 class TestMode {
 public:
-    TestMode(int argc, char* argv[], TestShell& shell);
+    TestMode(int argc, char* argv[], ShellAPI& shell);
     int run();
 
 private:
     int argc;
     char** argv;
-    TestShell& shell;
+    ShellAPI& shell;
     TestScenario* scenarioExcutor;
 
     int runnerMode();

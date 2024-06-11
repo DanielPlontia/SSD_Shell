@@ -11,8 +11,8 @@
 void ReadTest::execute() {
 	ssdExecutor ssdExe;
 	SddDataReader datareader;
-	TestShell shell{ &ssdExe, &datareader };
-	shell.TestExecute("read 3 ");
+	ShellAPI shell{ &ssdExe, &datareader };
+	shell.TestExecute("read 100 ");
 };
 
 ReadTest _app;

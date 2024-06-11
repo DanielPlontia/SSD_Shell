@@ -5,7 +5,7 @@
 #include "TestMode.h"
 #include "include_logger.h"
 
-TestMode::TestMode(int argc, char* argv[], TestShell& shell)
+TestMode::TestMode(int argc, char* argv[], ShellAPI& shell)
     : argc(argc), argv(argv), shell(shell) {
     scenarioExcutor = new TestScenario();
 }
