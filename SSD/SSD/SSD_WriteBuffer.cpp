@@ -236,7 +236,7 @@ private:
 				}
 
 				erase_commands.insert(make_erase_command(start_addr, size));
-				for (int a = addr; a < addr + size; a++) {
+				for (int a = start_addr; a < start_addr + size; a++) {
 					addrs.insert(a);
 				}
 				target = make_set(start_addr, size);
