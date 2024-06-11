@@ -29,7 +29,6 @@ public:
 	void read(int addr) {
 		std::string command = check_fast_read(addr);
 		if (commands.empty() || command.empty()) {
-			WRITE_LOG_WITHOUT_CONSOLE("Can't Fast Read Address : " + std::to_string(addr) + " nand.txt read!!");
 			ssd_hw->read(addr);
 			return;
 		}
@@ -333,6 +332,8 @@ private:
 
 	void execute_ssd() {
 		for (std::string command : commands) {
+			WRITE_LOG_WITHOUT_CONSOLE("Real Execute!! " + command);
+
 			std::vector<std::string> words = parse_command(command);
 			std::string opcode = words.at(0);
 			int addr = stoi(words.at(1));
