@@ -6,12 +6,9 @@
 #include <algorithm>
 #include <cctype>
 #include <iostream>
-#include "Command.h"
+#include "include_logger.h"
+#include "CmdFactory.h"
 #include "SSD_WriteBuffer.cpp"
-#include "read.cpp"
-#include "write.cpp"
-#include "erase.cpp"
-#include "flush.cpp"
 
 using std::vector;
 using std::string;
@@ -21,7 +18,7 @@ public:
 	SSD_Invoker(vector<string> userCommand)
 	{
 		userCmd = userCommand;
-		command_Instance = std::move(getCmdInstance());
+		command_Instance = std::move(cmd_fac.getCmdInstance(userCmd[0]));
 	}
 
 	string run()
@@ -43,6 +40,7 @@ public:
 		return string();
 	}
 private:
+	CommandFactory cmd_fac;
 	vector<string> userCmd;
 	std::shared_ptr<Command> command_Instance;
 
@@ -63,25 +61,6 @@ private:
 		return e.what();
 	}
 
-	std::shared_ptr<Command> getCmdInstance()
-	{
-		if (userCmd.empty())
-			return nullptr;
-
-		if (userCmd[0] == "R") {
-			return std::make_shared<ReadCmd>();
-		}
-		if (userCmd[0] == "W") {
-			return std::make_shared<WriteCmd>();
-		}
-		if (userCmd[0] == "E") {
-			return std::make_shared<EraseCmd>();
-		}
-		if (userCmd[0] == "F") {
-			return std::make_shared<FlushCmd>();
-		}
-		return nullptr;
-	}
 	void cmd_send_write_buf_logging()
 	{
 		std::string raw_cmd;

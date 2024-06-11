@@ -139,6 +139,7 @@
     <ClCompile Include="write.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CmdFactory.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="include_logger.h" />
     <ClInclude Include="SSD_HW.h" />
