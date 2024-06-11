@@ -58,6 +58,7 @@ public:
 
 	void flush() {
 		optimize();
+
 		execute_ssd();
 		commands.clear();
 	}
@@ -69,6 +70,7 @@ private:
 	SSD_WriteBuffer()
 	{
 		buffer_file_ = "./buffer.txt";
+		optimize_file_ = "./optimize.txt";
 		result_file_ = "./result.txt";
 		ssd_hw = std::make_shared<MySSD>();
 
@@ -79,6 +81,7 @@ private:
 	SSD_WriteBuffer(const SSD_WriteBuffer& other) = delete;
 
 	std::string buffer_file_;
+	std::string optimize_file_;
 	std::string result_file_;
 	std::vector<std::string> commands;
 	std::shared_ptr<SSD_HW> ssd_hw;
@@ -125,6 +128,13 @@ private:
 	void optimize() {
 		remove_redundant_command();
 		merge_erase_command();
+		std::ofstream file;
+		file.open(optimize_file_);
+
+		for (std::string command : commands) {
+			file << command;
+		}
+		file.close();
 	}
 
 	// 역순으로 동일한 address에 access하는 command를 제거
