@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <algorithm>
 #include <fstream>
@@ -36,20 +36,14 @@ public:
 	}
 
 	void write(int addr, unsigned int data) {
-		std::stringstream ss;
-		ss << "W " << addr << " " << data << std::endl;
-		commands.push_back(ss.str());
-
+		commands.push_back(make_write_command(addr, data));
 		if (need_self_flush()) {
 			flush();
 		}
 	}
 
 	void erase(int addr, int size) {
-		std::stringstream ss;
-		ss << "E " << addr << " " << size << std::endl;
-		commands.push_back(ss.str());
-
+		commands.push_back(make_erase_command(addr, size));
 		if (need_self_flush()) {
 			flush();
 		}
@@ -136,8 +130,9 @@ private:
 		file.close();
 	}
 
-	// ¿ª¼øÀ¸·Î µ¿ÀÏÇÑ address¿¡ accessÇÏ´Â command¸¦ Á¦°Å
-	// erase´Â ¸ðµç ¹üÀ§°¡ Æ÷ÇÔµÇ¾î¾ß »èÁ¦ °¡´É
+	// ì—­ìˆœìœ¼ë¡œ commandë¥¼ ì œê±°/ìˆ˜ì •
+	// write: ë™ì¼í•œ addressì— accessí•˜ëŠ” commandë¥¼ ì œê±°
+	// erase: ëª¨ë“  ë²”ìœ„ê°€ í¬í•¨ë˜ì–´ì•¼ ì‚­ì œ ê°€ëŠ¥. ìˆ˜ì •ì€ ì–‘ ëì—ì„œë§Œ.
 	void remove_redundant_command() {
 		std::vector<std::string> new_commands = {};
 		std::set<unsigned int> addrs = {};
@@ -156,9 +151,9 @@ private:
 				// check already existing range
 				bool range_exist = true;
 				for (int a = addr; a < addr + size; a++) {
-					if (addrs.find(a) == addrs.end()) {
-						range_exist = false;
-					}
+					if (addrs.find(a) != addrs.end()) continue;
+					range_exist = false;
+					break;
 				}
 				if (range_exist) continue;
 
@@ -167,30 +162,21 @@ private:
 				int start_addr = addr;
 				// from start
 				for (int a = addr; a < addr + size; a++) {
-					if (addrs.find(a) != addrs.end()) {
-						size_left--;
-						start_addr++;
-						continue;
-					}
-					break;
+					if (addrs.find(a) == addrs.end()) break;
+					size_left--;
+					start_addr++;
 				}
 				// from end
 				for (int a = addr + size - 1; size_left > 0 && a >= addr; a--) {
-					if (addrs.find(a) != addrs.end()) {
-						size_left--;
-						continue;
-					}
-					break;
+					if (addrs.find(a) == addrs.end()) break;
+					size_left--;
 				}
 
-				if (size_left != 0) {
-					std::stringstream ss;
-					ss << "E " << start_addr << " " << size_left << std::endl;
-					new_commands.push_back(ss.str());
+				if (size_left == 0) continue;
 
-					for (int a = start_addr; a < start_addr + size_left; a++) {
-						addrs.insert(a);
-					}
+				new_commands.push_back(make_erase_command(start_addr, size_left));
+				for (int a = start_addr; a < start_addr + size_left; a++) {
+					addrs.insert(a);
 				}
 			}
 		}
@@ -200,9 +186,9 @@ private:
 
 	void merge_erase_command() {
 		std::vector<std::string> new_commands = {};
-		std::set< std::set<int> > erase_sets = {};
-		std::set<std::string> erase_commands = {};
 		std::set<unsigned int> addrs = {};
+		std::set<std::string> erase_commands = {};
+		std::set< std::set<int> > erase_sets = {};
 		for (auto it = commands.begin(); it != commands.end(); ++it) {
 			std::string command = *it;
 			std::vector<std::string> words = parse_command(command);
@@ -215,11 +201,7 @@ private:
 				int size = stoi(words.at(2));
 
 				// check subset
-				std::set<int> target{};
-				for (int a = addr; a < addr + size; a++) {
-					target.insert(a);
-				}
-
+				std::set<int> target = make_set(addr, size);
 				bool is_subset = false;
 				for (auto erase_set : erase_sets) {
 					if (std::includes(erase_set.begin(), erase_set.end(), target.begin(), target.end())) {
@@ -240,14 +222,9 @@ private:
 				}
 				size += size_added;
 				if (size_added > 0) {
-					std::stringstream ss;
-					ss << "E " << start_addr << " " << size_added << std::endl;
-					erase_commands.erase(ss.str());
+					erase_commands.erase(make_erase_command(start_addr, size_added));
 
-					target.clear();
-					for (int a = start_addr; a < start_addr + size_added; a++) {
-						target.insert(a);
-					}
+					target = make_set(start_addr, size_added);
 					erase_sets.erase(target);
 				}
 
@@ -261,32 +238,71 @@ private:
 				size += size_added;
 				start_addr -= size_added;
 				if (size_added > 0) {
-					std::stringstream ss;
-					ss << "E " << start_addr << " " << size_added << std::endl;
-					erase_commands.erase(ss.str());
+					erase_commands.erase(make_erase_command(start_addr, size_added));
 
-					target.clear();
-					for (int a = start_addr; a < start_addr + size_added; a++) {
-						target.insert(a);
-					}
+					target = make_set(start_addr, size_added);
 					erase_sets.erase(target);
 				}
 
-				std::stringstream ss;
-				ss << "E " << start_addr << " " << size << std::endl;
-				erase_commands.insert(ss.str());
-				target.clear();
-				for (int a = addr; a < addr + size; a++) {
+				erase_commands.insert(make_erase_command(start_addr, size));
+				for (int a = start_addr; a < start_addr + size; a++) {
 					addrs.insert(a);
-					target.insert(a);
 				}
+				target = make_set(start_addr, size);
 				erase_sets.insert(target);
 			}
 		}
+
+		split_erase_by_sizeten(erase_commands);
+
 		for (std::string command : erase_commands) {
 			new_commands.insert(new_commands.begin(), command);
 		}
 		commands = new_commands;
+	}
+
+	std::set<int> make_set(int addr, int size) {
+		std::set<int> target{};
+		for (int a = addr; a < addr + size; a++) {
+			target.insert(a);
+		}
+		return target;
+	}
+
+	std::string make_write_command(int addr, unsigned int value) {
+		std::stringstream ss;
+		ss << "W " << addr << " " << value << std::endl;
+		return ss.str();
+	}
+
+	std::string make_erase_command(int addr, int size) {
+		std::stringstream ss;
+		ss << "E " << addr << " " << size << std::endl;
+		return ss.str();
+	}
+
+	void split_erase_by_sizeten(std::set<std::string>& erase_commands) {
+		std::set<std::string> new_commands{};
+		std::set<std::string> del_commands{};
+		for (std::string command : erase_commands) {
+			std::vector<std::string> words = parse_command(command);
+			int addr = stoi(words.at(1));
+			int size = stoi(words.at(2));
+
+			if (size <= 10) continue;
+			del_commands.insert(command);
+			while (size > 10) {
+				new_commands.insert(make_erase_command(addr, 10));
+				size -= 10;
+				addr += 10;
+			}
+			new_commands.insert(make_erase_command(addr, size));
+		}
+		for (std::string command : del_commands) {
+			auto it = erase_commands.find(command);
+			erase_commands.erase(it);
+		}
+		erase_commands.insert(new_commands.begin(), new_commands.end());
 	}
 
 	void fast_read(std::string command) {
