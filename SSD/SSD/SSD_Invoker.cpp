@@ -32,7 +32,7 @@ public:
 		}
 		else {
 			try {
-				execute_cmd_logging();
+				cmd_send_write_buf_logging();
 				command_Instance->execute(userCmd);
 			}
 			catch (exception& e) {
@@ -69,29 +69,25 @@ private:
 			return nullptr;
 
 		if (userCmd[0] == "R") {
-			WRITE_LOG_WITHOUT_CONSOLE("ReadCmd Instance Return"); 
 			return std::make_shared<ReadCmd>();
 		}
 		if (userCmd[0] == "W") {
-			WRITE_LOG_WITHOUT_CONSOLE("WriteCmd Instance Return"); 
 			return std::make_shared<WriteCmd>();
 		}
 		if (userCmd[0] == "E") {
-			WRITE_LOG_WITHOUT_CONSOLE("EraseCmd Instance Return"); 
 			return std::make_shared<EraseCmd>();
 		}
 		if (userCmd[0] == "F") {
-			WRITE_LOG_WITHOUT_CONSOLE("FlushCmd Instance Return"); 
 			return std::make_shared<FlushCmd>();
 		}
 		return nullptr;
 	}
-	void execute_cmd_logging()
+	void cmd_send_write_buf_logging()
 	{
 		std::string raw_cmd;
 		for (const auto& cmd : userCmd) {
 			raw_cmd += cmd + " ";
 		}
-		WRITE_LOG_WITHOUT_CONSOLE("Execute!! " + raw_cmd);
+		WRITE_LOG_WITHOUT_CONSOLE("Send Write Buffer!! " + raw_cmd);
 	}
 };

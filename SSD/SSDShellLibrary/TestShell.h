@@ -19,6 +19,8 @@ public:
     TestShell(exeRunner* exe, dataReader* reader);
     bool TestExecute(std::string inputData);
 
+    bool IsShellAPI(const std::string& cmd);
+
 private:
     std::unordered_map<std::string, test_func> test_func_map;
     std::vector<std::string> readedData;
