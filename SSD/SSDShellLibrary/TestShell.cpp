@@ -13,11 +13,19 @@ bool ShellAPI::TestExecute(std::string inputData) {
     split_input_data(inputData);
     if (readedData[0] == "exit") return true;
 
-    if (test_func_map.find(readedData[0]) == test_func_map.end()) {
+    if (IsShellAPI(readedData[0]) == false) {
         throw std::runtime_error("Invalid Command");
     }
     test_func_map[readedData[0]].function();
     return false;
+}
+
+bool ShellAPI::IsShellAPI(const std::string& cmd)
+{
+    if (test_func_map.find(cmd) == test_func_map.end()) {
+        return false;
+    }
+    return true;
 }
 
 void ShellAPI::read() {
@@ -84,7 +92,7 @@ void ShellAPI::fullRead() {
     for (int index = MIN_LBA; index <= MAX_LBA; ++index) {
         std::string cmd = "R " + std::to_string(index);
         run_executer(cmd);
-        std::cout << fileReader->fileRead() << std::endl;
+        WRITE_LOG(fileReader->fileRead());
     }
 }
 

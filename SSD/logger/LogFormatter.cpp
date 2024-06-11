@@ -2,11 +2,13 @@
 
 std::string LogFormatter::get_log_formatted(const std::string& funcName, const std::string& msg, const std::source_location& loc)
 {
+    std::string trimed_msg = msg;
+    std::replace(trimed_msg.begin(), trimed_msg.end(), '\n', ' ');
     std::filesystem::path file_name{ loc.file_name() };
 	std::string formated_str = std::format("{} {:30}: {} \t[{}({})]\n", \
 			get_formatted_time("[%y.%m.%d %H:%M]").c_str(), \
 			get_split_funcName(funcName).c_str(), \
-			msg.c_str(), file_name.filename().string(), loc.line());
+        trimed_msg.c_str(), file_name.filename().string(), loc.line());
 	return formated_str;
 }
 

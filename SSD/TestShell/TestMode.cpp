@@ -87,12 +87,7 @@ bool TestMode::IsScenarioCommand(const std::vector<std::string>& testScenario) {
         WRITE_LOG("Please check scenario list file");
         return false;
     }
-
-    std::string invalidCmds[] = {"fullread", "fullwrite", "read", "write", "erase", "flush", "help", "exit"};
-    if (std::find(std::begin(invalidCmds), std::end(invalidCmds), testScenario[0]) != std::end(invalidCmds)) {
-        return false;
-    }
-    return true;
+    return !shell.IsShellAPI(testScenario[0]);
 }
 
 bool TestMode::IsValidScenarioCommand_size(const std::vector<std::string>& testScenario) {
