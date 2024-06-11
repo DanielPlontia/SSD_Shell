@@ -120,6 +120,7 @@ private:
 
 	void optimize() {
 		remove_redundant_command();
+		convert_write_zero_to_erase();
 		merge_erase_command();
 		std::ofstream file;
 		file.open(optimize_file_);
@@ -182,6 +183,20 @@ private:
 		}
 		reverse(new_commands.begin(), new_commands.end());
 		commands = new_commands;
+	}
+
+	void convert_write_zero_to_erase() {
+		for (int i = 0; i < commands.size(); i++) {
+			std::string command = commands.at(i);
+			std::vector<std::string> words = parse_command(command);
+			std::string opcode = words.at(0);
+			int addr = stoi(words.at(1));
+			if (opcode == "W") {
+				if (std::stoul(words.back(), nullptr, 10) == 0) {
+					commands.at(i) = make_erase_command(addr, 1);
+				}
+			}
+		}
 	}
 
 	void merge_erase_command() {

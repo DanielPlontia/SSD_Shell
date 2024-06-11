@@ -12,7 +12,7 @@ void ReadTest::execute() {
 	ssdExecutor ssdExe;
 	SddDataReader datareader;
 	ShellAPI shell{ &ssdExe, &datareader };
-	shell.TestExecute("read 100 ");
+	shell.TestExecute("read 3 ");
 };
 
 ReadTest _app;
