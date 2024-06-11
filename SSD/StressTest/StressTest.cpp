@@ -23,7 +23,7 @@ void StressTest::execute() {
 void StressTest::repeatReadOperation(int start, int end) {
     ssdExecutor ssdExe;
     SddDataReader datareader;
-    TestShell shell{ &ssdExe, &datareader };
+    ShellAPI shell{ &ssdExe, &datareader };
 
     for (int lba = start; lba <= end; lba++) {
         std::string testCpmmand = "read " + std::to_string(lba);
@@ -34,7 +34,7 @@ void StressTest::repeatReadOperation(int start, int end) {
 void StressTest::repeatWriteOperation(int start, int end, std::string data) {
     ssdExecutor ssdExe;
     SddDataReader datareader;
-    TestShell shell{ &ssdExe, &datareader };
+    ShellAPI shell{ &ssdExe, &datareader };
 
     for (int lba = start; lba <= end; lba++) {
         std::string testCpmmand = "write " + std::to_string(lba) + " " + data;

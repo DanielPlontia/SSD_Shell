@@ -11,7 +11,7 @@
 void FullWirteAndRead::execute() {
 	ssdExecutor ssdExe;
 	SddDataReader datareader;
-	TestShell shell{ &ssdExe, &datareader };
+	ShellAPI shell{ &ssdExe, &datareader };
 	shell.TestExecute("fullwrite 0x12345678 ");
 	shell.TestExecute("fullread");
 };

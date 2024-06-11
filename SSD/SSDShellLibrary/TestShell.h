@@ -14,9 +14,9 @@ struct test_func {
     std::string description;
 };
 
-class TestShell {
+class ShellAPI {
 public:
-    TestShell(exeRunner* exe, dataReader* reader);
+    ShellAPI(exeRunner* exe, dataReader* reader);
     bool TestExecute(std::string inputData);
 
 private:

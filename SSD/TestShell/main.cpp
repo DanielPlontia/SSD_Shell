@@ -7,7 +7,7 @@ int main(int argc, char* argv[])
 {
     ssdExecutor ssdExe;
     SddDataReader datareader;
-    TestShell shell{ &ssdExe, &datareader };
+    ShellAPI shell{ &ssdExe, &datareader };
     TestMode testMode(argc, argv, shell);
     return testMode.run();
 }
