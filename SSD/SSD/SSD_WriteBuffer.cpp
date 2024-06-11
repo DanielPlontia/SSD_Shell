@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <algorithm>
 #include <fstream>
@@ -121,9 +121,9 @@ private:
 		merge_erase_command();
 	}
 
-	// ¿ª¼øÀ¸·Î command¸¦ Á¦°Å/¼öÁ¤
-	// write: µ¿ÀÏÇÑ address¿¡ accessÇÏ´Â command¸¦ Á¦°Å
-	// erase´Â ¸ğµç ¹üÀ§°¡ Æ÷ÇÔµÇ¾î¾ß »èÁ¦ °¡´É
+	// ì—­ìˆœìœ¼ë¡œ commandë¥¼ ì œê±°/ìˆ˜ì •
+	// write: ë™ì¼í•œ addressì— accessí•˜ëŠ” commandë¥¼ ì œê±°
+	// erase: ëª¨ë“  ë²”ìœ„ê°€ í¬í•¨ë˜ì–´ì•¼ ì‚­ì œ ê°€ëŠ¥. ìˆ˜ì •ì€ ì–‘ ëì—ì„œë§Œ.
 	void remove_redundant_command() {
 		std::vector<std::string> new_commands = {};
 		std::set<unsigned int> addrs = {};
@@ -273,9 +273,27 @@ private:
 	}
 
 	void split_erase_by_sizeten(std::set<std::string>& erase_commands) {
+		std::set<std::string> new_commands{};
+		std::set<std::string> del_commands{};
 		for (std::string command : erase_commands) {
+			std::vector<std::string> words = parse_command(command);
+			int addr = stoi(words.at(1));
+			int size = stoi(words.at(2));
 
+			if (size <= 10) continue;
+			del_commands.insert(command);
+			while (size > 10) {
+				new_commands.insert(make_erase_command(addr, 10));
+				size -= 10;
+				addr += 10;
+			}
+			new_commands.insert(make_erase_command(addr, size));
 		}
+		for (std::string command : del_commands) {
+			auto it = erase_commands.find(command);
+			erase_commands.erase(it);
+		}
+		erase_commands.insert(new_commands.begin(), new_commands.end());
 	}
 
 	void fast_read(std::string command) {
